@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/banking.js}"></script>
+</head>
+<body>
+    <table border="">
+        <tr>
+            <td colspan="4">
+                <h2>내 계좌 조회</h2>
+            </td>
+        </tr>
+        <tr th:each="acc:${accs}" th:id="|myacc${acc.myacc}|">
+            <td>계좌번호</td>
+            <td th:text="${acc.myacc}"></td>
+            <td>잔액</td>
+            <td th:text="${acc.mymoney}"></td>
+        </tr>
+    </table>
+</body>
+</html>
