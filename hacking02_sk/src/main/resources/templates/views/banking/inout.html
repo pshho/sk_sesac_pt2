@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>이체</title>
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/banking.js}"></script>
+</head>
+<body>
+    <form action="/banking/sendBank" method="post" name="sendform">
+        <table border="">
+            <tr>
+                <td colspan="4">
+                    <h2>당행/다른기관이체</h2>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <h3>출금정보</h3>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2">출금계좌번호</td>
+                <td>
+                    <select name="myacc" id="myacc">
+                        <option value="0">계좌를 선택해주세요.</option>
+                        <option th:each="acc:${accList}"
+                                th:text="|${acc.myacc}(저축예금)|"
+                                th:value="${acc.myacc}"></option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" onclick="myaccmoneyview()">잔액조회</button>
+                </td>
+                <td>
+                    <button type="button" onclick="check()">본인계좌조회</button>
+                </td>
+            </tr>
+            <tr>
+                <td>출금가능잔액</td>
+                <td colspan="2">
+                    <input type="text" id="myaccmoney" readonly />
+                </td>
+            </tr>
+            <tr>
+                <td>계좌비밀번호</td>
+                <td colspan="3">
+                    <input type="text" name="myaccpw" id="mypw" placeholder="숫자 4자리" />
+                </td>
+            </tr>
+        </table>
+        <table border="">
+            <tr>
+                <td colspan="9">
+                    <h3>입금정보</h3>
+                </td>
+            </tr>
+            <tr>
+                <td>입금은행</td>
+                <td colspan="8">
+                    <select name="mysendbank" id="sendbank">
+                        <option value="0">입금하실 은행을 선택해주세요.</option>
+                        <option th:each="bank:${bankList}" th:text="${bank}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>입금계좌번호</td>
+                <td colspan="8">
+                    <input type="text" name="mysendacc" id="sendacc" placeholder="'-'없이 숫자만 입력" />
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2">이체금액</td>
+                <td colspan="8">
+                    <input type="text" name="myaccbalance" id="sendmoney" />원
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" onclick="sendMoney('100')">100만</button>
+                </td>
+                <td>
+                    <button type="button" onclick="sendMoney('50')">50만</button>
+                </td>
+                <td>
+                    <button type="button" onclick="sendMoney('10')">10만</button>
+                </td>
+                <td>
+                    <button type="button" onclick="sendMoney('5')">5만</button>
+                </td>
+                <td>
+                    <button type="button" onclick="sendMoney('3')">3만</button>
+                </td>
+                <td>
+                    <button type="button" onclick="sendMoney('1')">1만</button>
+                </td>
+                <td>
+                    <button type="button" onclick="sendMoney('all')">전액</button>
+                </td>
+                <td>
+                    <button type="button" onclick="sendMoney('cancel')">정정</button>
+                </td>
+            </tr>
+            <tr>
+                <td>받는통장 메모</td>
+                <td colspan="8">
+                    <input type="text" name="myaccioname" id="myaccioname" placeholder="(선택)15자 이내 입력" />
+                </td>
+            </tr>
+            <tr>
+                <td>내통장 메모</td>
+                <td colspan="8">
+                    <textarea rows="10" name="myaccmemo" id="myaccmemo" cols="50" placeholder="(선택)500자 이내 메모"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="9">
+                    <input type="submit" value="다음" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
