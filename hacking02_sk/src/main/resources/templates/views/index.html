@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="kr" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -7,5 +7,10 @@
 <body>
     <h2>Index</h2>
     <a href="/board/list">게시판 목록</a>
+    <a href="/member/login">로그인</a>
+    <a href="/member/joinInfo">회원가입</a>
+    
+    <br>
+    <span th:text="${name}"></span>님 반갑습니다.
 </body>
 </html>

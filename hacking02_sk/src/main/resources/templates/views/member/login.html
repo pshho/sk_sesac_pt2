@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>sesac login test</title>
+</head>
+<body>
+	<h3>로그인 화면</h3>
+	<form th:action="@{/member/login}" method="post">
+		<input type="text" placeholder="아이디" id="input_myid" name="myid" maxlength="20">
+		<input type="password" placeholder="비밀번호" id="input_mypw" name="mypw" maxlength="20">
+		<input type="submit" value="로그인">
+	</form>
+</body>
+</html>
