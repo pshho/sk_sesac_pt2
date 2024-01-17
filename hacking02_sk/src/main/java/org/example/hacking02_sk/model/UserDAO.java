@@ -120,6 +120,32 @@ public class UserDAO {
     	return -1; // Error
     }
     
+	public User getUser(String myid, String mypw) {
+		User user = null;
+		String SQL = "SELECT myname, myid, mypw, myemail, mylocation, myphone, mysid, mylevel FROM myuser WHERE myid = ? AND mypw = ?";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, myid);
+			pstmt.setString(2, mypw);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				user = new User();
+				user.setMyname(rs.getString("myname"));
+				user.setMyid(rs.getString("myid"));
+				user.setMypw(rs.getString("mypw"));
+				user.setMyemail(rs.getString("myemail"));
+				user.setMylocation(rs.getString("mylocation"));
+				user.setMyphone(rs.getString("myphone"));
+				user.setMysid(rs.getString("mysid"));
+				user.setMylevel(Integer.parseInt(rs.getString("mylevel")));
+			}
+			return user;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+    
     //주소 찾기
     public List<Location> findLocation(String keyword) throws SQLException {
     	

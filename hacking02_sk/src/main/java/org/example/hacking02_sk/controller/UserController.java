@@ -9,12 +9,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.example.hacking02_sk.model.Location;
 import org.example.hacking02_sk.model.User;
 import org.example.hacking02_sk.model.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 @RequestMapping("member")
@@ -92,22 +93,23 @@ public class UserController {
     }
 	
     // 로그인
-	@GetMapping("login")
+	@RequestMapping("login")
 	public String login() {
 		return "member/login";
 	}
 	
-    @RequestMapping("login")
-    public ModelAndView loginAction(User user, HttpServletResponse response) throws IOException {
+    @PostMapping("login")
+    public ModelAndView loginAction(User user, HttpServletRequest request) {
     	ModelAndView mav = new ModelAndView();
         int result = userDAO.login(user.getMyid(), user.getMypw());
-        System.out.println("로그인 유무 : " + result);
-        System.out.println("로그인 유저 : " + user.getMyid());
+		request.getSession().invalidate();
 
-        if (result == 1) {
-        	//로그인 성공
-        	mav.setViewName("redirect:/");
-        	mav.addObject("name", user.getMyid());
+        if (result == 1) { //로그인 성공
+			HttpSession session = request.getSession();
+			user = userDAO.getUser(user.getMyid(), user.getMypw());
+			session.setAttribute("user", user);
+			session.setMaxInactiveInterval(20);
+			mav.setViewName("redirect:/");
 			return mav;
         }
         else if (result == 0) {
@@ -125,8 +127,24 @@ public class UserController {
 			mav.addObject("message", "DB 에러");
 			return mav;
         }
-        return null;
+        return null; // maybe not reachable
     }
+
+    //로그아웃
+	@RequestMapping("logout")
+    public ModelAndView logoutAction(User user, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession(false);
+		if(session == null) { // 로그인하지 않고 로그아웃 시도할 경우 (maybe not reachable)
+			mav.addObject("message", "로그인하지 않았습니다.");
+		}
+		else { // 로그아웃 시도
+			session.invalidate();
+			mav.addObject("message", "로그아웃 하였습니다.");
+		}
+		mav.setViewName("/member/logout");
+		return mav;
+	}
     
     //주소 검색
 	@RequestMapping("join/popup")

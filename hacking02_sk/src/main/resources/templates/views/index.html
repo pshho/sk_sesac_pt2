@@ -7,10 +7,17 @@
 <body>
     <h2>Index</h2>
     <a href="/board/list">게시판 목록</a>
-    <a href="/member/login">로그인</a>
-    <a href="/member/joinInfo">회원가입</a>
-    
-    <br>
-    <span th:text="${name}"></span>님 반갑습니다.
+    <div th:if="${name == null}">
+        <a href="/member/login">로그인</a> <br>
+        <a href="/member/joinInfo">회원가입</a>
+    </div>
+    <div th:if="${name != null}">
+        <span th:text="${name}"></span> 님
+        <form th:action="@{/member/logout}" method="post">
+            <input type="submit" value="로그아웃">
+        </form>
+        <br>
+        <span th:text="${name}"></span>님 반갑습니다.
+    </div>
 </body>
 </html>
