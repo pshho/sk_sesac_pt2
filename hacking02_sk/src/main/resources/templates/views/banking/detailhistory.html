@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>계좌조회</title>
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/bankingResult.js}"></script>
+</head>
+<body>
+    <table border="">
+        <tr>
+            <td colspan="5">
+                <h2>거래내역조회</h2>
+            </td>
+        </tr>
+        <tr>
+            <form action="/banking/detailhistory" method="post">
+                <td colspan="4">
+                    <input type="text" name="keyword" placeholder="받는통장메모 혹은 내통장메모를 입력해주세요." />
+                </td>
+                <td>
+                    <input type="submit" value="검색" />
+                </td>
+            </form>
+        </tr>
+        <form method="post">
+            <tr>
+                <td>조회계좌번호</td>
+                <td colspan="4">
+                    <select th:each="accs:${accList}" name="acc">
+                        <option th:select="${accs.myacc eq myacc}" th:text="|${accs.myacc}[저축예금]|"
+                        th:value="${accs.myacc}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>조회기간</td>
+                <td>
+                    <input type="date" name="predate" id="predate" /> ~
+                    <input type="date" name="postdate" id="postdate" />
+                </td>
+                <td>
+                    <button type="button" onclick="selectDate(0)">오늘</button>
+                </td>
+                <td>
+                    <button type="button" onclick="selectDate(7)">1주일</button>
+                </td>
+                <td>
+                    <button type="button" onclick="selectDate(30)">1개월</button>
+                </td>
+            </tr>
+            <tr>
+                <td>조회내용</td>
+                <td colspan="4">
+                    <label for="all">
+                        <input type="radio" name="breakdown" id="all" value="all" checked /> 전체내역
+                    </label>
+                    <label for="in">
+                        <input type="radio" name="breakdown" id="in" value="in" /> 입금내역
+                    </label>
+                    <label for="out">
+                        <input type="radio" name="breakdown" id="out" value="out" /> 출금내역
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>조회결과순서</td>
+                <td colspan="4">
+                    <label for="newest">
+                        <input type="radio" name="deal" id="newest" value="new" checked /> 최근거래순
+                    </label>
+                    <label for="latest">
+                        <input type="radio" name="deal" id="latest" value="last" /> 과거거래순
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="조회" />
+                </td>
+                <td colspan="3">
+                    <a th:href="@{/banking/inout}">이체</a>
+                </td>
+            </tr>
+        </form>
+    </table>
+    <th:block th:if="${session.historys != null}">
+        <table border="">
+            <tr>
+                <td colspan="6">
+                    <h3>거래내역</h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button">거래내역조회 인쇄</button>
+                </td>
+                <td>
+                    <button type="button">영문거래내역조회 인쇄</button>
+                </td>
+                <td>
+                    <button type="button">보고서인쇄</button>
+                </td>
+                <td colspan="3">
+                    <button type="button">파일저장</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">조회결과 | 최근거래내역 [총 [[${#arrays.length(session.historys)}]]건]</td>
+            </tr>
+            <tr>
+                <td>입금합계</td>
+                <td th:text="${session.accin != 0 ? #numbers.formatInteger(session.accin, 3, 'COMMA')+'원' : '0원'}"></td>
+                <td>출금합계</td>
+                <td th:text="${session.accout != 0 ? #numbers.formatInteger(session.accout, 3, 'COMMA')+'원' : '0원'}"></td>
+            </tr>
+            <tr>
+                <td>거래일자</td>
+                <td>출금(원)</td>
+                <td>입금(원)</td>
+                <td>받는통장메모</td>
+                <td>내통장메모</td>
+                <td>잔액(원)</td>
+            </tr>
+            <tr th:each="hist:${session.historys}">
+                <td th:text="${#dates.format(hist.myaccdate)}"></td>
+                <td>
+                    <th:block th:if="${hist.myaccout == 0}">
+                        0
+                    </th:block>
+                    <th:block th:unless="${hist.myaccout == 0}">
+                        [[${#numbers.formatInteger(hist.myaccbalance, 3, 'COMMA')}]]
+                    </th:block>
+                </td>
+                <td>
+                    <th:block th:if="${hist.myaccin == 0}">
+                        0
+                    </th:block>
+                    <th:block th:unless="${hist.myaccin == 0}">
+                        [[${#numbers.formatInteger(hist.myaccbalance, 3, 'COMMA')}]]
+                    </th:block>
+                </td>
+                <td th:text="${hist.myaccioname}"></td>
+                <td th:text="${hist.myaccmemo}"></td>
+                <td>
+                    <th:block th:if="${hist.myaccin != 0}">
+                        [[${#numbers.formatInteger(hist.myaccin, 3, 'COMMA')}]]
+                    </th:block>
+                    <th:block th:if="${hist.myaccout != 0}">
+                        [[${#numbers.formatInteger(hist.myaccout, 3, 'COMMA')}]]
+                    </th:block>
+                </td>
+            </tr>
+        </table>
+    </th:block>
+    <th:block th:unless="${session.historys != null}">
+        <table border="">
+            <tr>
+                <td>거래내역조회 해주세요.</td>
+            </tr>
+        </table>
+    </th:block>
+</body>
+</html>

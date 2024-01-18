@@ -17,7 +17,7 @@
             <td>계좌번호</td>
             <td th:text="${acc.myacc}"></td>
             <td>잔액</td>
-            <td th:text="${acc.mymoney}"></td>
+            <td th:text="${#numbers.formatInteger(acc.mymoney, 3, 'COMMA')}"></td>
         </tr>
     </table>
 </body>
