@@ -2,73 +2,108 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width", initial-scale="1">
+	<link rel="stylesheet" href="../css/bootstrap.css">
     <title>결과 조회</title>
     <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 </head>
 <body>
-    <table border="">
-        <tr>
-            <td colspan="5">
-                <h2>당행/다른기관이체</h2>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5">이미지?</td>
-        </tr>
-        <tr>
-            <td colspan="5">즉시이체 처리가 완료되었습니다.</td>
-        </tr>
-        <tr>
-            <td colspan="5">거래완료 후 처리결과 조회 및 정상 신청등록 여부를 확인하여 주시기 바랍니다.</td>
-        </tr>
-        <tr>
-            <td>
-                <button type="button">가계부전송</button>
-            </td>
-            <td>
-                <button type="button">BAND 공유</button>
-            </td>
-            <td>
-                <button type="button">자주쓰는 입금계좌 등록</button>
-            </td>
-            <td>
-                <button type="button">이체목록 인쇄</button>
-            </td>
-            <td>
-                <button type="button">타행입금계좌 잔액조회</button>
-            </td>
-        </tr>
-    </table>
-    <table border="">
-        <tr>
-            <td colspan="4">입금내역</td>
-            <td>이체 후 출금계좌 잔액 : </td>
-            <td th:text="|${#numbers.formatInteger(result.myaccout, 3, 'COMMA')}원|"></td>
-        </tr>
-        <tr>
-            <td>결과</td>
-            <td>출금계좌</td>
-            <td>입금은행<br />입금계좌</td>
-            <td>받는분</td>
-            <td>이체금액(원)</td>
-            <td>받는통장메모</td>
-        </tr>
-        <tr>
-            <td>정상</td>
-            <td th:text="${result.myacc}"></td>
-            <td>[[${result.mysendbank}]]<br />[[${result.mysendacc}]]</td>
-            <td th:text="${result.myaccioname}"></td>
-            <td th:text="${#numbers.formatInteger(result.myaccbalance, 3, 'COMMA')}"></td>
-            <td th:text="${result.myaccmemo}"></td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <a th:href="@{/banking/acchistory}">이체결과조회</a>
-            </td>
-            <td colspan="3">
-                <a th:href="@{/banking/inout}">계속이체</a>
-            </td>
-        </tr>
-    </table>
+	<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 57vh; /* 높이를 화면 전체 높이로 설정하여 수직 중앙 정렬 */
+    }
+	</style>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+	    		data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+	    		aria-expanded="false" aria-label="Toggle navigation">
+	      		<span class="navbar-toggler-icon"></span>
+	    	</button>
+	    	<a class="navbar-brand" href="/">머니ST</a>
+	    	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	        		<li class="nav-item">
+	          			<a class="nav-link active" aria-current="page" href="/board/list">게시판</a>
+	        		</li>
+	      		</ul>
+	    	</div>
+	    </div>
+	</nav>
+	<div class="container">
+		<form>
+		    <table class="table table-bordered" style="border:1px solid #ccc; text-aling:center" border="">
+				<thead>
+			        <tr>
+			            <td colspan="5">
+			                <h2>당행/다른기관이체</h2>
+			            </td>
+			        </tr>	    
+				</thead>
+				<tbody>
+			        <tr>
+			            <td colspan="5">이미지?</td>
+			        </tr>
+			        <tr>
+			            <td colspan="5">즉시이체 처리가 완료되었습니다.</td>
+			        </tr>
+			        <tr>
+			            <td colspan="5">거래완료 후 처리결과 조회 및 정상 신청등록 여부를 확인하여 주시기 바랍니다.</td>
+			        </tr>
+			        <tr>
+			            <td>
+			                <input type="button" class="btn btn-secondary form-control" value="가계부전송">
+			            </td>
+			            <td>
+			                <input type="button" class="btn btn-secondary form-control" value="BAND 공유">
+			            </td>
+			            <td>
+			                <input type="button" class="btn btn-secondary form-control" value="자주쓰는 입금계좌 등록">
+			            </td>
+			            <td>
+			                <input type="button" class="btn btn-secondary form-control" value="이체목록 인쇄">
+			            </td>
+			            <td>
+			                <input type="button" class="btn btn-secondary form-control" value="타행입금계좌 잔액조회">
+			            </td>
+			        </tr>
+				</tbody>
+		    </table>
+		    <table class="table table-bordered" style="border:1px solid #ccc; text-align:center" border="">
+		        <tr>
+		            <td colspan="4">입금내역</td>
+		            <td>이체 후 출금계좌 잔액 : </td>
+		            <td th:text="|${#numbers.formatInteger(result.myaccout, 3, 'COMMA')}원|"></td>
+		        </tr>
+		        <tr>
+		            <td>결과</td>
+		            <td>출금계좌</td>
+		            <td>입금은행<br />입금계좌</td>
+		            <td>받는분</td>
+		            <td>이체금액(원)</td>
+		            <td>받는통장메모</td>
+		        </tr>
+		        <tr>
+		            <td>정상</td>
+		            <td th:text="${result.myacc}"></td>
+		            <td>[[${result.mysendbank}]]<br />[[${result.mysendacc}]]</td>
+		            <td th:text="${result.myaccioname}"></td>
+		            <td th:text="${#numbers.formatInteger(result.myaccbalance, 3, 'COMMA')}"></td>
+		            <td th:text="${result.myaccmemo}"></td>
+		        </tr>
+		        <tr>
+		            <td colspan="3" sytle="text-align:center">
+		                <a th:href="@{/banking/acchistory}" class="btn btn-secondary col-form-label">이체결과조회</a>
+		            </td>
+		            <td colspan="3">
+		                <a th:href="@{/banking/inout}" class="btn btn-secondary col-form-label">계속이체</a>
+		            </td>
+		        </tr>
+		    </table>
+		</form>
+	</div>
 </body>
 </html>
