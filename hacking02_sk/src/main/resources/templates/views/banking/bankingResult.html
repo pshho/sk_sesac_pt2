@@ -43,7 +43,7 @@
         <tr>
             <td colspan="4">입금내역</td>
             <td>이체 후 출금계좌 잔액 : </td>
-            <td th:text="|${#numbers.formatInteger(result.myaccout, 3, 'COMMA')}원|"></td>
+            <td th:text="${result.myaccout != 0 ? #numbers.formatInteger(result.myaccout, 3, 'COMMA')+'원':'0원'}"></td>
         </tr>
         <tr>
             <td>결과</td>
