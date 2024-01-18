@@ -72,6 +72,7 @@ public class BankingController {
         if (user == null) {
 //            System.out.println("여기로 들어옴?");
             model.addAttribute("msg", "로그인 해주세요.");
+            model.addAttribute("check", 2);
             return "banking/alert";
         }else {
             long sessionCreateTime = session.getCreationTime();
@@ -145,6 +146,10 @@ public class BankingController {
             return mav;
         }else if (sendBanking.getMyaccpw() != banking.getMyaccpw()) {
             msg = "비밀번호를 다시 입력해주세요.";
+            mav.addObject("msg", msg);
+            return mav;
+        }else if (sendBanking.getMyacc() == sendBanking.getMysendacc()) {
+            msg = "출금계좌와 입금계좌는 중복될 수 없습니다.";
             mav.addObject("msg", msg);
             return mav;
         }
