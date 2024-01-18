@@ -86,11 +86,17 @@ public class BankingController {
                 model.addAttribute("result", sendBanking);
             }else if (page.equals("acchistory")) {
                 List<SendBanking> sendBankings = new ArrayList<>();
+
                 for(Banking bank : bankList) {
                     SendBanking sendBanking = bankinghistMapper.sendbanking(bank.getMyacc());
                     if (sendBanking != null) {
                         sendBankings.add(sendBanking);
                     }
+                }
+
+                if (sendBankings.size() == 0) {
+                    model.addAttribute("msg", "조회된 내역이 없습니다.");
+                    return "banking/alert";
                 }
                 model.addAttribute("sendBankings", sendBankings);
                 model.addAttribute("time", sdf.format(time));
