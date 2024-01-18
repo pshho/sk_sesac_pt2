@@ -159,7 +159,8 @@ public class BankingController {
             }
 
             sendBanking.setMyaccout(submoney);
-            bankingMapper.submoney(sendBanking.getMyaccbalance(), sendBanking.getMyacc());
+            System.out.println(sendBanking.getMyaccbalance());
+            bankingMapper.submoney(sendBanking);
             bankinghistMapper.insert(sendBanking);
 
             addmoney = banking2.getMymoney() + sendBanking.getMyaccbalance();
@@ -168,7 +169,7 @@ public class BankingController {
             sendBanking.setMysendacc(sendBanking.getMyacc());
             sendBanking.setMyacc(banking2.getMyacc());
             sendBanking.setMyaccmemo("");
-            bankingMapper.addmoney(sendBanking.getMyaccbalance(), sendBanking.getMyacc());
+            bankingMapper.addmoney(sendBanking);
             bankinghistMapper.insert(sendBanking);
         }
         sendBanking.setMyaccmemo(memo);
