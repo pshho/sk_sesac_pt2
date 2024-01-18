@@ -48,8 +48,10 @@ public class BankingController {
     @ModelAttribute("accList")
     List<Banking> accList(HttpSession session){
         User user = (User)session.getAttribute("user");
-        System.out.println(user);
-        bankList = bankingMapper.myid(user.getMyid());
+//        System.out.println(user);
+        if (user != null){
+            bankList = bankingMapper.myid(user.getMyid());
+        }
         return bankList;
     }
 
@@ -66,30 +68,38 @@ public class BankingController {
             HttpSession session,
             Model model){
         User user = (User)session.getAttribute("user");
-        long sessionCreateTime = session.getCreationTime();
-        Date time = new Date(sessionCreateTime);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //String myid = session.getAttribute();
-        if (page.equals("myaccount")) {
-            List<Banking> banking = bankingMapper.myid(user.getMyid());
-            model.addAttribute("accs", banking);
-        }else if (page.equals("bankingResult")) {
-            model.addAttribute("result", sendBanking);
-        }else if (page.equals("acchistory")) {
-            List<SendBanking> sendBankings = new ArrayList<>();
-            for(Banking bank : bankList) {
-                SendBanking sendBanking = bankinghistMapper.sendbanking(bank.getMyacc());
-                if (sendBanking != null) {
-                    sendBankings.add(sendBanking);
+//        System.out.println(user + "??");
+        if (user == null) {
+//            System.out.println("여기로 들어옴?");
+            model.addAttribute("msg", "로그인 해주세요.");
+            return "banking/alert";
+        }else {
+            long sessionCreateTime = session.getCreationTime();
+            Date time = new Date(sessionCreateTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //String myid = session.getAttribute();
+            if (page.equals("myaccount")) {
+                List<Banking> banking = bankingMapper.myid(user.getMyid());
+//            System.out.println(banking);
+                model.addAttribute("accs", banking);
+            }else if (page.equals("bankingResult")) {
+                model.addAttribute("result", sendBanking);
+            }else if (page.equals("acchistory")) {
+                List<SendBanking> sendBankings = new ArrayList<>();
+                for(Banking bank : bankList) {
+                    SendBanking sendBanking = bankinghistMapper.sendbanking(bank.getMyacc());
+                    if (sendBanking != null) {
+                        sendBankings.add(sendBanking);
+                    }
                 }
+                model.addAttribute("sendBankings", sendBankings);
+                model.addAttribute("time", sdf.format(time));
+            }else if (page.equals("detailhistory")) {
+                model.addAttribute("myacc", this.acc);
             }
-            model.addAttribute("sendBankings", sendBankings);
-            model.addAttribute("time", sdf.format(time));
-        }else if (page.equals("detailhistory")) {
-            model.addAttribute("myacc", this.acc);
+            //System.out.println(page);
+            return "banking/" + page;
         }
-        //System.out.println(page);
-        return "banking/" + page;
     }
 
     @PostMapping("getmyacc")
@@ -133,7 +143,7 @@ public class BankingController {
             return mav;
         }
 
-        if (sendBanking.getMysendbank().equals("머니스트")) {
+        if (sendBanking.getMysendbank().equals("머니ST")) {
             Banking banking2 = bankingMapper.myacc(sendBanking.getMysendacc());
             int addmoney = 0;
             if (banking2 == null) {
