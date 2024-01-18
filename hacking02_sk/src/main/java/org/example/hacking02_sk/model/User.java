@@ -13,7 +13,6 @@ public class User {
 	private String myphone;
 	private String mysid;
 	private String myaccpw;
-	private int mylevel;
 	
 	public String getMyname() {
 		return myname;
@@ -62,11 +61,5 @@ public class User {
 	}
 	public void setMyaccpw(String myaccpw) {
 		this.myaccpw = myaccpw;
-	}
-	public int getMylevel() {
-		return mylevel;
-	}
-	public void setMylevel(int mylevel) {
-		this.mylevel = mylevel;
 	}
 }

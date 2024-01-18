@@ -15,9 +15,6 @@
 <body>
 	<h3>회원가입</h3>
 	<form th:action="@{/member/join}" th:object="${user}" method="post" onsubmit="return valid()">
-        <input type="radio" id="input_mylevel" name="mylevel" value="2" checked /> 일반 회원
-        <input type="radio" id="input_mylevel" name="mylevel" value="1" /> 관리자 <br>
-        <br>
     	아이디 * <br>
     	<input type="text" id="input_myid" name="myid" placeholder="4~20자리" maxlength="20" oninput="checkLoginLength()">
     	<input type="button" value="확인" onclick="sameCheck()">
@@ -45,7 +42,7 @@
     	고객님의 휴대폰 번호로 초기 계좌번호가 개설됩니다. <br>
     	<br>
     	주소 * <br>
-    	<input type="text" id="input_mylocation" th:field="*{mylocation}" maxlength="300">
+    	<input type="text" id="input_mylocation" th:field="*{mylocation}" maxlength="300" readonly>
     	<input id="find_location" type="button" value="주소 찾기"><br>
     	<br>
     	이메일 * <br>

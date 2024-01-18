@@ -54,8 +54,8 @@ public class UserDAO {
 	
 	//회원가입
 	public int signup(User user) {
-        String query1 = "INSERT INTO myuser (myname, myid, mypw, myemail, mylocation, myphone, mysid, mylevel) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String query1 = "INSERT INTO myuser (myname, myid, mypw, myemail, mylocation, myphone, mysid) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?);";
         String query2 = "INSERT INTO myacc (myacc, myid, mymoney, mybank, myaccpw) " +
         "VALUES (?, ?, ?, ?, ?);";
 		
@@ -71,7 +71,6 @@ public class UserDAO {
 			pstmt.setString(5, user.getMylocation());
 			pstmt.setString(6, user.getMyphone());
 			pstmt.setString(7, user.getMysid());
-			pstmt.setInt(8, user.getMylevel());
 			
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -122,7 +121,7 @@ public class UserDAO {
     
 	public User getUser(String myid, String mypw) {
 		User user = null;
-		String SQL = "SELECT myname, myid, mypw, myemail, mylocation, myphone, mysid, mylevel FROM myuser WHERE myid = ? AND mypw = ?";
+		String SQL = "SELECT myname, myid, mypw, myemail, mylocation, myphone, mysid FROM myuser WHERE myid = ? AND mypw = ?";
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, myid);
@@ -137,7 +136,6 @@ public class UserDAO {
 				user.setMylocation(rs.getString("mylocation"));
 				user.setMyphone(rs.getString("myphone"));
 				user.setMysid(rs.getString("mysid"));
-				user.setMylevel(Integer.parseInt(rs.getString("mylevel")));
 			}
 			return user;
 		} catch(Exception e) {

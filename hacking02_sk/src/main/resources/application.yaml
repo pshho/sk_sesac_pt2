@@ -1,9 +1,5 @@
 server :
   port : 80
-  servlet :
-    session :
-      tracking-modes : cookie
-      timeout : 10
 spring :
   thymeleaf :
     prefix : classpath:/templates/views/
