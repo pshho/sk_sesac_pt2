@@ -9,10 +9,10 @@
     <select id="myacc" resultType="bank" parameterType="java.lang.Integer">
         select * from myacc where myacc = '${myacc}'
     </select>
-    <update id="addmoney" parameterType="java.lang.Integer">
-        update myacc set mymoney = mymoney + ${money}  where myacc = '${sendacc}'
+    <update id="addmoney" parameterType="sendbank">
+        update myacc set mymoney = mymoney + ${myaccbalance} where myacc = ${mysendacc}
     </update>
-    <update id="submoney" parameterType="java.lang.Integer">
-        update myacc set mymoney = mymoney - ${money}  where myacc = '${sendacc}'
+    <update id="submoney" parameterType="sendbank">
+        update myacc set mymoney = mymoney - ${myaccbalance} where myacc = ${mysendacc}
     </update>
 </mapper>

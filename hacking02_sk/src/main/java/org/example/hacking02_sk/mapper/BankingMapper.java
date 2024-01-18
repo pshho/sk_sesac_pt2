@@ -9,6 +9,6 @@ import org.example.hacking02_sk.model.SendBanking;
 public interface BankingMapper {
     List<Banking> myid(String myid);
     Banking myacc(int myacc);
-    int addmoney(int money, int sendacc);
-    int submoney(int money, int sendacc);
+    int addmoney(SendBanking sendBanking);
+    int submoney(SendBanking sendBanking);
 }
