@@ -1,14 +1,202 @@
-
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width", initial-scale="1">
 	<link rel="stylesheet" href="../css/bootstrap.css">
-    <title>머니ST</title>
+    <title>MNST</title>
+    <style>
+        .carousel_slide {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin: 2% 0;
+        }
+        .carousel_wrap {
+            margin: 0;
+            padding: 0;
+            height: 500px;
+            width: 300%;
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel_wrap li {
+            width: 33.333%;
+            display: inline-block;
+            position: relative;
+            float: left;
+        }
+        .carousel_wrap li a {
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        .carousel_1 a {
+            background-color: #ffffff;
+        }
+        .carousel_2 a {
+            background-color: #ffffff;
+        }
+        .carousel_3 a {
+            background-color: #ffffff;
+        }
+        .carousel_btns a{
+            display: block;
+            position: absolute;
+            top: 40%;
+        }
+        .carousel_btns img {
+            width: 80px;
+            height: 80px;
+        }
+        .carousel_btns .prev {
+            left: 1%;
+        }
+        .carousel_btns .next {
+            right: 1%;
+        }
+
+        .menu_box {
+            display: flex;
+            width: 100%;
+            height: auto;
+            color: #ffffff;
+            background-color: #0076be;
+        }
+
+        .menu_inner_box {
+            padding: 2% 0;
+            margin: 0 auto;
+            width: 70%;
+        }
+
+        .menu_inner_box a{
+            text-decoration-line: none;
+            color: #ffffff;
+        }
+
+        .menu_inner_box ul{
+            list-style: none;
+        }
+
+        .menu_inner_box li{
+            display: flex;
+            flex-direction: column;
+            float:left;
+
+            margin: 2%;
+        }
+
+        .menu_inner_box span{
+            text-align: center;
+            display: block;
+        }
+
+        .menu_inner_box img{
+            width: 90px;
+            height: 90px;
+        }
+
+        .service_box{
+
+        }
+
+        .service_inner_box {
+
+        }
+    </style>
 </head>
 <body>
 	<th:block th:replace="header :: headerFragment"></th:block>
+    <!-- main -->
+    <div>
+        <!-- 광고배너 -->
+        <div class="carousel_slide">
+            <div>
+                <ul class="carousel_wrap">
+                    <li class="carousel_1">
+                        <a href="#">
+                            <!-- <img src="http://192.168.101.135:8888/banner1.png" alt="img1"> -->
+                            <img th:src="@{/images/banner1.png}" alt="img1">
+                        </a>
+                    </li>
+                    <li class="carousel_2">
+                        <a href="#">
+                            <!-- <img src="http://192.168.101.135:8888/banner2.png" alt="img2"> -->
+                            <img th:src="@{/images/banner2.png}" alt="img1">
+                        </a>
+                    </li>
+                    <li class="carousel_3">
+                        <a href="#">
+                            <!-- <img src="http://192.168.101.135:8888/banner3.png" alt="img3"> -->
+                            <img th:src="@{/images/banner1.png}" alt="img1">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="carousel_btns">
+                <a href="#" class="prev" onclick="return false"><img th:src="@{/images/btn_prev.png}"></a>
+                <a href="#" class="next" onclick="return false"><img th:src="@{/images/btn_next.png}"></a>
+            </div>
+        </div>
+        <!-- 금융상품 -->
+        <div class="menu_box">
+            <div class="menu_inner_box">
+                <p style="font-size: 24px;">금융상품</p>
+                <ul>
+                    <li><a href="#"><img th:src="@{/images/inmoney.png}"/><span>예금</span></a></li>
+                    <li><a href="#"><img th:src="@{/images/chart.png}"/><span>펀드</span></a></li>
+                    <li><a href="#"><img th:src="@{/images/loan.png}"/><span>대출</span></a></li>
+                    <li><a href="#"><img th:src="@{/images/oldmoney.png}"/><span>퇴직연금</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 주요 서비스 -->
+        <div class="service_box">
+            <div class="service_inner_box">
+
+            </div>
+        </div>
+    </div>
+    <!-- script -->
+    <script>
+        $(document).ready(function() {
+
+            var carouselIndex = 0;
+            var carouselLength = $(".carousel_wrap li").length;
+
+            setInterval(function() {
+                if(carouselIndex < carouselLength-1) {
+                    $(".carousel_wrap").animate({left:"-=100%"}, 2000);
+                    carouselIndex += 1;
+                } else {
+                    $(".carousel_wrap").animate({left:"0"}, 2000);
+                    carouselIndex = 0;
+                }
+            }, 4000);
+
+            $(".prev").click(function() {
+                if(carouselIndex > 0) {
+                    $(".carousel_wrap").animate({left:"+=100%"}, 2000);
+                    carouselIndex -= 1;
+                } else {
+                    $(".carousel_wrap").animate({left:"-200%"}, 2000);
+                    carouselIndex = carouselLength-1;
+                }
+            });
+
+            $(".next").click(function() {
+                if(carouselIndex < carouselLength-1) {
+                    $(".carousel_wrap").animate({left:"-=100%"}, 2000);
+                    carouselIndex += 1;
+                } else {
+                    $(".carousel_wrap").animate({left:"0"}, 2000);
+                    carouselIndex = 0;
+                }
+            });
+        });
+    </script>
 	<th:block th:replace="footer :: footerFragment"></th:block>
 </body>
 </html>

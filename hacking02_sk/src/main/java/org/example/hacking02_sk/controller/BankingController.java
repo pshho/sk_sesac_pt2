@@ -57,7 +57,7 @@ public class BankingController {
 
     @ModelAttribute("bankList")
     String[] bankList(){
-        String banks = "머니ST,KEB하나은행,SC제일은행,국민은행,신한은행,외환은행,우리은행,한국시티은행,농협,기업은행";
+        String banks = "MNST,KEB하나은행,SC제일은행,국민은행,신한은행,외환은행,우리은행,한국시티은행,농협,기업은행";
         String[] list = banks.split(",");
         return list;
     }
@@ -154,7 +154,7 @@ public class BankingController {
             return mav;
         }
 
-        if (sendBanking.getMysendbank().equals("머니ST")) {
+        if (sendBanking.getMysendbank().equals("MNST")) {
             Banking banking2 = bankingMapper.myacc(sendBanking.getMysendacc());
             int addmoney = 0;
             if (banking2 == null) {
@@ -164,7 +164,7 @@ public class BankingController {
             }
 
             sendBanking.setMyaccout(submoney);
-            System.out.println(sendBanking.getMyaccbalance());
+//            System.out.println(sendBanking.getMyaccbalance());
             bankingMapper.submoney(sendBanking);
             bankinghistMapper.insert(sendBanking);
 

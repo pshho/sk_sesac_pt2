@@ -7,6 +7,7 @@
     <script type="application/javascript" th:src="@{/js/bankingResult.js}"></script>
 </head>
 <body>
+    <th:block th:replace="header :: headerFragment"></th:block>
     <table border="">
         <tr>
             <td colspan="5">
@@ -84,75 +85,77 @@
             </tr>
         </form>
     </table>
-    <th:block th:if="${session.historys != null}">
-        <table border="">
-            <tr>
-                <td colspan="6">
-                    <h3>거래내역</h3>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="button">거래내역조회 인쇄</button>
-                </td>
-                <td>
-                    <button type="button">영문거래내역조회 인쇄</button>
-                </td>
-                <td>
-                    <button type="button">보고서인쇄</button>
-                </td>
-                <td colspan="3">
-                    <button type="button">파일저장</button>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6">조회결과 | 최근거래내역 [총 [[${#arrays.length(session.historys)}]]건]</td>
-            </tr>
-            <tr>
-                <td>입금합계</td>
-                <td th:text="${session.accin != 0 ? #numbers.formatInteger(session.accin, 3, 'COMMA')+'원' : '0원'}"></td>
-                <td>출금합계</td>
-                <td th:text="${session.accout != 0 ? #numbers.formatInteger(session.accout, 3, 'COMMA')+'원' : '0원'}"></td>
-            </tr>
-            <tr>
-                <td>거래일자</td>
-                <td>출금(원)</td>
-                <td>입금(원)</td>
-                <td>받는통장메모</td>
-                <td>내통장메모</td>
-                <td>잔액(원)</td>
-            </tr>
-            <tr th:each="hist:${session.historys}">
-                <td th:text="${#dates.format(hist.myaccdate)}"></td>
-                <td>
-                    <th:block th:if="${hist.myaccout == 0}">
-                        0
-                    </th:block>
-                    <th:block th:unless="${hist.myaccout == 0}">
-                        [[${#numbers.formatInteger(hist.myaccbalance, 3, 'COMMA')}]]
-                    </th:block>
-                </td>
-                <td>
-                    <th:block th:if="${hist.myaccin == 0}">
-                        0
-                    </th:block>
-                    <th:block th:unless="${hist.myaccin == 0}">
-                        [[${#numbers.formatInteger(hist.myaccbalance, 3, 'COMMA')}]]
-                    </th:block>
-                </td>
-                <td th:text="${hist.myaccioname}"></td>
-                <td th:text="${hist.myaccmemo}"></td>
-                <td>
-                    <th:block th:if="${hist.myaccin != 0}">
-                        [[${#numbers.formatInteger(hist.myaccin, 3, 'COMMA')}]]
-                    </th:block>
-                    <th:block th:if="${hist.myaccout != 0}">
-                        [[${#numbers.formatInteger(hist.myaccout, 3, 'COMMA')}]]
-                    </th:block>
-                </td>
-            </tr>
-        </table>
-    </th:block>
+    <div style="height: 800px; overflow: auto;">
+        <th:block th:if="${session.historys != null}">
+            <table border="">
+                <tr>
+                    <td colspan="6">
+                        <h3>거래내역</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button">거래내역조회 인쇄</button>
+                    </td>
+                    <td>
+                        <button type="button">영문거래내역조회 인쇄</button>
+                    </td>
+                    <td>
+                        <button type="button">보고서인쇄</button>
+                    </td>
+                    <td colspan="3">
+                        <button type="button">파일저장</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">조회결과 | 최근거래내역 [총 [[${#arrays.length(session.historys)}]]건]</td>
+                </tr>
+                <tr>
+                    <td>입금합계</td>
+                    <td th:text="${session.accin != 0 ? #numbers.formatInteger(session.accin, 3, 'COMMA')+'원' : '0원'}"></td>
+                    <td>출금합계</td>
+                    <td th:text="${session.accout != 0 ? #numbers.formatInteger(session.accout, 3, 'COMMA')+'원' : '0원'}"></td>
+                </tr>
+                <tr>
+                    <td>거래일자</td>
+                    <td>출금(원)</td>
+                    <td>입금(원)</td>
+                    <td>받는통장메모</td>
+                    <td>내통장메모</td>
+                    <td>잔액(원)</td>
+                </tr>
+                <tr th:each="hist:${session.historys}">
+                    <td th:text="${#dates.format(hist.myaccdate)}"></td>
+                    <td>
+                        <th:block th:if="${hist.myaccout == 0}">
+                            0
+                        </th:block>
+                        <th:block th:unless="${hist.myaccout == 0}">
+                            [[${#numbers.formatInteger(hist.myaccbalance, 3, 'COMMA')}]]
+                        </th:block>
+                    </td>
+                    <td>
+                        <th:block th:if="${hist.myaccin == 0}">
+                            0
+                        </th:block>
+                        <th:block th:unless="${hist.myaccin == 0}">
+                            [[${#numbers.formatInteger(hist.myaccbalance, 3, 'COMMA')}]]
+                        </th:block>
+                    </td>
+                    <td th:text="${hist.myaccioname}"></td>
+                    <td th:text="${hist.myaccmemo}"></td>
+                    <td>
+                        <th:block th:if="${hist.myaccin != 0}">
+                            [[${#numbers.formatInteger(hist.myaccin, 3, 'COMMA')}]]
+                        </th:block>
+                        <th:block th:if="${hist.myaccout != 0}">
+                            [[${#numbers.formatInteger(hist.myaccout, 3, 'COMMA')}]]
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </th:block>
+    </div>
     <th:block th:unless="${session.historys != null}">
         <table border="">
             <tr>
@@ -160,5 +163,6 @@
             </tr>
         </table>
     </th:block>
+    <th:block th:replace="footer :: footerFragment"></th:block>
 </body>
 </html>

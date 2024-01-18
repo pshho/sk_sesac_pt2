@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
     <th:block th:fragment="footerFragment">
-        <footer class="footer" style="background: dimgray; position:fixed; bottom:0; width:100%; left:0;">
-            <div class="container">
-                <div class="content has-text-centered">
-                    <div class="links row" style="font-size: 90%;">
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">개인정보처리방침</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">신용정보활용체제</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">전자민원</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">사고신고</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">전자민원</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">실드지킴이</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">보호금융상품등록부</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">상품공시실</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">영업점안내</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white; cursor: not-allowed;">상담신청</a>
-                        </div>
-                        <div class="level-item">
-                            <a style="color: white;" href="#">인증센터</a>
-                        </div>
+        <th:block th:if="${#request.getRequestURI() == '/member/login' or
+        #request.getRequestURI() == '/banking/bankingResult' or #request.getRequestURI() == '/banking/acchistory'}">
+            <footer class="footer py-2"
+                    style="background: #8e8e8e; width:100%; height: 80px; position: absolute; bottom: 0;">
+        </th:block>
+        <th:block th:unless="${#request.getRequestURI() == '/member/login' or
+        #request.getRequestURI() == '/banking/bankingResult'}">
+            <footer class="footer py-2"
+                    style="background: #8e8e8e; width:100%; height: 80px;">
+        </th:block>
+            <div class="content has-text-centered">
+                <div class="links d-flex justify-content-around" style="font-size: 90%;">
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">개인정보처리방침</a>
                     </div>
-                    <br>
-                    <p>
-                    <div class="links">
-                        <div class="level-item">
-                            <span style="color: white;">&copy; Copyright 2021. Shield
-                                Bank. All Rights Reserved.</span>
-                        </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">신용정보활용체제</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">전자민원</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">사고신고</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">전자민원</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">실드지킴이</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">보호금융상품등록부</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">상품공시실</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">영업점안내</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white; cursor: not-allowed;">상담신청</a>
+                    </div>
+                    <div class="level-item">
+                        <a style="color: white;" href="#">인증센터</a>
+                    </div>
+                </div>
+                <div class="links my-4 px-5">
+                    <div class="level-item" style="text-align: center;">
+                        <span style="color: white;">&copy; Copyright 2021. Shield
+                            Bank. All Rights Reserved.</span>
                     </div>
                 </div>
             </div>

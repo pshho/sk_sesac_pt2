@@ -21,29 +21,14 @@
 </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container-fluid">
-	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-	    		data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-	    		aria-expanded="false" aria-label="Toggle navigation">
-	      		<span class="navbar-toggler-icon"></span>
-	    	</button>
-	    	<a class="navbar-brand" href="/">머니ST</a>
-	    	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-	        		<li class="nav-item">
-	          			<a class="nav-link active" aria-current="page" href="/board/list">게시판</a>
-	        		</li>
-	      		</ul>
-	    	</div>
-	    </div>
-	</nav>
-	<div class="container">
-		<form th:action="@{/member/join}" th:object="${user}" method="post" onsubmit="return valid()">
-			<table class="table table-bordered" style="border:1px solid #ccc; text-aling:center">
+	<th:block th:replace="header :: headerFragment"></th:block>
+	<div class="container" style="margin: 20px auto 50px auto">
+		<form th:action="@{/member/join}" th:object="${user}" method="post"
+			  style="width: 700px;" onsubmit="return valid()">
+			<table class="table table-borderless">
 				<thead class="table table-striped">
 					<tr>
-						<th colspan="2" style="background-color:#fafafa">
+						<th colspan="3" style="background-color:#fafafa; border: 0;">
 							<h3 style="text-align: center;">회원가입</h3>
 						</th>
 					</tr>
@@ -52,66 +37,71 @@
 					<tr>
 						<td style="background-color:#fafafa">아이디 *</td>
 						<td>
-							<input class="form-control" type="text" placeholder="4~20자리"  id="input_myid" name="myid" maxlength="20" oninput="checkLoginLength()">
-							<input type="button" class="btn btn-secondary me-md-2" value="확인" onclick="sameCheck()">
+							<input class="form-control" type="text" placeholder="4~20자리" id="input_myid" name="myid"
+								   style="width: 125%;" maxlength="20" oninput="checkLoginLength()">
 							<span id="label_myid" style="color: red;"></span>
+						</td>
+						<td style="text-align: right;">
+							<input type="button" class="btn btn-secondary" value="확인" onclick="sameCheck()">
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">비밀번호 *</td>
-						<td>
+						<td colspan="2">
 							<input class="form-control" type="password" id="input_mypw" name="mypw" placeholder="8~20자리" maxlength="16" oninput="checkPassword()">
 							<span id="label_mypw" style="color: red;"></span>
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">비밀번호 확인 *</td>
-						<td>
+						<td colspan="2">
 							<input class="form-control" type="password" id="input_mycheckpw" name="mypwcheck" maxlength="16" oninput="checkConfirmPassword()">
 							<span id="label_mycheckpw" style="color: red;"></span>
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">이름 *</td>
-						<td>
+						<td colspan="2">
 							<input class="form-control" type="text" placeholder="이름 입력"  id="input_myname" name="myname" maxlength="30">
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">주민등록번호 *</td>
-						<td>
+						<td colspan="2">
 							<input class="form-control" type="number" id="input_mysid" name="mysid" placeholder="'-' 빼고 숫자만 입력" maxlength="13" oninput="numMaxLength(this)">
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">휴대폰번호 *</td>
-						<td>
+						<td colspan="2">
 							<input class="form-control" type="number" id="input_myphone" name="myphone" placeholder="'-' 빼고 숫자만 입력" maxlength="11"  oninput="numMaxLength(this)">
 							고객님의 휴대폰 번호로 초기 계좌번호가 개설됩니다.
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">계좌 비밀번호 *</td>
-						<td>
+						<td colspan="2">
 							<input class="form-control" type="number" id="input_myaccpw" name="myaccpw" placeholder="4자리 숫자만 입력 가능" maxlength="4"  oninput="numMaxLength(this)">
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">주소 *</td>
 						<td>
-							<input class="form-control" type="text" id="input_mylocation" th:field="*{mylocation}" maxlength="300">
-    						<input id="find_location" class="btn btn-secondary me-md-2" type="button" value="주소 찾기"><br>
+							<input class="form-control" type="text" id="input_mylocation"
+								   th:field="*{mylocation}" maxlength="300" style="width: 115%;">
+						</td>
+						<td style="text-align:right;">
+							<input id="find_location" class="btn btn-secondary" type="button" value="주소 찾기">
 						</td>
 					</tr>
 					<tr>
 						<td style="background-color:#fafafa">이메일 *</td>
-						<td>
+						<td colspan="2">
 							<input class="form-control" type="text" id="input_myemail" name="myemail" placeholder="email@sesac.com" maxlength="50">
 						</td>
 					</tr>
 					<tr>
-						<td></td>
-						<td colspan="2">
+						<td colspan="3">
 							<input type="submit" class="btn btn-secondary form-control" value="회원가입">
 						</td>
 					</tr>
@@ -119,6 +109,7 @@
 			</table>
 		</form>
 	</div>
+	<th:block th:replace="footer :: footerFragment"></th:block>
 	<script>
 		
 		var myElement = document.getElementById("label_myid");
