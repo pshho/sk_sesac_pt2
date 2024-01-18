@@ -1,5 +1,9 @@
 package org.example.hacking02_sk.controller;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,31 +12,43 @@ import javax.servlet.http.HttpSession;
 import org.example.hacking02_sk.mapper.BankingMapper;
 import org.example.hacking02_sk.mapper.BankinghistMapper;
 import org.example.hacking02_sk.model.Banking;
+import org.example.hacking02_sk.model.DetailHistory;
 import org.example.hacking02_sk.model.SendBanking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/banking")
+@RequestMapping("banking")
 public class BankingController {
     @Autowired
     BankingMapper bankingMapper;
 
     @Autowired
     BankinghistMapper bankinghistMapper;
+    Map<String, String> checkBankingData;
+    List<Banking> bankList;
+    SendBanking sendBanking;
+    String acc;
+
+    @ModelAttribute("checkData")
+    Map<String, String> check() {
+        return checkBankingData;
+    }
 
     @ModelAttribute("accList")
     List<Banking> accList(HttpSession session){
         //String myid = (String) session.getAttribute();
-        return bankingMapper.myid("test");
+        bankList = bankingMapper.myid("test");
+        return bankList;
     }
 
     @ModelAttribute("bankList")
@@ -47,11 +63,29 @@ public class BankingController {
             @PathVariable String page,
             HttpSession session,
             Model model){
+        long sessionCreateTime = session.getCreationTime();
+        Date time = new Date(sessionCreateTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //String myid = session.getAttribute();
         if (page.equals("myaccount")) {
             List<Banking> banking = bankingMapper.myid("test");
             model.addAttribute("accs", banking);
+        }else if (page.equals("bankingResult")) {
+            model.addAttribute("result", sendBanking);
+        }else if (page.equals("acchistory")) {
+            List<SendBanking> sendBankings = new ArrayList<>();
+            for(Banking bank : bankList) {
+                SendBanking sendBanking = bankinghistMapper.sendbanking(bank.getMyacc());
+                if (sendBanking != null) {
+                    sendBankings.add(sendBanking);
+                }
+            }
+            model.addAttribute("sendBankings", sendBankings);
+            model.addAttribute("time", sdf.format(time));
+        }else if (page.equals("detailhistory")) {
+            model.addAttribute("myacc", this.acc);
         }
+        //System.out.println(page);
         return "banking/" + page;
     }
 
@@ -64,43 +98,96 @@ public class BankingController {
         return acc;
     };
 
-    @GetMapping("selectacc")
-    String select(int check) {
-        System.out.println(check);
-        return "banking/inout";
+    @PostMapping("confirm")
+    @ResponseBody
+    String confirm(@RequestBody Map<String, String> data) {
+        checkBankingData = data;
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String date = currentTime.format(dateFormatter);
+        String time = currentTime.format(timeFormatter);
+        checkBankingData.put("myaccdate", date);
+        checkBankingData.put("myacctime", time);
+        return "Y";
     }
 
     @PostMapping("sendBank")
-    String sendBank(SendBanking sendBanking, Model model) {
+    ModelAndView sendBank(SendBanking sendBanking) {
+        ModelAndView mav = new ModelAndView("banking/alert");
         String msg = "";
         Banking banking = bankingMapper.myacc(sendBanking.getMyacc());
         int submoney = banking.getMymoney() - sendBanking.getMyaccbalance();
+        String memo = sendBanking.getMyaccmemo();
 
         if (submoney < 0) {
             msg = "잔고가 부족합니다.";
-            model.addAttribute("msg", msg);
-            return "banking/alert";
+            mav.addObject("msg", msg);
+            return mav;
         }else if (sendBanking.getMyaccpw() != banking.getMyaccpw()) {
             msg = "비밀번호를 다시 입력해주세요.";
-            model.addAttribute("msg", msg);
-            return "banking/alert";
+            mav.addObject("msg", msg);
+            return mav;
         }
-
-        sendBanking.setMyaccout(submoney);
-        bankingMapper.submoney(sendBanking.getMyaccbalance(), sendBanking.getMyacc());
-        bankinghistMapper.insert(sendBanking);
 
         if (sendBanking.getMysendbank().equals("머니스트")) {
             Banking banking2 = bankingMapper.myacc(sendBanking.getMysendacc());
-            int addmoney = banking2.getMymoney() + sendBanking.getMyaccbalance();
+            int addmoney = 0;
+            if (banking2 == null) {
+                msg = "입금계좌번호를 확인해주세요.";
+                mav.addObject("msg", msg);
+                return mav;
+            }
+
+            sendBanking.setMyaccout(submoney);
+            bankingMapper.submoney(sendBanking.getMyaccbalance(), sendBanking.getMyacc());
+            bankinghistMapper.insert(sendBanking);
+
+            addmoney = banking2.getMymoney() + sendBanking.getMyaccbalance();
             sendBanking.setMyaccin(addmoney);
             sendBanking.setMyaccout(0);
             sendBanking.setMysendacc(sendBanking.getMyacc());
             sendBanking.setMyacc(banking2.getMyacc());
+            sendBanking.setMyaccmemo("");
             bankingMapper.addmoney(sendBanking.getMyaccbalance(), sendBanking.getMyacc());
             bankinghistMapper.insert(sendBanking);
         }
+        sendBanking.setMyaccmemo(memo);
+        sendBanking.setMyaccout(submoney);
+        mav.addObject("msg", "이체처리 완료되었습니다.");
+        mav.addObject("check", 1);
+        this.sendBanking = sendBanking;
         //System.out.println(sendBanking);
-        return "index";
+        return mav;
+    }
+
+    @PostMapping("accSearch")
+    @ResponseBody
+    String accSearch(@RequestParam String acc) {
+        this.acc = acc;
+        return "Y";
+    }
+
+    @PostMapping("detailhistory")
+    String detailhistory(DetailHistory detailHistory, HttpSession session) {
+        List<SendBanking> sendBankings;
+        if (detailHistory.getKeyword() != null) {
+            sendBankings = bankinghistMapper.searchmemo(detailHistory.getKeyword());
+        }else {
+            sendBankings = bankinghistMapper.history(detailHistory);
+        }
+        int accin = 0;
+        int accout = 0;
+        for (SendBanking sendbank : sendBankings) {
+            accout += sendbank.getMyaccout();
+            accin += sendbank.getMyaccin();
+        }
+
+        session.setAttribute("accin", accin);
+        session.setAttribute("accout", accout);
+        session.setAttribute("historys", sendBankings);
+//        System.out.println(detailHistory);
+//        System.out.println(accin + " " + accout);
+        return "redirect:/banking/detailhistory";
     }
 }

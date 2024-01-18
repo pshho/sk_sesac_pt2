@@ -17,14 +17,13 @@ function getMoney(data, callback){
 };
 
 function myaccmoneyview(){
-    debugger;
     var myacc = $('#myacc').val();
     if (myacc != '0'){
         var data = {
             'myacc':myacc
         };
         getMoney(data, function (money) {
-            $('#myaccmoney').val(money);
+            $('#myaccmoney').val(money.toLocaleString('ko-KR'));
         });
     }else {
         alert('출금계좌번호를 선택해주세요.');
@@ -150,6 +149,38 @@ $(document).ready(function () {
             alert('내통장 메모는 500자 이내로 작성해주세요.');
             return;
         }
-        form.submit();
+
+        var bank = {
+            'myacc':$('#myacc').val(),
+            'mysendbank':$('#sendbank').val(),
+            'mysendacc':$('#sendacc').val(),
+            'myaccbalance':$('#sendmoney').val(),
+            'myaccioname':$('#myaccioname').val(),
+            'myaccmemo':$('#myaccmemo').val()
+        }
+
+        $.ajax({
+            url: '/banking/confirm',
+            type: 'post',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(bank),
+            async: false,
+            success: function (result){
+                console.log(result);
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+
+        var newWindow = window.open(
+            '/banking/checksend',
+            '_blank',
+            'width=400, height=500');
+
+        newWindow.addEventListener('beforeunload', function (e) {
+            form.submit();
+        });
     });
 });

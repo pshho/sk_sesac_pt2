@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>계좌조회</title>
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+</head>
+<body>
+    <table border="">
+        <tr>
+            <td colspan="6">
+                <h2>계좌조회</h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <h3>입/출금계좌</h3>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <button type="button">보고서인쇄</button>
+            </td>
+            <td>
+                <button type="button">파일저장</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">조회건수 | [[${#arrays.length(accList)}]]건</td>
+            <td>기준일시 : </td>
+            <td th:text="${time}"></td>
+        </tr>
+        <tr>
+            <td>은행</td>
+            <td>계좌번호</td>
+            <td>신규일</td>
+            <td>최근거래일</td>
+            <td>잔액(원)</td>
+            <td>업무</td>
+        </tr>
+        <tr th:each="i:${#numbers.sequence(0, #arrays.length(accList) - 1)}">
+            <td th:text="${accList[i].mybank}"></td>
+            <td th:text="${accList[i].myacc}"></td>
+            <td th:text="${accList[i].myaccregdate}"></td>
+            <td th:text="${#dates.format(sendBankings[i].myaccdate)}"></td>
+            <td th:text="${#numbers.formatInteger(accList[i].mymoney, 3, 'COMMA')}"></td>
+            <td>
+                <button type="button" th:onclick="|sear(${accList[i].myacc})|">조회</button>
+                <a th:href="@{/banking/inout}">이체</a>
+            </td>
+        </tr>
+    </table>
+    <script th:inline="javascript">
+        function sear(myacc) {
+            $.ajax({
+                type: 'post',
+                url: '/banking/accSearch',
+                dataType: 'text',
+                data: {'acc': myacc},
+                success: function (res) {
+                    if (res == 'Y') {
+                        window.location.href = '/banking/detailhistory';
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+    </script>
+</body>
+</html>

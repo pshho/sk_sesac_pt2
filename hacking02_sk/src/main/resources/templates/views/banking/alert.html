@@ -1,5 +1,11 @@
 <html xmlns="http://www.thymeleaf.org">
-<script>
-    alert(`[[${msg}]]`)
-    history.back();
+<script th:inline="javascript">
+    var msg = [[${msg}]];
+    var check = [[${check}]];
+    alert(msg);
+    if (check === 1) {
+        window.location.href = "/banking/bankingResult";
+    }else {
+        history.back();
+    }
 </script>
