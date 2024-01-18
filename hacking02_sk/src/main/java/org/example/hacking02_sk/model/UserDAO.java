@@ -80,7 +80,7 @@ public class UserDAO {
 			pstmt2.setInt(1, Integer.parseInt(user.getMyphone()));
 			pstmt2.setString(2, user.getMyid());
 			pstmt2.setInt(3, 0);
-			pstmt2.setString(4, "moneyst");
+			pstmt2.setString(4, "머니ST");
 			pstmt2.setInt(5, Integer.parseInt(user.getMyaccpw()));
 			
 			num = pstmt2.executeUpdate();
