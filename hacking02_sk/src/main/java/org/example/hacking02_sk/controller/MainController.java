@@ -17,11 +17,8 @@ public class MainController {
     	if (session != null) {
             User user = (User) session.getAttribute("user");
             if (user != null) {
-                System.out.println("(debug: here 1) " + user.toString());
     		    model.addAttribute("name", user.getMyname());
             }
-        } else {
-            System.out.println("(debug: here 2) 세션이 존재하지 않는 경우");
         }
         return "index";
     }

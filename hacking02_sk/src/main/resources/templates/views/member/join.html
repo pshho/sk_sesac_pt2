@@ -2,7 +2,9 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>sesac join test</title>
+<meta name="viewport" content="width=device-width", initial-scale="1">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<title>머니ST - 회원가입</title>
 <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 <style>
 	input[type="number"]::-webkit-outer-spin-button,
@@ -10,48 +12,115 @@
     	-webkit-appearance: none;
     	margin: 0;
 	}
+	.container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh; /* 높이를 화면 전체 높이로 설정하여 수직 중앙 정렬 */
+    }
 </style>
 </head>
 <body>
-	<h3>회원가입</h3>
-	<form th:action="@{/member/join}" th:object="${user}" method="post" onsubmit="return valid()">
-    	아이디 * <br>
-    	<input type="text" id="input_myid" name="myid" placeholder="4~20자리" maxlength="20" oninput="checkLoginLength()">
-    	<input type="button" value="확인" onclick="sameCheck()">
-    	<span id="label_myid" style="color: red;"></span><br>
-    	<br>
-    	비밀번호 * <br>
-    	<input type="password" id="input_mypw" name="mypw" placeholder="8~16자리" maxlength="16" oninput="checkPassword()">
-    	<span id="label_mypw" style="color: red;"></span><br>
-    	<br>
-    	비밀번호 확인 * <br>
-    	<input type="password" id="input_mycheckpw" name="mycheckpw" placeholder="" maxlength="16" oninput="checkConfirmPassword()">
-    	<span id="label_mycheckpw" style="color: red;"></span><br>
-    	<br>
-    	이름 * <br>
-    	<input type="text" id="input_myname" name="myname" maxlength="30"><br>
-    	<br>
-    	주민등록번호 * <br>
-    	<input type="number" id="input_mysid" name="mysid" placeholder="'-' 빼고 숫자만 입력" maxlength="13" oninput="numMaxLength(this)"><br>
-    	<br>
-    	휴대폰번호 * <br>
-    	<input type="number" id="input_myphone" name="myphone" placeholder="'-' 빼고 숫자만 입력" maxlength="11" oninput="numMaxLength(this)"><br>
-    	<br>
-    	계좌 비밀번호 * <br>
-    	<input type="number" id="input_myaccpw" name="myaccpw" placeholder="4자리 숫자만 입력 가능" maxlength="4" oninput="numMaxLength(this)"><span id="label_myphone" style="color: red;"></span><br> 
-    	고객님의 휴대폰 번호로 초기 계좌번호가 개설됩니다. <br>
-    	<br>
-    	주소 * <br>
-    	<input type="text" id="input_mylocation" th:field="*{mylocation}" maxlength="300" readonly>
-    	<input id="find_location" type="button" value="주소 찾기"><br>
-    	<br>
-    	이메일 * <br>
-    	<input type="text" id="input_myemail" name="myemail" placeholder="email@sesac.co.kr" maxlength="50"><br>
-    	<br>
-    	<input type="submit" value="회원가입">
-	</form>
-	
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+	    		data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+	    		aria-expanded="false" aria-label="Toggle navigation">
+	      		<span class="navbar-toggler-icon"></span>
+	    	</button>
+	    	<a class="navbar-brand" href="/">머니ST</a>
+	    	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	        		<li class="nav-item">
+	          			<a class="nav-link active" aria-current="page" href="/board/list">게시판</a>
+	        		</li>
+	      		</ul>
+	    	</div>
+	    </div>
+	</nav>
+	<div class="container">
+		<form th:action="@{/member/join}" th:object="${user}" method="post" onsubmit="return valid()">
+			<table class="table table-bordered" style="border:1px solid #ccc; text-aling:center">
+				<thead class="table table-striped">
+					<tr>
+						<th colspan="2" style="background-color:#fafafa">
+							<h3 style="text-align: center;">회원가입</h3>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="background-color:#fafafa">아이디 *</td>
+						<td>
+							<input class="form-control" type="text" placeholder="4~20자리"  id="input_myid" name="myid" maxlength="20" oninput="checkLoginLength()">
+							<input type="button" class="btn btn-secondary me-md-2" value="확인" onclick="sameCheck()">
+							<span id="label_myid" style="color: red;"></span>
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">비밀번호 *</td>
+						<td>
+							<input class="form-control" type="password" id="input_mypw" name="mypw" placeholder="8~20자리" maxlength="16" oninput="checkPassword()">
+							<span id="label_mypw" style="color: red;"></span>
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">비밀번호 확인 *</td>
+						<td>
+							<input class="form-control" type="password" id="input_mycheckpw" name="mypwcheck" maxlength="16" oninput="checkConfirmPassword()">
+							<span id="label_mycheckpw" style="color: red;"></span>
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">이름 *</td>
+						<td>
+							<input class="form-control" type="text" placeholder="이름 입력"  id="input_myname" name="myname" maxlength="30">
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">주민등록번호 *</td>
+						<td>
+							<input class="form-control" type="number" id="input_mysid" name="mysid" placeholder="'-' 빼고 숫자만 입력" maxlength="13" oninput="numMaxLength(this)">
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">휴대폰번호 *</td>
+						<td>
+							<input class="form-control" type="number" id="input_myphone" name="myphone" placeholder="'-' 빼고 숫자만 입력" maxlength="11"  oninput="numMaxLength(this)">
+							고객님의 휴대폰 번호로 초기 계좌번호가 개설됩니다.
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">계좌 비밀번호 *</td>
+						<td>
+							<input class="form-control" type="number" id="input_myaccpw" name="myaccpw" placeholder="4자리 숫자만 입력 가능" maxlength="4"  oninput="numMaxLength(this)">
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">주소 *</td>
+						<td>
+							<input class="form-control" type="text" id="input_mylocation" th:field="*{mylocation}" maxlength="300">
+    						<input id="find_location" class="btn btn-secondary me-md-2" type="button" value="주소 찾기"><br>
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color:#fafafa">이메일 *</td>
+						<td>
+							<input class="form-control" type="text" id="input_myemail" name="myemail" placeholder="email@sesac.com" maxlength="50">
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2">
+							<input type="submit" class="btn btn-secondary form-control" value="회원가입">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
 	<script>
+		
 		var myElement = document.getElementById("label_myid");
 		
 		//색깔
@@ -66,7 +135,6 @@
     		}    
   		}
 		
-		//로그인 길이 체크
         function checkLoginLength() {
             var password = document.getElementById("input_myid").value;
 
@@ -77,60 +145,37 @@
                 document.getElementById("label_myid").innerText = "";
             }
         }
-        
-        //비밀번호 길이 체크 및 비밀번호 일치 여부 확인 
-        function checkPassword() {
-            var password = document.getElementById("input_mypw").value;
-
-            if (password.length < 8 || password.length > 16) {
-                document.getElementById("label_mypw").innerText = "비밀번호는 최소 8자 최대 16자입니다.";
-            } else {
-                document.getElementById("label_mypw").innerText = "";
-            }
-
-            checkConfirmPassword();
-        }
-
-        function checkConfirmPassword() {
-            var password = document.getElementById("input_mypw").value;
-            var confirmPassword = document.getElementById("input_mycheckpw").value;
-
-            if (password !== confirmPassword) {
-                document.getElementById("label_mycheckpw").innerText = "비밀번호가 일치하지 않습니다.";
-            } else {
-                document.getElementById("label_mycheckpw").innerText = "";
-            }
-        }
-        
-        //아이디 중복 체크
-        let submitCheck = false;
+		
+		
+		let submitCheck = false;
 
 	    function valid() {
-	        if (submitCheck) {
+	        if (submitCheck) { // true 가 되면 회원가입 버튼 동작
 	            return true;
 	        } else {
 	            alert('ID 확인은 필수입니다.'); 
-	            return false;
+	            return false; // 회원가입 버튼을 막는다
 	        }
 	    }
-	    
 	    function sameCheck() {
 	        let myid = $('#input_myid').val();
+		    
 	        var datas = {"myid": myid};
 	        $.ajax({
-				url: "/member/usercheck",
-	            type: 'post',
+				url: "/member/usercheck", // 컨트롤러로 가는 mapping
+	            type: 'post', // post로 컨트롤러에 요청
 	            contentType: 'application/json',
 	            dataType: 'json',
    	            data: JSON.stringify(datas),
             	success: function(data){ 
 					console.log(data.result);
-                	if(data.result == "N"){
+                	
+                	if(data.result == "N"){ // 중복 없음
                     	result = "사용 가능한 아이디입니다.";
                     	$("#label_myid").html(result).css("color", "green");
                  		submitCheck = true;
              		}
-             		else if(data.result == "E"){
+             		else if(data.result == "E"){ // 에러
                     	result = "에러입니다.";
                     	$("#label_myid").html(result).css("color", "red");
                  		submitCheck = false;
@@ -144,9 +189,34 @@
          		},
             	error : function(error){alert(error);}
         	});
-	    }  
-	    
-	    //주소찾기 팝업
+	    }
+		
+		
+		function checkPassword() {
+            var password = document.getElementById("input_mypw").value;
+
+            if (password.length < 8 || password.length > 16) {
+                document.getElementById("label_mypw").innerText = "비밀번호는 최소 8자 최대 16자입니다.";
+            } else {
+                document.getElementById("label_mypw").innerText = "";
+            }
+
+            checkConfirmPassword(); // 비밀번호가 변경될 때마다 확인 비밀번호도 다시 체크
+        }
+
+        function checkConfirmPassword() {
+            var password = document.getElementById("input_mypw").value;
+            var confirmPassword = document.getElementById("input_mycheckpw").value;
+
+            // 간단한 예제: 비밀번호와 확인 비밀번호 일치 여부 확인
+            if (password !== confirmPassword) {
+                document.getElementById("label_mycheckpw").innerText = "비밀번호가 일치하지 않습니다.";
+            } else {
+                document.getElementById("label_mycheckpw").innerText = "";
+            }
+        }
+        
+        //주소찾기 팝업
 	    //자식창에서 받아온 주소 넣기
         function setLocation(name){
             document.getElementById('input_mylocation').value = name;
@@ -157,5 +227,8 @@
     		}
 		};
     </script>
+    
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
 </body>
 </html>
