@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- 주소 팝업창 -->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+	<div style="max-width: 600px">
+	    <div>
+	        <h2>주소 찾기</h2>
+	    </div>
+	    <form action="/member/join/popup" method="post">
+			<input type="text" id="input_myaddr" name="keyword" maxlength="100">
+	    	<input id="search_location" type="submit" value="검색"><br>
+		</form>
+	    <hr>
+	    <div>
+	        <table>
+	            <tbody>
+					<tr>
+						<td>우편번호</td>
+						<td></td>
+						<td>주소</td>
+					</tr>
+		            <tr th:each="location : ${locations}">
+		                <td th:text="${location.myzip}"></td>
+		                <td></td>
+		                <td><a href="#" th:text="${location.myaddr}" th:onclick="sendLocation([[${location.myaddr}]])"></a></td>
+		            </tr>
+	            </tbody>
+	        </table>
+	    </div>
+	</div>
+	<script>
+		//부모창으로 데이터 보내고 팝업창 종료
+		function sendLocation(name){
+        	window.opener.setLocation(name);
+        	window.close();
+    	}
+    </script>
+</body>
+</html>
