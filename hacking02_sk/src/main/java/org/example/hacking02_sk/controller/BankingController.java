@@ -14,6 +14,7 @@ import org.example.hacking02_sk.mapper.BankinghistMapper;
 import org.example.hacking02_sk.model.Banking;
 import org.example.hacking02_sk.model.DetailHistory;
 import org.example.hacking02_sk.model.SendBanking;
+import org.example.hacking02_sk.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,14 +47,15 @@ public class BankingController {
 
     @ModelAttribute("accList")
     List<Banking> accList(HttpSession session){
-        //String myid = (String) session.getAttribute();
-        bankList = bankingMapper.myid("test");
+        User user = (User)session.getAttribute("user");
+        System.out.println(user);
+        bankList = bankingMapper.myid(user.getMyid());
         return bankList;
     }
 
     @ModelAttribute("bankList")
     String[] bankList(){
-        String banks = "머니스트,KEB하나은행,SC제일은행,국민은행,신한은행,외환은행,우리은행,한국시티은행,농협,기업은행";
+        String banks = "머니ST,KEB하나은행,SC제일은행,국민은행,신한은행,외환은행,우리은행,한국시티은행,농협,기업은행";
         String[] list = banks.split(",");
         return list;
     }
@@ -63,12 +65,13 @@ public class BankingController {
             @PathVariable String page,
             HttpSession session,
             Model model){
+        User user = (User)session.getAttribute("user");
         long sessionCreateTime = session.getCreationTime();
         Date time = new Date(sessionCreateTime);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //String myid = session.getAttribute();
         if (page.equals("myaccount")) {
-            List<Banking> banking = bankingMapper.myid("test");
+            List<Banking> banking = bankingMapper.myid(user.getMyid());
             model.addAttribute("accs", banking);
         }else if (page.equals("bankingResult")) {
             model.addAttribute("result", sendBanking);

@@ -107,7 +107,7 @@ public class UserController {
 			HttpSession session = request.getSession();
 			user = userDAO.getUser(user.getMyid(), user.getMypw());
 			session.setAttribute("user", user);
-			session.setMaxInactiveInterval(60);
+			session.setMaxInactiveInterval(1800);
 			sessions.put(session.getId(), ((User)(session.getAttribute("user"))).getMyname());
 			mav.setViewName("redirect:/");
 			return mav;
