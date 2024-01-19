@@ -2,6 +2,7 @@ package org.example.hacking02_sk.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.example.hacking02_sk.model.Location;
 import org.example.hacking02_sk.model.User;
 import org.example.hacking02_sk.model.UserDAO;
+import org.example.hacking02_sk.service.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+// 쿠키 import
+import javax.servlet.http.Cookie;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+// import io.jsonwebtoken.Claims;
+// import java.util.function.Function;
 
 @Controller
 @RequestMapping("member")
@@ -31,6 +39,9 @@ public class UserController {
 	
 	@Autowired
     private UserDAO userDAO;
+
+	@Autowired
+	private JwtUtil jwtUtil;
 	
 	// 회원가입 약관
 	@GetMapping("joinInfo")
@@ -56,26 +67,10 @@ public class UserController {
 			return mav;
 		}
 		else {
-			int flag = userDAO.phoneCheck(user.getMyphone()); // 중복 번호 검사
-			
-			System.out.print("핸드폰 중복 검사 flag : " + flag);
-			
-			if (flag == 1) { // 중복되는 핸드폰 번호 없을 때
-				int result = userDAO.signup(user);
-				
-				if (result > 0) { // 회원가입 성공
-		        	mav.setViewName("redirect:/");
-					return mav;
-				}
-			}
-			else if(flag == 0){
-				mav.setViewName("member/joinFail");
-				mav.addObject("message", "이미 존재하는 핸드폰 번호입니다.");
-				return mav;
-			}
-			else if(flag == -1) {
-				mav.setViewName("member/joinFail");
-				mav.addObject("message", "DB 에러");
+			int result = userDAO.signup(user);
+
+			if (result > 0) { // 회원가입 성공
+				mav.setViewName("redirect:/");
 				return mav;
 			}
 		}
@@ -100,9 +95,7 @@ public class UserController {
         else if(flag == -1) {
         	result = "E";
         }
-        else if(flag == 2) {
-        	result = "NO";
-        }
+
         check.put("result", result);
         System.out.println("result값 : " + result);
         return check;
@@ -117,16 +110,25 @@ public class UserController {
 	HashMap<String, String> sessions = new HashMap<String, String>();
 
     @PostMapping("login")
-    public ModelAndView loginAction(User user, HttpServletRequest request) {
+	public ModelAndView loginAction(User user, HttpServletRequest request, HttpServletResponse response) {
     	ModelAndView mav = new ModelAndView();
         int result = userDAO.login(user.getMyid(), user.getMypw());
 		request.getSession().invalidate();
 
         if (result == 1) { //로그인 성공
+			int session_time_seconds = 1800;
 			HttpSession session = request.getSession();
 			user = userDAO.getUser(user.getMyid(), user.getMypw());
 			session.setAttribute("user", user);
-			session.setMaxInactiveInterval(1800);
+			session.setMaxInactiveInterval(session_time_seconds);
+
+			String jwtToken = jwtUtil.generateToken(user.getMyid());
+			Cookie cookie = new Cookie("JWT", jwtToken);
+			cookie.setMaxAge(session_time_seconds);
+			cookie.setPath("/");
+			System.out.println("(hy debug) Add cookie : " + cookie.getValue());
+
+			response.addCookie(cookie);
 			sessions.put(session.getId(), ((User)(session.getAttribute("user"))).getMyname());
 			mav.setViewName("redirect:/");
 			return mav;
@@ -154,7 +156,7 @@ public class UserController {
     }
 
 	@RequestMapping("logout")
-    public ModelAndView logoutAction(User user, HttpServletRequest request) {
+	public ModelAndView logoutAction(User user, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession(false);
 		if(session == null) { // 세션이 만료된 경우 (maybe not reachable)
@@ -165,6 +167,20 @@ public class UserController {
 				sessions.remove(session.getId());
 			session.invalidate();
 			mav.addObject("message", "로그아웃 하였습니다.");
+
+			// 모든 쿠키 삭제
+			Cookie[] cookies = request.getCookies();
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if(cookie.getName().equals("JWT"))
+					{
+						cookie.setMaxAge(0);
+						cookie.setPath("/");
+						System.out.println("(hy debug) Remove cookie : " + cookie.getValue());
+						response.addCookie(cookie);
+					}
+				}
+			}
 		}
 		mav.setViewName("/member/logout");
 		return mav;

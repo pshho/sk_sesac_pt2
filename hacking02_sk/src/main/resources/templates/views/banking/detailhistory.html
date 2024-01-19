@@ -157,11 +157,8 @@
                             [[${#numbers.formatInteger(hist.myaccbalance, 3, 'COMMA')}]]
                         </th:block>
                     </td>
-                    <td th:text="${hist.myaccioname}"></td>
+                    <td th:utext="${hist.myaccioname}"></td>
                     <td th:utext="${hist.myaccmemo}"></td>
-                    <div contenteditable="true">
-                        <h1>a</h1>
-                    </div>
                     <td>
                         <th:block th:if="${hist.myaccin != 0}">
                             [[${#numbers.formatInteger(hist.myaccin, 3, 'COMMA')}]]
