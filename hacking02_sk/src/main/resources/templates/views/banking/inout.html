@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
 <head>
@@ -39,8 +40,8 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td style="background-color:#fafafa; width: 15%;" rowspan="2">출금계좌번호</td>
-							<td>
+							<td style="background-color:#fafafa; width:10%;" rowspan="2">출금계좌번호</td>
+							<td style="width:60%;">
 								<select name="myacc" id="myacc" class="form-select">
 									<option value="0">계좌를 선택해주세요.</option>
 									<option th:each="acc:${accList}"
@@ -56,15 +57,15 @@
 							</td>
 						</tr>
 						<tr>
-							<td style="padding: 15px 10px; text-align: right;">출금가능잔액</td>
+							<td style="padding:15px 10px; text-align:right;">출금가능잔액</td>
 							<td colspan="2">
 								<input type="text" class="form-control" id="myaccmoney" readonly />
 							</td>
 						</tr>
 						<tr>
 							<td style="background-color:#fafafa">계좌비밀번호</td>
-							<td>
-								<input type="text" class="form-control" name="myaccpw" id="mypw" placeholder="숫자 4자리" />
+							<td colspan="3">
+								<input type="text" class="form-control" style="width:66%;" name="myaccpw" id="mypw" placeholder="숫자 4자리" />
 							</td>
 						</tr>
 					</tbody>
@@ -72,14 +73,14 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<td colspan="9">
+							<td colspan="9" style="background-color:#fafafa">
 								<h3 style="text-align: center;">입금정보</h3>
 							</td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td style="background-color:#fafafa">입금은행</td>
+							<td style="background-color:#fafafa; width:10%;">입금은행</td>
 							<td colspan="8">
 								<select class="form-select" name="mysendbank" id="sendbank">
 									<option value="0">입금하실 은행을 선택해주세요.</option>
@@ -94,12 +95,11 @@
 							</td>
 						</tr>
 						<tr>
-							<td style="background-color:#fafafa;" rowspan="2">이체금액</td>
-							<td colspan="7">
-								<input type="text" class="form-control" name="myaccbalance" id="sendmoney" />
-							</td>
-							<td style="vertical-align: middle;">
-								<h5 style="margin: 0;">원</h5>
+							<td style="background-color:#fafafa" rowspan="2">이체금액</td>
+							<td colspan="8">
+								<input type="text" class="form-control" name="myaccbalance" id="sendmoney"
+										style="width:97%; display: inline-block; vertical-align:middle;"/>
+								<p style="display:inline-block; font-size: 150%; margin: 0 auto;">원</p>
 							</td>
 						</tr>
 						<tr>
@@ -142,7 +142,7 @@
 						</tr>
 						<tr>
 							<td colspan="10" style="text-align:right;">
-								<input type="submit" class="btn btn-secondary form-label" style="width:100px;" value="다음">
+								<input type="submit" class="btn btn-secondary form-label" style="width:100px; margin: 0 auto;" value="다음">
 							</td>
 						</tr>
 					</tbody>

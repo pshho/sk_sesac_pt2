@@ -58,6 +58,8 @@ public class UserController {
 		else {
 			int flag = userDAO.phoneCheck(user.getMyphone()); // 중복 번호 검사
 			
+			System.out.print("핸드폰 중복 검사 flag : " + flag);
+			
 			if (flag == 1) { // 중복되는 핸드폰 번호 없을 때
 				int result = userDAO.signup(user);
 				

@@ -39,11 +39,11 @@
 						<td style="background-color:#ffffff">아이디 *</td>
 						<td>
 							<input class="form-control" type="text" placeholder="4~20자리" id="input_myid" name="myid"
-								   style="width: 125%;" maxlength="20" oninput="checkLoginLength()" autofocus>
+								   style="display: block; width: 128.5%;" maxlength="20" oninput="checkLoginLength()" autofocus>
 							<span id="label_myid" style="color: red;"></span>
 						</td>
 						<td style="text-align: right;">
-							<input type="button" class="btn btn-secondary" value="확인" onclick="sameCheck()">
+							<input type="button" style="display: inline-block;" class="btn btn-secondary" value="확인" onclick="sameCheck()">
 						</td>
 					</tr>
 					<tr>
@@ -90,10 +90,10 @@
 						<td style="background-color:#ffffff">주소 *</td>
 						<td>
 							<input class="form-control" type="text" id="input_mylocation"
-								   th:field="*{mylocation}" maxlength="300" style="width: 115%;" readonly>
+								   th:field="*{mylocation}" maxlength="300" style="display:block; width: 120%;" readonly>
 						</td>
 						<td style="text-align:right;">
-							<input id="find_location" class="btn btn-secondary" type="button" value="주소 찾기">
+							<input id="find_location" style="display:inline-block;" class="btn btn-secondary" type="button" value="주소 찾기">
 						</td>
 					</tr>
 					<tr>
