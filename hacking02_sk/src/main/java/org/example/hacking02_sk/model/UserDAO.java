@@ -123,6 +123,32 @@ public class UserDAO {
     	return -1; // Error
     }
     
+	//전화번호 중복 체크
+    public int phoneCheck(String myphone) {
+    	String SQL = "SELECT myphone FROM myuser WHERE myphone = ?";
+		
+    	System.out.println("넘어오는 myphone 값 : " + "010" + myphone);
+
+    	try {		
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, "010" + myphone);
+			System.out.println(pstmt);
+			rs = pstmt.executeQuery(); // 결과 담는 객체
+			
+			if(!rs.next()) {
+				System.out.println("없는 폰번호! 회원가입 가능");
+				return 1; // 회원가입 가능
+			} else {
+				System.out.println("이미 존재하는 폰번호");
+				return 0; // 핸드폰 번호 이미 존재
+			}
+			
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return -1; // Error
+    }
+    
 	public User getUser(String myid, String mypw) {
 		User user = null;
 		String SQL = "SELECT myname, myid, mypw, myemail, mylocation, myphone, mysid FROM myuser WHERE myid = ? AND mypw = ?";
