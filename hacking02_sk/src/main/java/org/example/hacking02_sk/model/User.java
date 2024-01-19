@@ -1,5 +1,6 @@
 package org.example.hacking02_sk.model;
 
+import lombok.Data;
 import org.springframework.stereotype.Repository;
 
 @Repository
