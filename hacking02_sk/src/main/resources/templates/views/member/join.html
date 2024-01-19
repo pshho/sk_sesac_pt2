@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width", initial-scale="1">
 <link rel="stylesheet" href="../css/bootstrap.css">
-<title>머니ST - 회원가입</title>
+<title>MNST 회원가입</title>
 <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
 <style>
 	input[type="number"]::-webkit-outer-spin-button,
@@ -16,29 +16,30 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 90vh; /* 높이를 화면 전체 높이로 설정하여 수직 중앙 정렬 */
+        margin: 2% auto;
+        height: 100vh; /* 높이를 화면 전체 높이로 설정하여 수직 중앙 정렬 */
     }
 </style>
 </head>
 <body>
 	<th:block th:replace="header :: headerFragment"></th:block>
-	<div class="container" style="margin: 20px auto 50px auto">
+	<div class="container">
 		<form th:action="@{/member/join}" th:object="${user}" method="post"
 			  style="width: 700px;" onsubmit="return valid()">
 			<table class="table table-borderless">
 				<thead class="table table-striped">
 					<tr>
-						<th colspan="3" style="background-color:#fafafa; border: 0;">
+						<th colspan="3" style="background-color:#ffffff; border: 0;">
 							<h3 style="text-align: center;">회원가입</h3>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td style="background-color:#fafafa">아이디 *</td>
+						<td style="background-color:#ffffff">아이디 *</td>
 						<td>
 							<input class="form-control" type="text" placeholder="4~20자리" id="input_myid" name="myid"
-								   style="width: 125%;" maxlength="20" oninput="checkLoginLength()">
+								   style="width: 125%;" maxlength="20" oninput="checkLoginLength()" autofocus>
 							<span id="label_myid" style="color: red;"></span>
 						</td>
 						<td style="text-align: right;">
@@ -46,56 +47,56 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">비밀번호 *</td>
+						<td style="background-color:#ffffff">비밀번호 *</td>
 						<td colspan="2">
 							<input class="form-control" type="password" id="input_mypw" name="mypw" placeholder="8~20자리" maxlength="16" oninput="checkPassword()">
 							<span id="label_mypw" style="color: red;"></span>
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">비밀번호 확인 *</td>
+						<td style="background-color:#ffffff">비밀번호 확인 *</td>
 						<td colspan="2">
 							<input class="form-control" type="password" id="input_mycheckpw" name="mypwcheck" maxlength="16" oninput="checkConfirmPassword()">
 							<span id="label_mycheckpw" style="color: red;"></span>
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">이름 *</td>
+						<td style="background-color:#ffffff">이름 *</td>
 						<td colspan="2">
 							<input class="form-control" type="text" placeholder="이름 입력"  id="input_myname" name="myname" maxlength="30">
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">주민등록번호 *</td>
+						<td style="background-color:#ffffff">주민등록번호 *</td>
 						<td colspan="2">
 							<input class="form-control" type="number" id="input_mysid" name="mysid" placeholder="'-' 빼고 숫자만 입력" maxlength="13" oninput="numMaxLength(this)">
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">휴대폰번호 *</td>
+						<td style="background-color:#ffffff">휴대폰번호 *</td>
 						<td colspan="2">
 							<input class="form-control" type="number" id="input_myphone" name="myphone" placeholder="'-' 빼고 숫자만 입력" maxlength="11"  oninput="numMaxLength(this)">
 							고객님의 휴대폰 번호로 초기 계좌번호가 개설됩니다.
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">계좌 비밀번호 *</td>
+						<td style="background-color:#ffffff">계좌 비밀번호 *</td>
 						<td colspan="2">
 							<input class="form-control" type="number" id="input_myaccpw" name="myaccpw" placeholder="4자리 숫자만 입력 가능" maxlength="4"  oninput="numMaxLength(this)">
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">주소 *</td>
+						<td style="background-color:#ffffff">주소 *</td>
 						<td>
 							<input class="form-control" type="text" id="input_mylocation"
-								   th:field="*{mylocation}" maxlength="300" style="width: 115%;">
+								   th:field="*{mylocation}" maxlength="300" style="width: 115%;" readonly>
 						</td>
 						<td style="text-align:right;">
 							<input id="find_location" class="btn btn-secondary" type="button" value="주소 찾기">
 						</td>
 					</tr>
 					<tr>
-						<td style="background-color:#fafafa">이메일 *</td>
+						<td style="background-color:#ffffff">이메일 *</td>
 						<td colspan="2">
 							<input class="form-control" type="text" id="input_myemail" name="myemail" placeholder="email@sesac.com" maxlength="50">
 						</td>
@@ -171,6 +172,11 @@
                     	$("#label_myid").html(result).css("color", "red");
                  		submitCheck = false;
              		}
+             		else if(data.result == "NO"){ // null
+						 result = "아이디를 입력해주세요."
+                    	$("#label_myid").html(result).css("color", "red");
+                 		submitCheck = false;
+					 }
              		else{ 
                  	 	result="이미 사용중인 아이디입니다.";
                      	$("#label_myid").html(result).css("color","red");

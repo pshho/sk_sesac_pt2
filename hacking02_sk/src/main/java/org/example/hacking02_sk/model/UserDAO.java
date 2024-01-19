@@ -99,6 +99,10 @@ public class UserDAO {
 		
     	System.out.println("넘어오는 myid 값 : " + myid);
     	
+    	if (myid.equals("")) {
+    		return 2;
+    	}
+    	
     	try {		
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, myid);

@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width", initial-scale="1">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<title>MNST 게시판</title>
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<style>
+	.container {
+        display: flex;
+        margin: 2% auto;
+        height: 100vh; /* 높이를 화면 전체 높이로 설정하여 수직 중앙 정렬 */
+    }
+</style>
 </head>
 <body>
-    <h2>게시판 목록</h2>
-    [[${list}]]
+	<!--header-->
+	<th:block th:replace="header :: headerFragment"></th:block>
+	<!--main-->
+	<div class="container">
+		<h3>게시판 목록</h3>
+    	[[${list}]]
+	</div>
+    <!--footer-->
+	<th:block th:replace="footer :: footerFragment"></th:block>
 </body>
 </html>
