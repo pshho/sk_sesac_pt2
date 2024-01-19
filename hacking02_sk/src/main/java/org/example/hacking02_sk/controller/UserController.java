@@ -79,10 +79,13 @@ public class UserController {
         int flag = userDAO.userCheck(myid.get("myid"));
       
         if(flag == 0) {
-        	result ="Y";
+        	result = "Y";
         }
         else if(flag == -1) {
         	result = "E";
+        }
+        else if(flag == 2) {
+        	result = "NO";
         }
         check.put("result", result);
         System.out.println("result값 : " + result);

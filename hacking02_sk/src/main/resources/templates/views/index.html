@@ -15,7 +15,7 @@
         .carousel_wrap {
             margin: 0;
             padding: 0;
-            height: 500px;
+            height: 380px;
             width: 300%;
             overflow: hidden;
             position: relative;
@@ -27,7 +27,7 @@
             float: left;
         }
         .carousel_wrap li a {
-            height: 600px;
+            height: 380px;
             display: flex;
             justify-content: center;
             position: relative;
@@ -99,12 +99,58 @@
         }
 
         .service_box{
-
+			position: relative;
+            width: 100%;
+            height: auto;
+            color: #000000;
+            background-color: #ffffff;
         }
 
         .service_inner_box {
-
+			padding: 2% 0;
+            margin: 0 auto;
+            width: 70%;
         }
+        
+        .service_menu_box {
+			width: 100%;
+			height: 80px;
+			border: 3px solid #D5D5D5;
+			
+			position: relative;
+			margin: 0 auto;
+        }
+        
+        .service_menu_box ul{
+            list-style: none;
+            padding: 0;
+            
+            display: block;
+    		margin-block-start: 1.5em;
+    		margin-block-end: 1.5em;
+    		margin-inline-start: 0px;
+    		margin-inline-end: 0px;
+    		padding-inline-start: 0px;
+        }
+        
+        .service_menu_box li{
+        	float: left;
+    		width: 20%;
+    		text-align: center;
+        }
+        
+        .service_menu_box img{
+            width: 25px;
+            height: 25px;
+        }
+        
+        .service_menu_box a{
+			text-decoration: none;
+			display: block;
+		    font-size: 16px;
+		    font-weight: normal;
+		    color: #333;
+		}
     </style>
 </head>
 <body>
@@ -124,13 +170,13 @@
                     <li class="carousel_2">
                         <a href="#">
                             <!-- <img src="http://192.168.101.135:8888/banner2.png" alt="img2"> -->
-                            <img th:src="@{/images/banner2.png}" alt="img1">
+                            <img th:src="@{/images/banner2.png}" alt="img2">
                         </a>
                     </li>
                     <li class="carousel_3">
                         <a href="#">
                             <!-- <img src="http://192.168.101.135:8888/banner3.png" alt="img3"> -->
-                            <img th:src="@{/images/banner1.png}" alt="img1">
+                            <img th:src="@{/images/banner3.png}" alt="img3">
                         </a>
                     </li>
                 </ul>
@@ -143,7 +189,7 @@
         <!-- 금융상품 -->
         <div class="menu_box">
             <div class="menu_inner_box">
-                <p style="font-size: 24px;">금융상품</p>
+                <p style="font-size: 22px;">금융상품</p>
                 <ul>
                     <li><a href="#"><img th:src="@{/images/inmoney.png}"/><span>예금</span></a></li>
                     <li><a href="#"><img th:src="@{/images/chart.png}"/><span>펀드</span></a></li>
@@ -155,7 +201,16 @@
         <!-- 주요 서비스 -->
         <div class="service_box">
             <div class="service_inner_box">
-
+				<p style="font-size: 22px;">주요서비스</p>
+				<div class="service_menu_box">
+					<ul>
+	                    <li><a href="/banking/inout"><span>이체</span><img th:src="@{/images/go.png}"/></a></li>
+	                    <li><a href="/banking/acchistory"><span>계좌조회</span><img th:src="@{/images/go.png}"/></a></li>
+	                    <li><a href="/board/list"><span>게시판</span><img th:src="@{/images/go.png}"/></a></li>
+	                    <li><a href="/"><span>인터넷환전</span><img th:src="@{/images/go.png}"/></a></li>
+	                    <li><a href="/"><span>환율조회</span><img th:src="@{/images/go.png}"/></a></li>
+                	</ul>
+				</div>
             </div>
         </div>
     </div>
