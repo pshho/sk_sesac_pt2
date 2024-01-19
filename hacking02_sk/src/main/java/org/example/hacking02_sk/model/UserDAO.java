@@ -69,7 +69,7 @@ public class UserDAO {
 			pstmt.setString(3, user.getMypw());
 			pstmt.setString(4, user.getMyemail());
 			pstmt.setString(5, user.getMylocation());
-			pstmt.setString(6, user.getMyphone());
+			pstmt.setString(6, "010" + user.getMyphone());
 			pstmt.setString(7, user.getMysid());
 			
 			pstmt.executeUpdate();
@@ -77,7 +77,7 @@ public class UserDAO {
 			
 			// myacc table
 			pstmt2 = conn.prepareStatement(query2);
-			pstmt2.setInt(1, Integer.parseInt(user.getMyphone()));
+			pstmt2.setInt(1, Integer.parseInt("010" + user.getMyphone()));
 			pstmt2.setString(2, user.getMyid());
 			pstmt2.setInt(3, 1000000);	// 초기 잔액
 			pstmt2.setString(4, "MNST");
