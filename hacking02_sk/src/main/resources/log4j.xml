@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug" strict="true" name="XMLConfig"
+<Configuration status="all" name="XMLConfig"
                packages="org.apache.logging.log4j">
     <Appenders>
-        <Appender type="Console" name="STDOUT">
-            <Layout type="PatternLayout" pattern="%m MDC%X%n"/>
-            <Filters>
-                <Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
-            </Filters>
-        </Appender>
         <Appender type="Console" name="allLogs">
             <Layout type="PatternLayout" pattern="%c{10}.%M %m %ex%n"/><!-- class and line number -->
             <Filters>
                 <Filter type="MarkerFilter" marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
-                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="ACCEPT" onMismatch="DENY"/>
+                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
             </Filters>
         </Appender>
-        <Appender type="File" name="File" fileName="${filename}">
-            <Layout type="PatternLayout">
-                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-            </Layout>
-        </Appender>
     </Appenders>
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="allLogs" />
+        </Root>
+    </Loggers>
 </Configuration>
