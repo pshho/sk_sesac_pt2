@@ -105,6 +105,7 @@ public class BankingController {
                 model.addAttribute("myacc", this.acc);
             }
             //System.out.println(page);
+            model.addAttribute("name", user.getMyname());
             return "banking/" + page;
         }
     }
