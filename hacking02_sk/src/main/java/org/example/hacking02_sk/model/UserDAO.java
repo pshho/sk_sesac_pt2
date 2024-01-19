@@ -69,7 +69,7 @@ public class UserDAO {
 			pstmt.setString(3, user.getMypw());
 			pstmt.setString(4, user.getMyemail());
 			pstmt.setString(5, user.getMylocation());
-			pstmt.setString(6, user.getMyphone());
+			pstmt.setString(6, "010" + user.getMyphone());
 			pstmt.setString(7, user.getMysid());
 			
 			pstmt.executeUpdate();
@@ -77,7 +77,7 @@ public class UserDAO {
 			
 			// myacc table
 			pstmt2 = conn.prepareStatement(query2);
-			pstmt2.setInt(1, Integer.parseInt(user.getMyphone()));
+			pstmt2.setInt(1, Integer.parseInt("010" + user.getMyphone()));
 			pstmt2.setString(2, user.getMyid());
 			pstmt2.setInt(3, 1000000);	// 초기 잔액
 			pstmt2.setString(4, "MNST");
@@ -115,6 +115,32 @@ public class UserDAO {
 			} else {
 				System.out.println("이미 존재하는 ID");
 				return 0; // 아이디 이미 존재
+			}
+			
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return -1; // Error
+    }
+    
+	//전화번호 중복 체크
+    public int phoneCheck(String myphone) {
+    	String SQL = "SELECT myphone FROM myuser WHERE myphone = ?";
+		
+    	System.out.println("넘어오는 myphone 값 : " + "010" + myphone);
+
+    	try {		
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, "010" + myphone);
+			System.out.println(pstmt);
+			rs = pstmt.executeQuery(); // 결과 담는 객체
+			
+			if(!rs.next()) {
+				System.out.println("없는 폰번호! 회원가입 가능");
+				return 1; // 회원가입 가능
+			} else {
+				System.out.println("이미 존재하는 폰번호");
+				return 0; // 핸드폰 번호 이미 존재
 			}
 			
     	}catch(Exception e) {
