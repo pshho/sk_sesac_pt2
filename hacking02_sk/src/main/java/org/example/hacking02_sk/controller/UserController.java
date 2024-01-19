@@ -114,7 +114,11 @@ public class UserController {
         }
         else if (result == 0) {
 			mav.setViewName("member/loginFail");
-			mav.addObject("message", "패스워드 불일치");
+			if (user.getMypw().equals("")) {
+				mav.addObject("message", "패스워드 공란");
+			} else {
+				mav.addObject("message", "패스워드 불일치");
+			}
 			return mav;
         }
         else if (result == -1) {
