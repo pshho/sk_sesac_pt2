@@ -74,7 +74,7 @@
                     <td>[[${result.mysendbank}]]<br />[[${result.mysendacc}]]</td>
                     <td th:text="${result.myaccioname}"></td>
                     <td th:text="${result.myaccbalance != 0 ? #numbers.formatInteger(result.myaccbalance, 3, 'COMMA'):'0'}"></td>
-                    <td th:text="${result.myaccmemo}"></td>
+                    <td th:utext="${result.myaccmemo}"></td>
                 </tr>
                 <tr>
                     <td colspan="4" style="text-align:right;">
