@@ -16,8 +16,8 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    //all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-    //all*.exclude group: 'org.springframework.boot', module: 'logback-classic'
+    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    all*.exclude group: 'org.springframework.boot', module: 'logback-classic'
 }
 
 repositories {
@@ -37,12 +37,13 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.apache.logging.log4j:log4j-api:2.12.4'
     implementation 'org.apache.logging.log4j:log4j-core:2.12.4'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-core'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-    implementation 'javax.servlet:jstl'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'javax.servlet:jstl'
+    implementation fileTree(dir: 'libs', include: '*.jar')
 }
 
 tasks.named('test') {

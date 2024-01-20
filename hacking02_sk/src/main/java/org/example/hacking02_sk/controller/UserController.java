@@ -67,10 +67,24 @@ public class UserController {
 			return mav;
 		}
 		else {
-			int result = userDAO.signup(user);
+			int flag = userDAO.phoneCheck(user.getMyphone()); // 중복 번호 검사
 
-			if (result > 0) { // 회원가입 성공
-				mav.setViewName("redirect:/");
+			System.out.print("핸드폰 중복 검사 flag : " + flag);
+
+			if (flag == 1) { // 중복되는 핸드폰 번호 없을 때
+				int result = userDAO.signup(user);
+
+				if (result > 0) { // 회원가입 성공
+					mav.setViewName("redirect:/");
+					return mav;
+				}
+			} else if (flag == 0) {
+				mav.setViewName("member/joinFail");
+				mav.addObject("message", "이미 존재하는 핸드폰 번호입니다.");
+				return mav;
+			} else if (flag == -1) {
+				mav.setViewName("member/joinFail");
+				mav.addObject("message", "DB 에러");
 				return mav;
 			}
 		}
@@ -95,6 +109,9 @@ public class UserController {
         else if(flag == -1) {
         	result = "E";
         }
+		else if(flag == 2) {
+			result = "NO";
+		}
 
         check.put("result", result);
         System.out.println("result값 : " + result);

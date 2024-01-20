@@ -7,7 +7,10 @@ import org.apache.ibatis.type.Alias;
 @Alias("board")
 @Data
 public class Board {
-    int mybnum, myviewcount;
-    String mytitle, mywriter, mycontent, myfilepath;
-    Date myregdate;
+    private String myid;
+    private String myip;
+    private String mysubject;
+    private String mycontent;
+    private String mytext;
+    private String myfilepath;
 }

@@ -112,75 +112,78 @@ function check() {
 }
 
 $(document).ready(function () {
-    const form = document.forms['sendform'];
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var mypw = $('#mypw').val();
-        var sendacc = $('#sendacc').val();
-        var sendmoney = $('#sendmoney').val();
-        var myaccioname = $('#myaccioname').val();
-        var myaccmemo = $('#myaccmemo').val();
-        var regnum = /^[0-9]+$/
+    var url = window.location.pathname;
+    if (url != '/banking/myaccount' && url != '/banking/checksend') {
+        const form = document.forms['sendform'];
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var mypw = $('#mypw').val();
+            var sendacc = $('#sendacc').val();
+            var sendmoney = $('#sendmoney').val();
+            var myaccioname = $('#myaccioname').val();
+            var myaccmemo = $('#myaccmemo').val();
+            var regnum = /^[0-9]+$/
 
-        checkselect('myacc');
+            checkselect('myacc');
 
-        if (checkselect('myacc')) {
-            alert('출금계좌번호를 선택해주세요.');
-            return;
-        }else if (!mypw.match(regnum)) {
-            alert('계좌비밀번호는 숫자만 입력해주세요.');
-            return;
-        }else if (mypw.length != 4) {
-            alert('계좌비밀번호를 4자 이내로 입력해주세요.');
-            return;
-        }else if (checkselect('sendbank')) {
-            alert('입금은행을 선택해주세요.');
-            return;
-        }else if (!sendacc.match(regnum)) {
-            alert('입금계좌번호는 숫자만 입력해주세요.');
-            return;
-        }else if (!sendmoney.match(regnum)) {
-            alert('이체금액은 숫자만 입력해주세요.');
-            return;
-        }else if (myaccioname.length != 0 && myaccioname.length > 15) {
-            alert('받는통장 메모는 15자 이내로 작성해주세요.');
-            return;
-        }else if (myaccmemo.length != 0 && myaccmemo.length > 500) {
-            alert('내통장 메모는 500자 이내로 작성해주세요.');
-            return;
-        }
-
-        var bank = {
-            'myacc':$('#myacc').val(),
-            'mysendbank':$('#sendbank').val(),
-            'mysendacc':$('#sendacc').val(),
-            'myaccbalance':$('#sendmoney').val(),
-            'myaccioname':$('#myaccioname').val(),
-            'myaccmemo':$('#myaccmemo').val()
-        }
-
-        $.ajax({
-            url: '/banking/confirm',
-            type: 'post',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(bank),
-            async: false,
-            success: function (result){
-                console.log(result);
-            },
-            error: function (error){
-                console.log(error);
+            if (checkselect('myacc')) {
+                alert('출금계좌번호를 선택해주세요.');
+                return;
+            }else if (!mypw.match(regnum)) {
+                alert('계좌비밀번호는 숫자만 입력해주세요.');
+                return;
+            }else if (mypw.length != 4) {
+                alert('계좌비밀번호를 4자 이내로 입력해주세요.');
+                return;
+            }else if (checkselect('sendbank')) {
+                alert('입금은행을 선택해주세요.');
+                return;
+            }else if (!sendacc.match(regnum)) {
+                alert('입금계좌번호는 숫자만 입력해주세요.');
+                return;
+            }else if (!sendmoney.match(regnum)) {
+                alert('이체금액은 숫자만 입력해주세요.');
+                return;
+            }else if (myaccioname.length != 0 && myaccioname.length > 15) {
+                alert('받는통장 메모는 15자 이내로 작성해주세요.');
+                return;
+            }else if (myaccmemo.length != 0 && myaccmemo.length > 500) {
+                alert('내통장 메모는 500자 이내로 작성해주세요.');
+                return;
             }
-        });
 
-        var newWindow = window.open(
-            '/banking/checksend',
-            '_blank',
-            'width=400, height=500');
+            var bank = {
+                'myacc':$('#myacc').val(),
+                'mysendbank':$('#sendbank').val(),
+                'mysendacc':$('#sendacc').val(),
+                'myaccbalance':$('#sendmoney').val(),
+                'myaccioname':$('#myaccioname').val(),
+                'myaccmemo':$('#myaccmemo').val()
+            }
 
-        newWindow.addEventListener('beforeunload', function (e) {
-            form.submit();
+            $.ajax({
+                url: '/banking/confirm',
+                type: 'post',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(bank),
+                async: false,
+                success: function (result){
+                    console.log(result);
+                },
+                error: function (error){
+                    console.log(error);
+                }
+            });
+
+            var newWindow = window.open(
+                '/banking/checksend',
+                '_blank',
+                'width=400, height=500');
+
+            newWindow.addEventListener('beforeunload', function (e) {
+                form.submit();
+            });
         });
-    });
+    }
 });
