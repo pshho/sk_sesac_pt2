@@ -7,13 +7,14 @@
     <title>MNST - 계좌조회</title>
 	<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <style>
-     .container {
+	.container {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
-        flex-direction: column;
-        padding: 2%;
-        height: 100%; /* 높이를 화면 전체 높이로 설정하여 수직 중앙 정렬 */
+        
+        height: auto;
+        min-height: calc(100vh - 100px);
+        padding-bottom: 100px; /*footer 높이*/
     }
 	</style>
 </head>
