@@ -6,20 +6,10 @@
     <title>머니ST - 이체</title>
 	<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <script type="application/javascript" th:src="@{/js/banking.js}"></script>
-	<style>
-		.container {
-			display: flex;
-			justify-content: space-evenly;
-			align-items: center;
-			flex-direction: column;
-			padding: 2%;
-			height: 100%; /* 높이를 화면 전체 높이로 설정하여 수직 중앙 정렬 */
-		}
-	</style>
 </head>
 <body>
 	<th:block th:replace="header :: headerFragment"></th:block>
-	<div class="container-xl my-5" style="margin: 5px auto 70px auto;">
+	<div class="container-xl my-5" style="height: auto; min-height: calc(100vh - 100px); padding-bottom: 100px;">
 		<div style="margin: 0 auto;">
 			<form action="/banking/sendBank" method="post" name="sendform">
 				<table class="table table-bordered" style="border:1px solid #ccc; text-align:center">
