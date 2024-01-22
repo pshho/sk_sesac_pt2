@@ -16,15 +16,25 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>문의게시판 상세보기</title>
 	
-	<script charset="UTF-8" src="../js/MyLibrary.js"></script>	 
-	<script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
-	
-	
-	<link rel="stylesheet" href="../css/packages/MyGUI.css" /> 
+	<script charset="UTF-8" src="/js/MyLibrary.js"></script>
+	<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+
+	<link rel="stylesheet" href="/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/packages/MyGUI.css" />
 	
 	<style type="text/css">
+		.container {
+			display: flex;
+
+			height: auto;
+			min-height: calc(100vh - 100px);
+
+			margin: 0 auto;
+
+			flex-direction: column;
+		}
 		.button_class{ 
 			background-color : rgba(212,244,250,0.7);
 			border: thin;
@@ -33,7 +43,6 @@
 			font-weight: 500;  
 			text-shadow: gray;
 		}
-		
 		font{   
 			margin-left: 15%;
 			font-weight: bold;        
@@ -140,93 +149,93 @@
 			window.param1.send_querystring='update=true&mypriority='+ '<%=mypriority%>' + '&myreadcount=' + (parseInt('<%=myreadcount%>') + 1)
 			MyLibrary.Base.xmlHttpRequest( window.param1 )	 
 	    </script>
-	    <span id="spanmyid1">
-	    	<div id="divmyid_제목">
-	            <font>제목</font>
-	            <b> <%=mysubject%> </b> 					    	
-	    	</div>
-	    
-	    	<div id="divmyid_작성일">
-	            <font>작성일</font>
-	            <b><%=mydate%></b>	       	
-	    	</div>
-	    	<div id="divmyid_유형">
-	            <font>유형</font>
-	            <b><%=mycontent%></b>	    	
-	    	</div>
-	    	<div id="divmyid_첨부파일" >  
-	    		<% if(!myfilepath.equals("")) fileCount=myfilepath.split(";").length;  %>
-	           <font id="fontmyid_첨부파일" style="border-color: red; cursor: pointer;">첨부파일</font> <%=fileCount%> 개    
-	           <script type="text/javascript">
-		           	var myfilepath = '<%=myfilepath%>'  
-		           	//alert(myfilepath)
-		           	click_count=0  
-		           
-		            fontmyid_첨부파일.addEventListener('click',(e)=>{
-		            	myfilepath.split(';').forEach((v,i,arr)=>{
-		            		if(v.match(/\/fileupload\//img)){
-		            			파일이름_확장자 = v.split('/fileupload/')[1];
-		            		}else{
-		            			파일이름_확장자 = v;
-		            		}
-		            		if(파일이름_확장자.match(/^null/)){
-		            			파일이름_확장자 = 파일이름_확장자.replace(/^null/,"")
-		            		} 
-		            		
-				            if(click_count % 2 === 0){  
-			            		if(파일이름_확장자 != undefined){  
-			            			divmyid_첨부파일.innerHTML += '<br/>'
-				            		a = document.createElement('a');
-				            		a.id = 'amyid_' + 파일이름_확장자.split('.')[0]  
-				            		a.download = 파일이름_확장자;
-				            		a.href = '/fileupload/' + 파일이름_확장자;  
-				            		a.innerText =파일이름_확장자;     
-				            		divmyid_첨부파일.append(a)	            			
-			            		}            		  
-			            	}else if(click_count % 2 === 1) {  
-			            		divmyid_첨부파일.querySelectorAll('a').forEach((a)=>{
-			            			a.remove();
-			            		})      
-  			            	}		            	
-		            	})
+	<div class="container">
+		<h2 style="text-align:center;">게시글</h2>
+		<div style="width:100%">
+			<table class="table table-bordered">
+				<tbody>
+				<tr>
+					<th style="background-color:#fafafa; width:10%">유형</th>
+					<td style="width:40%"><%=mycontent%></td>
 
-		            	click_count++
-		            })
-	           		
-	           </script>	            	    	
-	    	</div>
-	    	
-	    	<div id="divmyid_작성자">
-	           	 
-	            <font>작성자</font>
-	            <b><%=myid%></b> 		    	
-	    	</div>
-	    	
-	    	<div id="divmyid_조회">
-	                     
-	            <font>조회</font>   
-	            <b><%=myreadcount%></b>	    	
-	    	</div>	    		    
-	    	
-	    	
-      		<br/> <br/> <br/> <br/>  
-      		<div id="divmyid_내용" style="background-color: rgba(246,246,246,0.8); margin-left: 15%; margin-right: 15%; height: 15cm;">       
-              <font style="margin-left: 0%; font-weight: bold; color: rgba(34,116,28,1.0);">내용</font>  <br/>    
-              <b> <%=mytext%></b>	      	    	 
-      		</div> 	    	
-	    			    		
-			<br/><br/><br/><br/>        
+					<th style="background-color:#fafafa; width:10%">작성일</th>
+					<td style="width:50%"><%=mydate%></td>
+				</tr>
+				<tr>
+					<th style="background-color:#fafafa;">제목</th>
+					<td><%=mysubject%></td>
 
-   
-	    </span>
-	    
-	    
-	    <div id="divmyid_수정목록" style="margin-left: 45%;"> 
-		    <input id="inputmyid_수정" class="input_class_버튼" type="button" value="  수정  " /> 
-		    <input id="inputmyid_삭제" class="input_class_버튼" type="button" value="  삭제  " style="margin-left: 1%;" />
-		    <input id="inputmyid_목록" class="input_class_버튼" type="button" value="  목록  " style="margin-left: 1%;"/>            	  
-	    </div>
-		<script>    
+					<th style="background-color:#fafafa;">조회</th>
+					<td style="width:50%"><%=myreadcount%></td>
+				</tr>
+				<tr>
+					<th style="background-color:#fafafa;">작성자</th>
+					<td colspan="3"><%=myid%></td>
+				</tr>
+				<tr>
+					<th style="background-color:#fafafa;">첨부파일</th>
+					<% if(!myfilepath.equals("")) fileCount=myfilepath.split(";").length;  %>
+					<td id="tdmyid_첨부파일" colspan="3" style="cursor: pointer;"><%=fileCount%> 개
+						<span id="tdmyid_첨부파일_링크"></span>
+					</td>
+
+					<script type="text/javascript">
+						var myfilepath = '<%=myfilepath%>'
+						//alert(myfilepath)
+						click_count=0
+
+						tdmyid_첨부파일.addEventListener('click',(e)=>{
+							myfilepath.split(';').forEach((v,i,arr)=>{
+								if(v.match(/\/fileupload\//img)){
+									파일이름_확장자 = v.split('/fileupload/')[1];
+								}else{
+									파일이름_확장자 = v;
+								}
+								if(파일이름_확장자.match(/^null/)){
+									파일이름_확장자 = 파일이름_확장자.replace(/^null/,"")
+								}
+
+
+								if(click_count % 2 === 0){
+									if(파일이름_확장자 != undefined){
+										tdmyid_첨부파일_링크.innerHTML += '<br/>'
+										a = document.createElement('a');
+										a.id = 'amyid_' + 파일이름_확장자.split('.')[0]
+										a.download = 파일이름_확장자;
+										a.href = '/fileupload/' + 파일이름_확장자;
+										a.innerText =파일이름_확장자;
+										tdmyid_첨부파일_링크.append(a);
+									}
+								}else if(click_count % 2 === 1) {
+									tdmyid_첨부파일.querySelectorAll('a').forEach((a)=>{
+										a.remove();
+										tdmyid_첨부파일_링크.innerHTML = '';
+
+									})
+								}
+							})
+
+							click_count++
+						})
+					</script>
+				</tr>
+				<tr>
+					<th style="background-color:#fafafa;">내용</th>
+					<td colspan="3"><%=mytext%></td>
+				</tr>
+				</tbody>
+			</table>
+			<div id="divmyid_수정목록" style="text-align:center;">
+				<input id="inputmyid_수정" class="input_class_버튼 btn btn-secondary form-label" type="button" value="수정"
+					   style="display:inline-block"/>
+				<input id="inputmyid_삭제" class="input_class_버튼 btn btn-secondary form-label" type="button" value="삭제"
+					   style="display:inline-block"/>
+				<input id="inputmyid_목록" class="input_class_버튼 btn btn-secondary form-label" type="button" value="목록"
+					   style="display:inline-block"/>
+			</div>
+		</div>
+	</div>
+	<script>
 			inputmyid_삭제.addEventListener('click',(e)=>{
 				window.param1.send_querystring = 'delete=true&mypriority=' + '<%=mypriority%>'  
 				MyLibrary.Base.xmlHttpRequest( window.param1 )  

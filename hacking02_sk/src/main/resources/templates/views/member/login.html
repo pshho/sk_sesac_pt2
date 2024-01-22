@@ -7,8 +7,9 @@
 </head>
 <body>
 	<th:block th:replace="header :: headerFragment"></th:block>
-	<div style="height: auto; min-height: calc(100vh - 100px); padding-bottom: 100px;">
-		<div class="col-4 pt-5" style="margin:0 auto;">
+	<div style="height: auto; min-height: calc(100vh - 100px); padding-bottom: 100px;
+			display: flex; justify-content: center; align-items: center;">
+		<div class="col-4 pt-4" style="margin:0 auto;">
 			<h2 class="text-center">로그인</h2>
 			<form th:action="@{/member/login}" method="post">
 				<input type="hidden" name="_csrf" value="2393241f-12bf-4b3e-bc12-6b92bcc15e3c"/>

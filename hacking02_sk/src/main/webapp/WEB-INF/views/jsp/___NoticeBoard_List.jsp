@@ -34,34 +34,51 @@ String cur_usermyid="";
 	height: auto;
 	min-height: calc(100vh - 100px);
 	padding-bottom: 100px; /*footer 높이*/
+
+	padding-top: 3%;
 }
 .search_keyword {
 	width: 100%;
 }
+table td {
+	text-align: center;
+}
+table input {
+	text-align: center;
+	width: 100%;
+}
+table th:first-child {
+	width: 5%;
+}
+table th:nth-child(2) {
+	width: 7%;
+}
+table th:nth-child(4) {
+	width: 10%;
+}
+table th:last-child {
+	width: 5%;
+}
+
 </style>
 </head>
-<body>
+<body style="overflow-x: auto;">
 	<script>
-	<%if( session.getAttribute("user") == null ){%> 
-		alert('로그인 후 이용해주세요. 로그인 페이지로 이동합니다.');
-		location.href='/member/login';  
-	<%}%>
-	
-	
-	window.param1 = {
-		method: "POST",  
-		url: "/NoticeBoard",      //protocol://hostname:port/pathname?name=value&searchparam#hash     
-		setRequestHeader: '', //["요청-헤더","값"] setRequestHeader 는 for(var 키 in setRequestHeader) { xhr.setRequestHeader(키 , setRequestHeader[키]) } 
-		async: "false",  //true<비동기>또는false<동기>  
-		withCredentials: "true", //true<cors 일 ? 쿠키 보냄>또는false<안보냄> 
-		//responseType : "text", //text또는document등..   
-	}
-	
-	
-	
-	
-	</script>  
-	
+		<%if( session.getAttribute("user") == null ){%>
+			alert('로그인 후 이용해주세요. 로그인 페이지로 이동합니다.');
+			location.href='/member/login';
+		<%}%>
+
+
+		window.param1 = {
+			method: "POST",
+			url: "/NoticeBoard",      //protocol://hostname:port/pathname?name=value&searchparam#hash
+			setRequestHeader: '', //["요청-헤더","값"] setRequestHeader 는 for(var 키 in setRequestHeader) { xhr.setRequestHeader(키 , setRequestHeader[키]) }
+			async: "false",  //true<비동기>또는false<동기>
+			withCredentials: "true", //true<cors 일 ? 쿠키 보냄>또는false<안보냄>
+			//responseType : "text", //text또는document등..
+		}
+	</script>
 	
 	<script type="text/javascript">
 			var list_count = 1 ; var current_index = 0 ; var page_count = 1;  
@@ -101,12 +118,12 @@ String cur_usermyid="";
 	
 	<jsp:include page="header.jsp" />
 	<div class="container">
-		<h3>공지사항</h3>
+		<h3>문의게시판</h3>
 		<div class="search_keyword">
 			<input id="inputmyid_조회" class="btn btn-secondary form-label" type="button"
-				   style="display:inline-block; width:5%; float:right;" value="검색" />
+				   style="display:inline-block; width:5%; float:right; margin-left: 5px;" value="검색" />
 			<input id="inputmyid_입력해주세요" class="form-control" type="text" placeholder="입력해주세요."
-				   style="display:inline; width:23%; float:right;" required />
+				   style="display:inline; width:23%; float:right; margin-left: 5px;" required />
 			<select id="selectmyid_검색유형" class="form-select"
 					style="display:inline; width:8%; float:right;">
 				<option id="optionmyid_전체" label="전체" value="전체" selected />
@@ -115,40 +132,41 @@ String cur_usermyid="";
 		</div>
 		<div id="div_게시판myid">
 			<!-- 게시판 목록 -->
-			<table id="tablemyid" class="table" style="text-align:center;">
+			<table id="tablemyid" class="table">
 				<tr>
 					<th>
-						<input name="_select" id="선택" class="input_class_관리자 board_title" type="text" value="선택" />
+						<input name="_select" id="선택" class="input_class_관리자"
+							   style="border:0; cursor:not-allowed;" type="text" readonly value="" />
 					</th>
 					<th>
-						<input name="count" id="번호" class="board_title" type="text" value="번호"
-							   style="border:0; cursor:not-allowed; text-align:center;" disabled/>
+						<input name="count" id="번호" type="text" value="번호"
+							   style="border:0; cursor:not-allowed;" disabled/>
 					</th>
 					<th>
-						<input name="title" id="게시판_제목" class="board_title" type="text" value="제목"
-							   style="border:0; cursor:not-allowed; text-align:center" disabled/>
+						<input name="title" id="게시판_제목" type="text" value="제목"
+							   style="border:0; cursor:not-allowed;" disabled/>
 					</th>
 					<th>
-						<input name="writer" id="작성자" class="board_title" type="text" value="작성자"
-							   style="border:0; cursor:not-allowed; text-align:center" disabled/>
+						<input name="writer" id="작성자" type="text" value="작성자"
+							   style="border:0; cursor:not-allowed;" disabled/>
 					</th>
 					<th>
-						<input name="write_time" id="작성시간" class="board_title" type="text" value="작성일시"
-							   style="border:0; cursor:not-allowed; text-align:center" disabled/>
+						<input name="write_time" id="작성시간" type="text" value="작성일시"
+							   style="border:0; cursor:not-allowed;" disabled/>
 					</th>
 					<th>
-						<input name="_type" id="유형" class="board_title" type="text" value="유형"
-							   style="border:0; cursor:not-allowed; text-align:center" disabled/>
+						<input name="_type" id="유형" type="text" value="유형"
+							   style="border:0; cursor:not-allowed;" disabled/>
 					</th>
 					<th>
-						<input name="view_count" id="조회수" class="board_title" type="text" value="조회수"
-							   style="border:0; cursor:not-allowed; text-align:center" disabled/>
+						<input name="view_count" id="조회수" type="text" value="조회수"
+							   style="border:0; cursor:not-allowed;" disabled/>
 					</th>
 				</tr>
 			</table>
 			<div>
 				<input id="inputmyid_삭제" class="input_class_관리자 btn btn-secondary form-label" type="button"
-					   style="display:inline-block; width:5%; float:right;" value="삭제" />
+					   style="display:inline-block; width:5%; float:right; margin-left: 5px;" value="삭제" />
 				<input id="inputmyid_게시글_작성" class="btn btn-secondary form-label" type="button"
 					   style="display:inline-block; width:5%; float:right;" value="작성" />
 				<script>
@@ -205,7 +223,7 @@ String cur_usermyid="";
 									if(i % 11 == 0){
 
 									} else {
-
+										debugger
 										lt.outerHTML += '<input type=button id=list_buttonmyid_'+i+' class="list_button_class"  value='+i+' onclick="javascript: page_change('+ i +');"/>'
 
 									}
@@ -233,6 +251,7 @@ String cur_usermyid="";
 				</script>
 			</div>
 		</div>
+		<div id="div_ltgt" style=""></div>
 	</div>
 
 	<script type="text/javascript">
@@ -264,23 +283,7 @@ String cur_usermyid="";
 		});
 		
 	<%}%>
-		$('#inputmyid_조회').on('mouseover', function(click) {
-				$('#inputmyid_조회').css('background-color', 'black');
-				$('#inputmyid_조회').css('color', 'white');
-		});
-		$('#inputmyid_조회').on('mouseout', function(click) {
-				$('#inputmyid_조회').css('background-color', 'rgb(103,153,255,1.0)');
-				$('#inputmyid_조회').css('color', 'white');
-		});
-		
-		$('#inputmyid_게시글_작성').on('mouseover', function(click) {
-				$('#inputmyid_게시글_작성').css('background-color', 'black');
-				$('#inputmyid_게시글_작성').css('color', 'white');
-		});
-		$('#inputmyid_게시글_작성').on('mouseout', function(click) {
-				$('#inputmyid_게시글_작성').css('background-color', 'rgb(103,153,255,1.0)');
-				$('#inputmyid_게시글_작성').css('color', 'white');
-		});
+
 	</script>
 	<%
 		 
@@ -294,7 +297,7 @@ String cur_usermyid="";
 		resultSet = statement.executeQuery("select * from myboard where myid="+"'"+ cur_usermyid +"'"+";");
 		 
 	%>
-	<script>
+	<script>``
 		<%if(resultSet.next() && !cur_usermyid.equals("")){%>
 			// 아래 수행안됨.          
 			mypriority = '<%=resultSet.getString("mypriority")%>'
@@ -351,7 +354,7 @@ String cur_usermyid="";
 			//tdmyid_userid_
 			var userid = document.querySelectorAll('#tdmyid_userid_'+cur_usermyid)
 			for(var i=0;i<userid.length;i++){
-				userid[i].style.color='blue';
+				userid[i].style.color='black';
 				userid[i].backgroundColor='white';  
 			}
 			var subject = document.querySelectorAll('.td_classmysubject');
@@ -364,29 +367,30 @@ String cur_usermyid="";
 				  
 				subject[i].onmouseover =  function(e){
 					// alert('over');     
-					e.currentTarget.style.backgroundColor='white';  
+					e.currentTarget.style.backgroundColor='white';
 				}
 				
 				subject[i].onmouseout = function(e){
-					e.currentTarget.style.backgroundColor='rgba(246,246,246,0.8)';   
+					e.currentTarget.style.backgroundColor='#ffffff';
 				}
-			}	
+			}
+
+
+
+
 		}         
-		
+
+
+
 		
 		default_events();	
 	</script>
 
-
-
-
-	<div id="div_ltgt" style="margin-left: 28%; margin-top: 5%;"></div>
-
 	<script type="text/javascript">
 		div_ltgt = document.querySelector('#div_ltgt');
 		div_ltgt.innerHTML+=""
-			+'<input id="ltlt" class="ltgt" type="button" value="&lt&lt"  />'   
-			+'<input id="lt" class="ltgt" type="button" value="&lt" />';
+			+'<input id="ltlt" class="ltgt btn btn-secondary form-label" type="button" value="&lt&lt"  />'
+			+'<input id="lt" class="ltgt btn btn-secondary form-label" type="button" value="&lt" />';
 		
 		// 안됨 수정해야됨.
 		     
@@ -414,15 +418,16 @@ String cur_usermyid="";
 					input.id="list_buttonmyid_" + i; 
 					div_ltgt.appendChild(input); */  
 					
-					div_ltgt.innerHTML += '<input type=button id=list_buttonmyid_'+i+' class="list_button_class"  value='+i+' onclick="javascript: page_change('+ i +');"/>'
+					div_ltgt.innerHTML += '<input type=button id=list_buttonmyid_'+i+' class="list_button_class btn btn-secondary form-label"  value='+i+' onclick="javascript: page_change('+ i +');"/>'
 					
 				}
 			}  
 		}         
 	    $('#list_buttonmyid_1').css('background-color','rgba(189,189,189,0.7)');
 		
-		function page_change(cur_index,pre_index){   
-			  
+		function page_change(cur_index,pre_index){
+
+
 			current_index=cur_index;  
 			var tr_list_class=document.querySelectorAll(".tr_list_class");
 			$('#list_buttonmyid_'+current_index).css('background-color', 'rgba(189,189,189,0.7)')
@@ -450,8 +455,8 @@ String cur_usermyid="";
 			}
 		}
 		
-		div_ltgt.innerHTML +='<input id="gt" class="ltgt" type="button" value="&gt" />';   
-		div_ltgt.innerHTML +='<input id="gtgt" class="ltgt" type="button" value="&gt&gt" />';
+		div_ltgt.innerHTML +='<input id="gt" class="ltgt btn btn-secondary form-label" type="button" value="&gt" />';
+		div_ltgt.innerHTML +='<input id="gtgt" class="ltgt btn btn-secondary form-label" type="button" value="&gt&gt" />';
 			
 		$('#ltlt').on('click',function(click){
 			if(page_count <= 10) page_change(1);
@@ -486,9 +491,39 @@ String cur_usermyid="";
 	
 	</script>
 
-	<script>     
-		window.addEventListener('load',(e)=>{    
+	<script>
+
+		function change_color_subject(){
+			document.querySelectorAll('a[class*=a_class]').forEach((a)=>{
+				if(a.style.cssText.match(/color.*#0076BE;/)){
+					a.style.cssText = a.style.cssText.replace('color: #0076BE;','color: black;')
+				}
+				a.addEventListener('mouseover',(e)=>{
+					e.currentTarget.style.cssText += 'color: #0076BE; font-weight: bold;'
+				})
+
+				a.addEventListener('mouseout',(e)=>{
+					e.currentTarget.style.cssText += 'color: black;';
+				})
+			})
+		}
+
+		window.addEventListener('load',(e)=>{
+			document.querySelectorAll('a[id*=amyid_]').forEach((a)=>{
+				a.style.cssText='text-decoration: none; color: black; cursor: pointer;';
+			})
 			remove_관리자()
+
+			change_color_subject()
+
+
+			document.querySelectorAll(".list_button_class").forEach((input)=>{
+				input.addEventListener("click",(e)=>{
+					change_color_subject()
+
+
+				})
+			})
 		})  
 	</script>
 	<jsp:include page="footer.jsp" />

@@ -11,9 +11,9 @@
 </head>
 <body>
 	<th:block th:replace="header :: headerFragment"></th:block>
-	<div style="height: auto; min-height: calc(100vh - 100px); padding-bottom: 100px;">
-		<div class="col"></div>
-		<div class="container pt-5">
+	<div style="height: auto; min-height: calc(100vh - 100px); padding-bottom: 100px;
+			display: flex; justify-content: center; align-items: center;">
+		<div class="container" style="padding-top: 3.5%;">
     		<h2 class="text-center">회원가입</h2>
     		<div class="col-6 pt-5" style="margin:0 auto;">
 		    	<form action="/member/join" method="post">
