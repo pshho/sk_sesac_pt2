@@ -1,3 +1,4 @@
 #!/bin/bash
 gradle build
-cp -f ./build/libs/hacking02_sk-0.0.1-SNAPSHOT.war /usr/local/tomcat/apache-tomcat-8.0.53/webapps/ROOT.war
+sesac_tomcat_path=/usr/local/tomcat
+docker cp ./build/libs/hacking02_sk-0.0.1-SNAPSHOT-plain.war ${webwas_container_name}:${sesac_tomcat_path}/webapps/ROOT.war
