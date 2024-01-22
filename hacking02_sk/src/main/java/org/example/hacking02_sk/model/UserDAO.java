@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,14 +19,15 @@ public class UserDAO {
 	private PreparedStatement pstmt;
 	private PreparedStatement pstmt2;
 	private ResultSet rs;
-	
-	public UserDAO() {
+
+	@Autowired
+	public UserDAO(DataSource dataSource) {
 		try {
-			String dbURL = "jdbc:mysql://192.168.45.101:3306/myhacking";
-			String dbID = "myhack";
-			String dbPassword = "1234";
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+//			String dbURL = "jdbc:mysql://localhost:3306/myhacking";
+//			String dbID = "myhack";
+//			String dbPassword = "1234";
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = dataSource.getConnection();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

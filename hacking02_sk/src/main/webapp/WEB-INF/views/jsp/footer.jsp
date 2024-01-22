@@ -4,7 +4,8 @@
     <title></title>
 </head>
 <body>
-    <footer class="footer py-2" style="background: #474747; width:100%; height: 10%;">
+    <footer class="footer py-2"
+            style="background: #474747; width:100%; height: 100px; position: relative; transform: translateY(0%);">
         <div class="content has-text-centered" style="width: 70%; margin: 0 auto;">
             <div class="links d-flex justify-content-around" style="font-size: 85%; text-align: center;">
                 <div class="level-item">
@@ -41,13 +42,13 @@
                     <a style="color: white; text-decoration: none; cursor: not-allowed;">인증센터</a>
                 </div>
             </div>
-            <div class="links px-5" style="font-size: 85%; margin: 10px 0px;">
+            <div class="links px-5" style="font-size: 85%; margin: 10px 0;">
                 <div class="level-item" style="text-align: center;">
                     <span style="color: white">고객센터</span>
                     <span style="color: white; font-size: 1.3em;">9999-9999</span>
                     <span style="color: white; opacity: 80%;">평일 09:00~18:00 (은행휴무일 제외)</span>
                     <span style="color: white; opacity: 80%; display: block;">&copy; Copyright 2024. MNST
-                            Bank. All Rights Reserved.</span>
+                                Bank. All Rights Reserved.</span>
                 </div>
             </div>
         </div>

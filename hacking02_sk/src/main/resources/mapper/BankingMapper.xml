@@ -10,9 +10,9 @@
         select * from myacc where myacc = '${myacc}'
     </select>
     <update id="addmoney" parameterType="sendbank">
-        update myacc set mymoney = mymoney + ${myaccbalance} where myacc = ${mysendacc}
+        update myacc set mymoney = mymoney + ${myaccbalance} where myacc = ${myacc}
     </update>
     <update id="submoney" parameterType="sendbank">
-        update myacc set mymoney = mymoney - ${myaccbalance} where myacc = ${mysendacc}
+        update myacc set mymoney = mymoney - ${myaccbalance} where myacc = ${myacc}
     </update>
 </mapper>
