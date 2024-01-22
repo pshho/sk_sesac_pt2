@@ -292,7 +292,7 @@
 		
 		
 		$('#NoticeBoard_List').on('click',function(click){
-			window.open('/jsp/___NoticeBoard_List','_self');
+			location.href='/jsp/___NoticeBoard_List';
 		});
 		
 		
