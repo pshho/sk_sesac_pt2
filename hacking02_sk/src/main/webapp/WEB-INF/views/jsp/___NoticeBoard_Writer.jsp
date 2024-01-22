@@ -1,4 +1,3 @@
-
 <%@page import="org.example.hacking02_sk.model.User"%>
 <%@
 	page 
@@ -21,17 +20,9 @@
 	  
 	<script charset="UTF-8" src="../js/MyLibrary.js"></script>	
 	<link rel="stylesheet" href="../css/MyGUI.css" />
-	<style type="text/css">
-		label{
-			margin-left: 8cm; 
-			font-family: 궁서체; 
-			font-weight: bold;
-		}
-	</style>
-	
 </head>
 <body>
-
+	<jsp:include page="header.jsp" />
 	<script>
 	<%if( session.getAttribute("user") == null ){%> 
 		alert('로그인 후 이용해주세요. 로그인 페이지로 이동합니다.');
@@ -53,52 +44,44 @@
 
 
 	<!-- /FileUploadServlet -->
-		   
-	<form id="formmyid" action="/FileUploadServlet"  method="post" enctype="multipart/form-data"  > <!-- 다중 파일업로드  -->
-		
-		<div id = "divmyid_제목">
-			<label>제목 * </label>
-			<input id='inputmyidmysubject'name='mysubject' type="text" placeholder="최소 5글자 최대 50글자 미만으로 입력해주세요." required min="5" max="50" title="최소 5글자 최대 50글자 미만으로 입력해주세요."
-				   style=" width: 12cm; background-color: rgba(246,246,246,0.8); height: 1cm; border: thin;" /> 
-				
-		    <br/> 		
-		</div>
-		
-		<div id = "divmyid_파일업로드">
-		    <label>파일 업로드 * </label>
-		    <input id="inputmyid_file" name="myfilepath" type="file" class="input_file_cls" multiple/>
-		    <br/>		
-		</div>
-		
-		<div id = "divmyid_유형">
-		    <label>유형 * </label>
-			<select name="mycontent" id="mycontentmyid" style="border: thin; background-color: rgba(246,246,246,0.8); height: 1cm;">
-				<option label="웹 취약점 분석" value="웹 취약점 분석"/>
-				<option label="앱 취약점 분석" value="앱 취약점 분석"/>
-				<option label="시스템 취약점 분석" value="시스템 취약점 분석"/>
-				<option label="공격 시나리오" value="공격 시나리오"/>
-				<option label="고객센터" value="고객센터"/>
-				
-			</select>		
-		</div>
-	    <br/>
-	    <br/>
-	    <div id="divmyid" style="overflow: scroll;">
-	    	<textarea id="textareamyidmytext" name=mytext value="mytext" id = "mytext" class="mytextarea_cls" required  rows="40%" cols="170%" maxlength="65534" title="65535 글자 미만으로 입력해주세요."
-	    		  style="margin-left: 10%; background-color: rgba(217,229,255,0.3)">
-	        </textarea> 
-	    </div>
-	      
-	    <br/>
-	    <br/> 
-	    
-	    <input type="submit" id="btnSubmit" value="작성하기" 
-	    	   style="margin-left: 15%; background-color: rgb(103,153,255,1.0); color: white; height: 1cm; border: thin;"/>
-	 	 <input type="button" id="NoticeBoard_List" value="목록" 
-	    	   style="margin-left: 1%; background-color: rgb(103,153,255,1.0); color: white; height: 1cm; border: thin;"/>
-	    <br/>
-	</form> 
-
+	<!-- /FileUploadServlet -->
+	<div style="height: auto; min-height: calc(100vh - 100px); padding-bottom: 100px; padding-top: 2%">
+		<form id="formmyid" action="/FileUploadServlet" method="post" enctype="multipart/form-data"> <!-- 다중 파일업로드  -->
+			<h2 style="text-align: center;">게시글 작성</h2>
+			<div id="divmyid_제목" class="container" style="padding:1% 0;">
+				<label>제목 * </label>
+				<input id='inputmyidmysubject'name='mysubject' type="text" placeholder="최소 5글자 최대 50글자 미만으로 입력해주세요." required min="5" max="50" title="최소 5글자 최대 50글자 미만으로 입력해주세요."
+					   class="form-control" style="display:inline-block; background-color:rgba(246,246,246,0.8); height:1cm; border:thin;" />
+			</div>
+			<div id="divmyid_파일업로드" class="container" style="padding:1% 0;">
+				<label>파일 업로드 * </label>
+				<input id="inputmyid_file" name="myfilepath" type="file" class="input_file_cls form-control" style="width:30%" multiple/>
+			</div>
+			<div id="divmyid_유형" class="container" style="padding:1% 0;">
+				<label>유형 * </label>
+				<select name="mycontent" id="mycontentmyid" class="form-select"
+						style="display:inline-block; border:thin; background-color:rgba(246,246,246,0.8); height:1cm;">
+					<option label="웹 취약점 분석" value="웹 취약점 분석"/>
+					<option label="앱 취약점 분석" value="앱 취약점 분석"/>
+					<option label="시스템 취약점 분석" value="시스템 취약점 분석"/>
+					<option label="공격 시나리오" value="공격 시나리오"/>
+					<option label="고객센터" value="고객센터"/>
+				</select>
+			</div>
+			<br>
+			<div id="divmyid" class="container">
+		    	<textarea id="textareamyidmytext" class="form-control" name="mytext" id="mytext" class="mytextarea_cls" required
+						  rows="15%" cols="150%" maxlength="65534" placeholder="65535 글자 미만으로 입력해주세요."></textarea>
+			</div>
+			<br/>
+			<br/>
+			<div class="container text-center">
+				<input type="button" id="NoticeBoard_List" value="목록"  class="btn btn-secondary form-label" style="width:10%;"/>
+				<input type="submit" id="btnSubmit" value="작성하기" class="btn btn-secondary form-label " style="width:12%"/>
+			</div>
+			<br/>
+		</form>
+	</div>
 
 	<script>  
 		<%! 
@@ -278,33 +261,12 @@
 				}
 			});
 		});
-		
-		
-		$('#btnSubmit').on('mouseover', function(click) {
-			$('#btnSubmit').css('background-color', 'black');
-			$('#btnSubmit').css('color', 'white');
-		})
-		$('#btnSubmit').on('mouseout', function(click) {
-				$('#btnSubmit').css('background-color', 'rgb(103,153,255,1.0)');
-				$('#btnSubmit').css('color', 'white');
-		})
-		
-		
+
 		
 		$('#NoticeBoard_List').on('click',function(click){
 			window.open('/jsp/___NoticeBoard_List','_self');
 		});
-		
-		
-		$('#NoticeBoard_List').on('mouseover', function(mouseover) {
-			$('#NoticeBoard_List').css('background-color', 'black');
-			$('#NoticeBoard_List').css('color', 'white');
-		})
-		$('#NoticeBoard_List').on('mouseout', function(mouseout) {
-				$('#NoticeBoard_List').css('background-color', 'rgb(103,153,255,1.0)');
-				$('#NoticeBoard_List').css('color', 'white');
-		})
-		
 	</script>
+	<jsp:include page="footer.jsp" />
 </body>
 </html>
