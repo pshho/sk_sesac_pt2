@@ -31,7 +31,7 @@
 	
 </head>
 <body>
-	<jsp:include page="header.jsp" />
+
 	<script>
 	<%if( session.getAttribute("user") == null ){%> 
 		alert('로그인 후 이용해주세요. 로그인 페이지로 이동합니다.');
@@ -292,7 +292,7 @@
 		
 		
 		$('#NoticeBoard_List').on('click',function(click){
-			location.href='/jsp/___NoticeBoard_List';
+			window.open('/jsp/___NoticeBoard_List','_self');
 		});
 		
 		
@@ -306,6 +306,5 @@
 		})
 		
 	</script>
-	<jsp:include page="footer.jsp" />
 </body>
 </html>
