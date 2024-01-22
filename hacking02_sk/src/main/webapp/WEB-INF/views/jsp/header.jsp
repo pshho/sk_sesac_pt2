@@ -14,7 +14,10 @@
     <%
         HttpSession ss = request.getSession(false);
         User user = (User) ss.getAttribute("user");
-        String name = user.getMyname();
+        String name = null;
+        if (user != null) {
+            name = user.getMyname();
+        }
     %>
     <c:set var="name" value="<%= name %>" />
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(0, 118, 190)">
@@ -28,7 +31,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/jsp/___NoticeBoard_List">공지사항</a>
+                        <a class="nav-link active" aria-current="page" href="/jsp/___NoticeBoard_List">문의게시판</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/banking/inout">이체</a>

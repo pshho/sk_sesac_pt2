@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import javax.sql.DataSource;
 import org.example.hacking02_sk.model.*;
 
 import java.io.BufferedReader;
@@ -55,6 +56,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @WebServlet("/FileUploadServlet")
 public class FileUploadServlet extends HttpServlet {
@@ -71,8 +73,12 @@ public class FileUploadServlet extends HttpServlet {
     String 빌드경로 = 루트디렉 + "/fileupload/";  
     String param_mypriority;
     ServletContext servletContext;
+
+	@Autowired
+	DataSource dataSource;
+
     @Override
-    public void init() throws ServletException {	
+    public void init() throws ServletException {
     	super.init();
     }
       
@@ -83,8 +89,7 @@ public class FileUploadServlet extends HttpServlet {
     
     @SuppressWarnings("all")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	//    multipart/form-data 는  post 로 보냄 (파람값은 못보냄. getParameter 불가.) 때문에 <form action=servlet?name=value> 로 보내줘야됨. 
-    	
+    	//    multipart/form-data 는  post 로 보냄 (파람값은 못보냄. getParameter 불가.) 때문에 <form action=servlet?name=value> 로 보내줘야됨.
     	servletContext = getServletContext();
     	request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8"); 
@@ -125,11 +130,12 @@ public class FileUploadServlet extends HttpServlet {
 			    System.out.println("user 값 들어갔는지 확인 => "+board.getMyip()+board.getMyid()+board.getMysubject()+board.getMycontent()+board.getMytext());
 			    
 			    Class.forName("com.mysql.jdbc.Driver");
-				connection = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/myhacking",
-						"myhack",
-						"1234"
-				);
+				connection = dataSource.getConnection();
+//						DriverManager.getConnection(
+//						"jdbc:mysql://localhost:3306/myhacking",
+//						"myhack",
+//						"1234"
+//				);
 				
 				/* 보안함수 적용
 				 * preparedStatement = connection.
@@ -152,7 +158,7 @@ public class FileUploadServlet extends HttpServlet {
 				
 				if(f_check_valid(_rewriter) && !_rewriter.equals("true")) {   
 					updates="insert into myboard(mydate,mypriority,myreadcount,mycontent,myip,myid,mysubject,myfilepath,mytext) values("
-							+ null +", " + 0 + "," + 0 + ",'" + board.getMycontent()+ "', '" + board.getMyip()+"', '"+board.getMyid() + "', '"+ board.getMysubject()+"', " + null+ ", '" + board.getMytext()+"'); ";
+							+ "now()" +", " + 0 + "," + 0 + ",'" + board.getMycontent()+ "', '" + board.getMyip()+"', '"+board.getMyid() + "', '"+ board.getMysubject()+"', " + null+ ", '" + board.getMytext()+"'); ";
 					if(this.statement.executeUpdate(updates) >= 1) {
 						System.out.println("insert into 성공함!! => "+updates); 
 						
@@ -335,11 +341,12 @@ public class FileUploadServlet extends HttpServlet {
     	
     	
         Class.forName("com.mysql.jdbc.Driver");   
-		connection = DriverManager.getConnection(
-			"jdbc:mysql://localhost:3306/myhacking",
-			"myhack",
-			"1234"
-		);
+		connection = dataSource.getConnection();
+//				DriverManager.getConnection(
+//			"jdbc:mysql://localhost:3306/myhacking",
+//			"myhack",
+//			"1234"
+//		);
 		//preparedStatement = connection.prepareStatement("update myboard set myfilepath=? where myid=?");
 		Statement statement = connection.createStatement();
 		 
