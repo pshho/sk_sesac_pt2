@@ -74,9 +74,6 @@ public class FileUploadServlet extends HttpServlet {
     String param_mypriority;
     ServletContext servletContext;
 
-	@Autowired
-	DataSource dataSource;
-
     @Override
     public void init() throws ServletException {
     	super.init();
@@ -130,12 +127,11 @@ public class FileUploadServlet extends HttpServlet {
 			    System.out.println("user 값 들어갔는지 확인 => "+board.getMyip()+board.getMyid()+board.getMysubject()+board.getMycontent()+board.getMytext());
 			    
 			    Class.forName("com.mysql.jdbc.Driver");
-				connection = dataSource.getConnection();
-//						DriverManager.getConnection(
-//						"jdbc:mysql://localhost:3306/myhacking",
-//						"myhack",
-//						"1234"
-//				);
+				connection = DriverManager.getConnection(
+						"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
+						"myhack",
+						"1234"
+				);
 				
 				/* 보안함수 적용
 				 * preparedStatement = connection.
@@ -180,7 +176,7 @@ public class FileUploadServlet extends HttpServlet {
 					}
 				}
 				
-    		    connection.close(); 
+    		    connection.close();
 			} else {
 				response.getWriter().println("<script>");
 				response.getWriter().println("alert('로그인 후 이용해주세요.');"); 
@@ -341,12 +337,11 @@ public class FileUploadServlet extends HttpServlet {
     	
     	
         Class.forName("com.mysql.jdbc.Driver");   
-		connection = dataSource.getConnection();
-//				DriverManager.getConnection(
-//			"jdbc:mysql://localhost:3306/myhacking",
-//			"myhack",
-//			"1234"
-//		);
+		connection = DriverManager.getConnection(
+			"jdbc:mysql://localhost:3306/myhacking",
+			"myhack",
+			"1234"
+		);
 		//preparedStatement = connection.prepareStatement("update myboard set myfilepath=? where myid=?");
 		Statement statement = connection.createStatement();
 		 
@@ -392,7 +387,7 @@ public class FileUploadServlet extends HttpServlet {
 		
 		
 		
-		statement.close();  
+		statement.close();
 	    connection.close();
 	    
 	    /* 보안적용(1)

@@ -22,7 +22,6 @@
 	<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
 
 	<link rel="stylesheet" href="/css/bootstrap.css">
-	<link rel="stylesheet" href="/css/packages/MyGUI.css" />
 	
 	<style type="text/css">
 		.container {
