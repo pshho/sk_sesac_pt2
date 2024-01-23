@@ -289,7 +289,7 @@ table th:last-child {
 		 
 		Class.forName("com.mysql.jdbc.Driver");
 		connection = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/myhacking",
+				"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
 				"myhack",
 				"1234"
 		);
