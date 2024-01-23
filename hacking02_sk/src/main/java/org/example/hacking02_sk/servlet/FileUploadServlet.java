@@ -15,7 +15,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,12 +59,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.example.hacking02_sk.service.MyDBConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @WebServlet("/FileUploadServlet")
 public class FileUploadServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    Connection connection; 
+//    Connection connection;
     //PreparedStatement preparedStatement;
     Statement statement;
     //ResultSet resultSet;   
@@ -86,7 +90,8 @@ public class FileUploadServlet extends HttpServlet {
     
     @SuppressWarnings("all")
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	//    multipart/form-data 는  post 로 보냄 (파람값은 못보냄. getParameter 불가.) 때문에 <form action=servlet?name=value> 로 보내줘야됨.
+		System.out.println("겟방식");
+		//    multipart/form-data 는  post 로 보냄 (파람값은 못보냄. getParameter 불가.) 때문에 <form action=servlet?name=value> 로 보내줘야됨.
     	servletContext = getServletContext();
     	request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8"); 
@@ -126,12 +131,12 @@ public class FileUploadServlet extends HttpServlet {
 				);  
 			    System.out.println("user 값 들어갔는지 확인 => "+board.getMyip()+board.getMyid()+board.getMysubject()+board.getMycontent()+board.getMytext());
 			    
-			    Class.forName("com.mysql.jdbc.Driver");
-				connection = DriverManager.getConnection(
-						"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
-						"myhack",
-						"1234"
-				);
+//			    Class.forName("com.mysql.jdbc.Driver");
+//				connection = DriverManager.getConnection(
+//						"jdbc:mysql://localhost:3306/myhacking?verifyServerCertificate=false&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&autoReconnect=true",
+//						"myhack",
+//						"1234"
+//				);
 				
 				/* 보안함수 적용
 				 * preparedStatement = connection.
@@ -147,7 +152,7 @@ public class FileUploadServlet extends HttpServlet {
 				 * board.getMytext()); preparedStatement.executeUpdate();
 				 * preparedStatement.close();
 				 */  
-				this.statement = connection.createStatement();
+				this.statement = MyDBConnection.getConnection().createStatement();
 				String _rewriter = request.getParameter("_rewriter"); 
 				  
 				String updates="";
@@ -176,7 +181,7 @@ public class FileUploadServlet extends HttpServlet {
 					}
 				}
 				
-    		    connection.close();
+//    		    connection.close();
 			} else {
 				response.getWriter().println("<script>");
 				response.getWriter().println("alert('로그인 후 이용해주세요.');"); 
@@ -200,7 +205,8 @@ public class FileUploadServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
-    	//클라한테 요청올 시 get post 둘다 수행됨. 때믄에 user 에 담은것임.
+		System.out.println("포스트방식");
+		//클라한테 요청올 시 get post 둘다 수행됨. 때믄에 user 에 담은것임.
     	servletContext = getServletContext(); 
     	request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8"); 
@@ -210,9 +216,7 @@ public class FileUploadServlet extends HttpServlet {
 			String name속값 = enumeration.nextElement();
 			System.out.println(URLDecoder.decode(request.getParameter(name속값),"UTF-8"));
 		}
-		
-		
-		
+
         PrintWriter printWriter = response.getWriter();
         if(request.isRequestedSessionIdValid()) {
         	 try {
@@ -224,7 +228,7 @@ public class FileUploadServlet extends HttpServlet {
                      // -"C://Users/leehyunho/Desktop/VMwareSharedFolder/webFileUpload/"
                  //1. 메모리나 파일로 업로드 파일 보관하는 FileItem의 Factory 설정
                  DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory(); //디스크 파일 아이템 펙토리 생성자 호출
-                 diskFileItemFactory.setSizeThreshold(4096 * 5); //업로드시 사용할 임시 메모리 사이즈 지정
+                 diskFileItemFactory.setSizeThreshold(4096 * 5 * 10); //업로드시 사용할 임시 메모리 사이즈 지정
                  diskFileItemFactory.setRepository( // 셑 저장소를
                  		new File(빌드경로) //"C://Users/leehyunho/Desktop/VMwareSharedFolder/webFileUpload/"
                  ); //임시저장폴더
@@ -247,13 +251,12 @@ public class FileUploadServlet extends HttpServlet {
                     if(fileItem.isFormField()){ //파일이 아닌경우
                     	System.out.println(" 필드 = " + fileItem.getFieldName() + " \n 파일아이템_키 = " + fileItem.getString("UTF-8"));    
                     } else { //파일인 경우
-                        file_upload(printWriter, fileItem, 빌드경로);
+                        file_upload(printWriter, fileItem, 빌드경로, request);
                     }
                  }
                  
                  //resultSet.close();    
-     		     //preparedStatement.close();  
-     		     connection.close();    
+     		     //preparedStatement.close();
      		     System.out.println("처리완료됨.");  
      		     
      		     response.getWriter().println("<script>location.href='/jsp/___NoticeBoard_List';</script>");    
@@ -263,6 +266,14 @@ public class FileUploadServlet extends HttpServlet {
              	 response.getWriter().println(e.getMessage()); 
              	 e.printStackTrace();
              }
+//			 finally {
+//                 try {
+//					 statement.close();
+//                     connection.close();
+//                 } catch (SQLException e) {
+//                     throw new RuntimeException(e);
+//                 }
+//			 }
         	
         }
        
@@ -270,11 +281,12 @@ public class FileUploadServlet extends HttpServlet {
     
 
     //업로드한 정보가 파일인경우 처리
-    private void file_upload(PrintWriter printWriter, FileItem fileItem, String 빌드경로 ) throws Exception {
+    private void file_upload(PrintWriter printWriter, FileItem fileItem, String 빌드경로, HttpServletRequest request ) throws Exception {
         String 필드이름 = fileItem.getFieldName(); //파일의 필드 이름 얻기 즉 name속값임.
         String 파일이름 = fileItem.getName(); //파일명 얻기
         long 사이즈 = fileItem.getSize(); //파일의 크기 얻기
-        
+		int mypriority = (Integer.parseInt(servletContext.getAttribute("mypriority").toString()) - 1);
+		System.out.println("mypriority = " + mypriority);
         System.out.println("필드 = "+필드이름+"\n 파일 = "+파일이름+"\n 사이즈="+사이즈);
         
         /* 보안적용(1)
@@ -336,18 +348,19 @@ public class FileUploadServlet extends HttpServlet {
 
     	
     	
-        Class.forName("com.mysql.jdbc.Driver");   
-		connection = DriverManager.getConnection(
-			"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
-			"myhack",
-			"1234"
-		);
+//        Class.forName("com.mysql.jdbc.Driver");
+//		connection = DriverManager.getConnection(
+//			"jdbc:mysql://localhost:3306/myhacking?verifyServerCertificate=false&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&autoReconnect=true",
+//			"myhack",
+//			"1234"
+//		);
 		//preparedStatement = connection.prepareStatement("update myboard set myfilepath=? where myid=?");
-		Statement statement = connection.createStatement();
-		 
-		
+		Statement statement = MyDBConnection.getConnection().createStatement();
+
+		System.out.println("resultset 실행 전 오류");
+		System.out.println("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + servletContext.getAttribute("mypriority") + ";");
 		ResultSet resultSet = statement.executeQuery("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + servletContext.getAttribute("mypriority") + ";");
-		
+		System.out.println("resultset 실행 후 오류");
 		String getmyfilepath = "",getmyfilepath2="";
 		while(resultSet.next()) {
 			getmyfilepath=resultSet.getString("myfilepath"); 
@@ -356,24 +369,31 @@ public class FileUploadServlet extends HttpServlet {
 		
 		
 		if(파일이름 != null && !파일이름.equals("")) {   
-			this.db_file_upload_path = getServletContext().getInitParameter("upload.path")+파일이름+";";          
+			this.db_file_upload_path = request.getSession().getServletContext().getRealPath("/").toString().replaceAll("\\\\","/");
+			System.out.println("db_file_upload_path = " + db_file_upload_path);
+			this.db_file_upload_path = this.db_file_upload_path.replace("/webapp","/resources/static/fileupload");
+
+			System.out.println("this.db_file_upload_path = " + this.db_file_upload_path);
+			this.db_file_upload_path +=  파일이름+";";
+			System.out.println(db_file_upload_path + "DB File Upload 경로");
 			//일부러 취약하게 설정. 원래는 change_filename 이어야 함. 그래야 ldap가 취약하지 않음.  
 			  
 			//preparedStatement.setString(1, board.getMyfilepath());      
 			 
 			System.out.println("servletContext.getAttribute(\"mypriority\") = "+servletContext.getAttribute("mypriority"));
-			 
-			
-			System.out.println("update myboard set myfilepath=" +  getmyfilepath2 + this.db_file_upload_path + " where myid=" + board.getMyid() + " and " + "mypriority=" + servletContext.getAttribute("mypriority") + ";"); 
-			
-			if(statement.executeUpdate("update myboard set myfilepath=" + ("'" + getmyfilepath2 + this.db_file_upload_path + "'") + " where myid=" + "'" + board.getMyid() + "'" + " and " + "mypriority=" + "'" + servletContext.getAttribute("mypriority") + "'" + ";") >= 1) {
+
+
+
+			String f_update = "update myboard set myfilepath=" + ("'" + getmyfilepath2 + this.db_file_upload_path + "'") + " where myid=" + "'" + board.getMyid() + "'" + " and " + "mypriority=" + mypriority  + ";";
+			System.out.println("f_update" + f_update);
+			if(statement.executeUpdate(f_update) >= 1) {
 				board.setMyfilepath(this.db_file_upload_path);
 				System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath());     
 			};     
 			 
 			
 		}else {
-			if(statement.executeUpdate("update myboard set myfilepath=" + "'"+this.db_file_upload_path+"'" + " where " + "mypriority=" + servletContext.getAttribute("mypriority") + ";") >= 1) {        
+			if(statement.executeUpdate("update myboard set myfilepath=" + "'"+this.db_file_upload_path+"'" + " where " + "mypriority=" + mypriority + ";") >= 1) {
 				board.setMyfilepath(this.db_file_upload_path);      
 				System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath()); 
 			} 
@@ -384,21 +404,13 @@ public class FileUploadServlet extends HttpServlet {
 	    //preparedStatement.executeUpdate();
         
 	    //preparedStatement.close();
-		
-		
-		
-		statement.close();
-	    connection.close();
 	    
 	    /* 보안적용(1)
         System.out.println("myfilepath => "+업다운경로_년월일시분초_아이디_확장자);
         System.out.println("\n 업로드된 파일 = "+업다운경로_년월일시분초_아이디_확장자);  
 	    */
         System.out.println("myfilepath => "+파일이름);
-        System.out.println("\n 업로드된 파일 = "+파일이름);      
-        
-        
-        
+        System.out.println("\n 업로드된 파일 = "+파일이름);
     }
     
 }

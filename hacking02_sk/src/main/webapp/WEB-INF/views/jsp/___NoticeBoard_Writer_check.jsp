@@ -10,8 +10,16 @@
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="org.example.hacking02_sk.model.User"%>
+<%@ page import="org.example.hacking02_sk.service.MyDBConnection" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%!
+//	Connection connection;
+	Statement statement;
+	ResultSet resultSet;
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +66,7 @@
 	String mysubject,myid,mydate,mycontent,readcount,mypriority,myfilepath="",mytext,cur_user_id;  
 	int fileCount=0;
 	%>
-
+<%try{%>
 
 	<script>
 		<%
@@ -104,14 +112,14 @@
 		
 			String parmmysubject = request.getParameter("mysubject");
 			String parm_mypriority = request.getParameter("mypriority");
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection connection = DriverManager.getConnection(
-				"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
-				"myhack",
-				"1234"
-			);
+//			Class.forName("com.mysql.jdbc.Driver");
+//			connection = DriverManager.getConnection(
+//				"jdbc:mysql://localhost:3306/myhacking?verifyServerCertificate=false&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&autoReconnect=true",
+//				"myhack",
+//				"1234"
+//			);
 			
-			Statement statement = connection.createStatement();
+			statement = MyDBConnection.getConnection().createStatement();
 			/*
 			if(parm_mypriority == null){
 				System.out.println(parm_mypriority);
@@ -122,17 +130,17 @@
 				System.out.println(parm_mypriority);  
 			}
 			*/    
-			ResultSet resultset = statement.executeQuery("select * from myboard where mypriority=" + parm_mypriority + ";"); // 대소문자 상관없음.
+			resultSet = statement.executeQuery("select * from myboard where mypriority=" + parm_mypriority + ";"); // 대소문자 상관없음.
 			String mydate=null ,mysubject=null,mypriority=null,myid=null,myfilepath=null,mycontent=null,mytext=null , myreadcount=null;
-			while(resultset.next()){ 
-				mydate = resultset.getString("mydate"); 
-				mysubject = resultset.getString("mysubject");    
-				mypriority = String.valueOf(resultset.getInt("mypriority")); // 번째 행
-				myid = resultset.getString("myid");
-				myfilepath = resultset.getString("myfilepath");
-				mycontent = resultset.getString("mycontent"); 
-				mytext = resultset.getString("mytext");  
-				myreadcount = resultset.getString("myreadcount");    
+			while(resultSet.next()){
+				mydate = resultSet.getString("mydate");
+				mysubject = resultSet.getString("mysubject");
+				mypriority = String.valueOf(resultSet.getInt("mypriority")); // 번째 행
+				myid = resultSet.getString("myid");
+				myfilepath = resultSet.getString("myfilepath");
+				mycontent = resultSet.getString("mycontent");
+				mytext = resultSet.getString("mytext");
+				myreadcount = resultSet.getString("myreadcount");
 				
 			} 
 			if(myfilepath == null) {
@@ -271,6 +279,12 @@
 				}  
 			})			
 		</script>
+	<%
+		}catch (Exception e){
+			out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	%>
 	<jsp:include page="footer.jsp" />
 </body>
 </html>

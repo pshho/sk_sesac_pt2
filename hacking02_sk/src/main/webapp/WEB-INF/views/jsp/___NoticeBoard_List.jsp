@@ -3,12 +3,13 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="org.example.hacking02_sk.model.User"%>
+<%@page import="org.example.hacking02_sk.service.MyDBConnection"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <%!
-Connection connection;
+//Connection connection;
 Statement statement;
 ResultSet resultSet;
 String cur_usermyid="";
@@ -63,6 +64,7 @@ table th:last-child {
 </style>
 </head>
 <body style="overflow-x: auto;">
+<%try{%>
 	<script>
 		<%if( session.getAttribute("user") == null ){%>
 			alert('로그인 후 이용해주세요. 로그인 페이지로 이동합니다.');
@@ -287,13 +289,14 @@ table th:last-child {
 	</script>
 	<%
 		 
-		Class.forName("com.mysql.jdbc.Driver");
-		connection = DriverManager.getConnection(
-				"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
-				"myhack",
-				"1234"
-		);
-		statement = connection.createStatement();
+//		Class.forName("com.mysql.jdbc.Driver");
+//		connection = DriverManager.getConnection(
+//				"jdbc:mysql://localhost:3306/myhacking?verifyServerCertificate=false&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&autoReconnect=true",
+//				"myhack",
+//				"1234"
+//		);
+		//statement = connection.createStatement();
+		statement = MyDBConnection.getConnection().createStatement();
 		resultSet = statement.executeQuery("select * from myboard where myid="+"'"+ cur_usermyid +"'"+";");
 		 
 	%>
@@ -526,6 +529,12 @@ table th:last-child {
 			})
 		})  
 	</script>
+<%
+	}catch (Exception e){
+		out.println(e.getMessage());
+		e.printStackTrace();
+	}
+%>
 	<jsp:include page="footer.jsp" />
 
 </body>
