@@ -16,12 +16,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import org.example.hacking02_sk.service.MyDBConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 @WebServlet("/NoticeBoard")
 public class NoticeBoard extends HttpServlet {   
-	Connection connection;
+//	Connection connection;
 	Statement statement;
 	ResultSet resultSet;
 	
@@ -34,13 +35,13 @@ public class NoticeBoard extends HttpServlet {
 		try {  
 			String mydate,mypriority,myreadcount,mycontent,input_name,myip,myid,mysubject,myfilepath,mytext , result=""; 
 			int list_count=1, page_count=1 , current_index = 0 ;
-			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection(
-				"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
-				"myhack",
-				"1234"
-			);
-			statement = connection.createStatement();
+//			Class.forName("com.mysql.jdbc.Driver");
+//			connection = DriverManager.getConnection(
+//				"jdbc:mysql://localhost:3306/myhacking?verifyServerCertificate=false&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&autoReconnect=true",
+//				"myhack",
+//				"1234"
+//			);
+			statement = MyDBConnection.getConnection().createStatement();;
 			
 			
 			

@@ -4,11 +4,11 @@
 		import="java.net.URLDecoder"    
 		import="java.sql.*"
 %>
-
+<%@ page import="org.example.hacking02_sk.service.MyDBConnection" %>
 
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,24 +82,28 @@
 			<br/>
 		</form>
 	</div>
-
 	<script>  
 		<%! 
 		String _rewriter ,mysubject , mypriority , myid , myfilepath , mycontent , mytext , myreadcount;
-		Connection connection; Statement statement; ResultSet resultSet;
+		//Connection connection;
+		Statement statement; ResultSet resultSet;
 		%>
-		
+
+
+
+
+
 		
 		
 		<%
 		try{
-		    Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection(
-					"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
-					"myhack",
-					"1234"
-			);
-			statement = connection.createStatement();		
+//		    Class.forName("com.mysql.jdbc.Driver");
+//			connection = DriverManager.getConnection(
+//					"jdbc:mysql://localhost:3306/myhacking?verifyServerCertificate=false&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&autoReconnect=true",
+//					"myhack",
+//					"1234"
+//			);
+			statement = MyDBConnection.getConnection().createStatement();
 			mypriority = request.getParameter("mypriority");
 		%>
 		
@@ -124,7 +128,7 @@
 
 					//script 쪽임.
 					_rewriter = <%=_rewriter%>
-					mypriority = <%=mypriority%>   
+					mypriority = <%=mypriority%>
 					mysubject = '<%=mysubject%>'  
 					mypriority = '<%=mypriority%>'
 					myid = '<%=myid%>'
@@ -267,6 +271,8 @@
 			window.open('/jsp/___NoticeBoard_List','_self');
 		});
 	</script>
+
+
 	<jsp:include page="footer.jsp" />
 </body>
 </html>
