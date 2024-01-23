@@ -24,9 +24,6 @@ public class NoticeBoard extends HttpServlet {
 	Connection connection;
 	Statement statement;
 	ResultSet resultSet;
-
-	@Autowired
-	DataSource dataSource;
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,12 +35,11 @@ public class NoticeBoard extends HttpServlet {
 			String mydate,mypriority,myreadcount,mycontent,input_name,myip,myid,mysubject,myfilepath,mytext , result=""; 
 			int list_count=1, page_count=1 , current_index = 0 ;
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = dataSource.getConnection();
-//					DriverManager.getConnection(
-//				"jdbc:mysql://localhost:3306/myhacking",
-//				"myhack",
-//				"1234"
-//			);
+			connection = DriverManager.getConnection(
+				"jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking",
+				"myhack",
+				"1234"
+			);
 			statement = connection.createStatement();
 			
 			
