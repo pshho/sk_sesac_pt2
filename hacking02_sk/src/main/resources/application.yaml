@@ -5,8 +5,8 @@ spring :
     driver-class-name: com.mysql.cj.jdbc.Driver
     #url : jdbc:mysql://localhost:3306/myhacking
     url : jdbc:mysql://mydatabase.coysatc2jipz.ap-northeast-2.rds.amazonaws.com:3306/myhacking
-    username: myhack
-    password: 1234
+    username: root
+    password: 12345678
 mybatis :
   type-aliases-package : org.example.hacking02_sk.model
   configuration :
