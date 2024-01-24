@@ -20,6 +20,7 @@ IF "%ORI%" == "%CURRENT_PATH%" (
 			call git merge psh240124 master
 			call git checkout master
 			call git push origin psh240124
+			call git checkout psh240124
 			ECHO SUCCESS
 		)
 	)
