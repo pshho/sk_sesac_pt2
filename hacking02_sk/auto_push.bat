@@ -14,6 +14,9 @@ IF "%ORI%" == "%CURRENT_PATH%" (
 		FOR /F "tokens=*" %%C IN ('git branch ^| find /I "* psh240119"') DO SET "MY_GIT=%%C"
 		
 		IF %ERRORLEVEL% EQU 0 (
+			call git add .
+			call git pull origin master
+			call git push origin psh240119
 			ECHO SUCCESS
 		)
 	)
