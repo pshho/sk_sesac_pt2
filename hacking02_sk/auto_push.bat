@@ -16,10 +16,9 @@ IF "%ORI%" == "%CURRENT_PATH%" (
 		IF %ERRORLEVEL% EQU 0 (
 			call git add .
 			call git commit -m "update"
-			call git pull origin master
-			call git merge psh240124 master
 			call git checkout master
-			call git push origin psh240124
+			call git merge psh240124
+			call git push origin master
 			call git checkout psh240124
 			ECHO SUCCESS
 		)
