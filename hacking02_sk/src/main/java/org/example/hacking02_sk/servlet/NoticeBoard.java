@@ -132,7 +132,6 @@ public class NoticeBoard extends HttpServlet {
 			}else{
 				printWriter.println("false");      
 			}
-			
    			
 		}catch(Exception e) {
 			printWriter.println(e.getMessage());   

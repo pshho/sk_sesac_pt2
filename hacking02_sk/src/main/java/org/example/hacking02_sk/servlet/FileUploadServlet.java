@@ -67,10 +67,8 @@ public class FileUploadServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 //    Connection connection;
     //PreparedStatement preparedStatement;
-    Statement statement;
     //ResultSet resultSet;   
     Board board = new Board();
-    String db_file_upload_path="";
     int 중복카운트 = 0;
 	String 프젝이름 = "School_Project";
 	String 루트디렉 = "E:/C_drive_backup/tool/my_eclipse/eclipse-workstation/"+프젝이름+"/src/main/webapp";
@@ -114,7 +112,11 @@ public class FileUploadServlet extends HttpServlet {
 		  
 		try {
 			
-			response.getWriter().println("get수행됨");  
+			response.getWriter().println("get수행됨");
+
+
+
+			/*    2024-01-23     수정해야됨.   */
 			if(request.isRequestedSessionIdValid()) {	 
 				 board.setMyip( new String(request.getRemoteAddr().getBytes("utf-8")) );
 				 HttpSession httpSession = request.getSession();  
@@ -152,7 +154,7 @@ public class FileUploadServlet extends HttpServlet {
 				 * board.getMytext()); preparedStatement.executeUpdate();
 				 * preparedStatement.close();
 				 */  
-				this.statement = MyDBConnection.getConnection().createStatement();
+				Statement statement = MyDBConnection.getConnection().createStatement();
 				String _rewriter = request.getParameter("_rewriter"); 
 				  
 				String updates="";
@@ -160,7 +162,7 @@ public class FileUploadServlet extends HttpServlet {
 				if(f_check_valid(_rewriter) && !_rewriter.equals("true")) {   
 					updates="insert into myboard(mydate,mypriority,myreadcount,mycontent,myip,myid,mysubject,myfilepath,mytext) values("
 							+ "now()" +", " + 0 + "," + 0 + ",'" + board.getMycontent()+ "', '" + board.getMyip()+"', '"+board.getMyid() + "', '"+ board.getMysubject()+"', " + null+ ", '" + board.getMytext()+"'); ";
-					if(this.statement.executeUpdate(updates) >= 1) {
+					if(statement.executeUpdate(updates) >= 1) {
 						System.out.println("insert into 성공함!! => "+updates); 
 						
 					}else {  
@@ -172,7 +174,7 @@ public class FileUploadServlet extends HttpServlet {
 					updates = "update myboard"
 							+ " set mycontent=" + "'" + board.getMycontent()+"'"+ ", " + "myip=" + "'" + board.getMyip() + "'" + ", " + "mysubject=" + "'" + board.getMysubject() + "'" + ", " + "mytext=" + "'" + board.getMytext() + "'"
 							+ " where mypriority="+param_mypriority+";";  
-					if(this.statement.executeUpdate(updates) >= 1) {
+					if(statement.executeUpdate(updates) >= 1) {
 						System.out.println("update 성공함!! => "+updates);   
 						printWriter.println("true");
 					}else {  
@@ -221,7 +223,7 @@ public class FileUploadServlet extends HttpServlet {
         if(request.isRequestedSessionIdValid()) {
         	 try {
         		 param_mypriority = request.getParameter("mypriority");
-                 
+				 System.out.println("param_mypriority = " + param_mypriority);
         		 빌드경로 = request.getSession().getServletContext().getRealPath("/").replace("webapp\\", "") + "resources\\static\\fileupload\\";
                  System.out.println("경로 : \n\n\t\t"+빌드경로);           		 
                  // 파일업로드 경로를 웹 퍼블릭 경로가 아닌 로컬경로로 지정하여 확장자 취약점 보안해야 함. 일부러 취약하게 퍼브
@@ -359,7 +361,7 @@ public class FileUploadServlet extends HttpServlet {
 
 		System.out.println("resultset 실행 전 오류");
 		System.out.println("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + servletContext.getAttribute("mypriority") + ";");
-		ResultSet resultSet = statement.executeQuery("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + servletContext.getAttribute("mypriority") + ";");
+		ResultSet resultSet = statement.executeQuery("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + mypriority + ";");
 		System.out.println("resultset 실행 후 오류");
 		String getmyfilepath = "",getmyfilepath2="";
 		while(resultSet.next()) {
@@ -367,14 +369,16 @@ public class FileUploadServlet extends HttpServlet {
 		}
 		if(getmyfilepath != null) {getmyfilepath2 += getmyfilepath; }
 		
-		
-		if(파일이름 != null && !파일이름.equals("")) {   
-			this.db_file_upload_path = request.getSession().getServletContext().getRealPath("/").toString().replaceAll("\\\\","/");
-			System.out.println("db_file_upload_path = " + db_file_upload_path);
-			this.db_file_upload_path = this.db_file_upload_path.replace("/webapp","/resources/static/fileupload");
 
-			System.out.println("this.db_file_upload_path = " + this.db_file_upload_path);
-			this.db_file_upload_path +=  파일이름+";";
+
+		String db_file_upload_path = "";
+		if(파일이름 != null && !파일이름.equals("")) {   
+			db_file_upload_path = request.getSession().getServletContext().getRealPath("/").toString().replaceAll("\\\\","/");
+			System.out.println("db_file_upload_path = " + db_file_upload_path);
+			db_file_upload_path = db_file_upload_path.replace("/webapp","/resources/static/fileupload");
+
+			System.out.println("this.db_file_upload_path = " + db_file_upload_path);
+			db_file_upload_path +=  파일이름+";";
 			System.out.println(db_file_upload_path + "DB File Upload 경로");
 			//일부러 취약하게 설정. 원래는 change_filename 이어야 함. 그래야 ldap가 취약하지 않음.  
 			  
@@ -384,17 +388,17 @@ public class FileUploadServlet extends HttpServlet {
 
 
 
-			String f_update = "update myboard set myfilepath=" + ("'" + getmyfilepath2 + this.db_file_upload_path + "'") + " where myid=" + "'" + board.getMyid() + "'" + " and " + "mypriority=" + mypriority  + ";";
+			String f_update = "update myboard set myfilepath=" + ("'" + getmyfilepath2 + db_file_upload_path + "'") + " where myid=" + "'" + board.getMyid() + "'" + " and " + "mypriority=" +   mypriority + ";";
 			System.out.println("f_update" + f_update);
 			if(statement.executeUpdate(f_update) >= 1) {
-				board.setMyfilepath(this.db_file_upload_path);
+				board.setMyfilepath(db_file_upload_path);
 				System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath());     
 			};     
 			 
 			
 		}else {
-			if(statement.executeUpdate("update myboard set myfilepath=" + "'"+this.db_file_upload_path+"'" + " where " + "mypriority=" + mypriority + ";") >= 1) {
-				board.setMyfilepath(this.db_file_upload_path);      
+			if(statement.executeUpdate("update myboard set myfilepath=" + "'"+ db_file_upload_path+"'" + " where " + "mypriority=" +  mypriority + ";") >= 1) {
+				board.setMyfilepath(db_file_upload_path);
 				System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath()); 
 			} 
 			//preparedStatement.setString(1, filename); // null 업로드가능

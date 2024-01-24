@@ -298,7 +298,7 @@ table th:last-child {
 		//statement = connection.createStatement();
 		statement = MyDBConnection.getConnection().createStatement();
 		resultSet = statement.executeQuery("select * from myboard where myid="+"'"+ cur_usermyid +"'"+";");
-		 
+
 	%>
 	<script>``
 		<%if(resultSet.next() && !cur_usermyid.equals("")){%>
