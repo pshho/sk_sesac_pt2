@@ -1,7 +1,7 @@
 @ECHO OFF
 
 SET commit_message=%1
-SET "ORI=D:\sk_shieldus\hacking02_sk\sk_sesac_pt2\hacking02_sk"
+SET "ORI=D:\sk_shieldus\hacking02\sk_sesac_pt2\hacking02_sk"
 FOR /F %%P IN ('cd') DO SET CURRENT_PATH=%%P
 IF "%ORI%" == "%CURRENT_PATH%" (
 	 ECHO PATH SAME
@@ -12,15 +12,15 @@ IF "%ORI%" == "%CURRENT_PATH%" (
 		 ECHO BUILD SUCCESS
 		 call COPY build\libs\hacking02_sk-0.0.1-SNAPSHOT-plain.war "%CD%\ROOT.war"
 
-		 FOR /F "tokens=*" %%C IN ('git branch ^| find /I "* psh240124"') DO SET "MY_GIT=%%C"
+		 FOR /F "tokens=*" %%C IN ('git branch ^| find /I "* psh240125"') DO SET "MY_GIT=%%C"
 		
 		 IF %ERRORLEVEL% EQU 0 (
 			call git add .
 			call git commit -m "%commit_message%"
 			call git checkout master
-			call git merge psh240124
+			call git merge psh240125
 			call git push origin master
-			call git checkout psh240124
+			call git checkout psh240125
 			ECHO SUCCESS
 		)
 	)

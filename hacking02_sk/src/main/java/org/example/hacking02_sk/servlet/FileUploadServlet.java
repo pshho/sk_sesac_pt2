@@ -74,7 +74,7 @@ public class FileUploadServlet extends HttpServlet {
     Board board = new Board();
     int 중복카운트 = 0;
 	String 프젝이름 = "School_Project";
-	String 루트디렉 = "E:/C_drive_backup/tool/my_eclipse/eclipse-workstation/"+프젝이름+"/src/main/webapp";
+	String 루트디렉 = "/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/fileupload";
     String 빌드경로 = 루트디렉 + "/fileupload/";  
     //String param_mypriority;
     ServletContext servletContext;
@@ -208,7 +208,8 @@ public class FileUploadServlet extends HttpServlet {
         	 try {
         		 //param_mypriority = request.getParameter("mypriority");
 				 //System.out.println("param_mypriority = " + param_mypriority);
-        		 빌드경로 = request.getSession().getServletContext().getRealPath("/").replace("webapp\\", "") + "resources\\static\\fileupload\\";
+//        		 빌드경로 = request.getSession().getServletContext().getRealPath("/").replace("webapp\\", "") + "resources\\static\\fileupload\\";
+				 빌드경로 = "/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/fileupload";
                  System.out.println("경로 : \n\n\t\t"+빌드경로);           		 
 
                  DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory(); //디스크 파일 아이템 펙토리 생성자 호출
