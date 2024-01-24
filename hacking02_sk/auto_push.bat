@@ -3,9 +3,18 @@
 SET "ORI=D:\sk_shieldus\hacking02_sk\sk_sesac_pt2\hacking02_sk"
 FOR /F %%P IN ('cd') DO SET CURRENT_PATH=%%P
 IF "%ORI%" == "%CURRENT_PATH%" (
-	FOR /F "tokens=*" %%G IN ('gradlew build') DO SET MY_GRBUILD=%%G
-	ECHO "%MY_GRBUILD%"
+	ECHO PATH SAME
+	SET "MY_BUILD="
+	FOR /F "tokens=*" %%G IN ('gradlew build ^| find /I "BUILD SUCCESSFUL"') DO SET "MY_BUILD=%%G"
 	
-	:::FOR /F %%R IN ('(dir /B /A:-D) ^| findstr /I "ROOT.war"') DO SET MY_LIST=%%R
-	:::ECHO %MY_LIST%
+	IF %ERRORLEVEL% EQU 0 (
+		ECHO BUILD SUCCESS
+		call COPY build\libs\hacking02_sk-0.0.1-SNAPSHOT-plain.war "%CD%\ROOT.war"
+
+		FOR /F "tokens=*" %%C IN ('git branch ^| find /I "* psh240119"') DO SET "MY_GIT=%%C"
+		
+		IF %ERRORLEVEL% EQU 0 (
+			ECHO SUCCESS
+		)
+	)
 )
