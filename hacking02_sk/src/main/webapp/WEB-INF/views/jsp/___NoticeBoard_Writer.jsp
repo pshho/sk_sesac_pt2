@@ -220,10 +220,23 @@ pageEncoding="UTF-8"%>
 		formmyid.addEventListener('submit',(e)=>{
 			if(typeof mypriority !== 'undefined' && MyLibrary.f_check_valid(mypriority)){
 				e.preventDefault();
+				
+				debugger
+				if(typeof(_rewriter) !== 'undefined' && MyLibrary.f_check_valid(_rewriter)){ 
+					input_rewriter = document.createElement('input');
+					input_rewriter.id='input_id_rewriter'; input_rewriter.name='_rewriter'; input_rewriter.type='hidden'; 
+					input_rewriter.value='true'			
+					e.currentTarget.appendChild(input_rewriter); 
+				}   
+				 
 				input_mypriority = document.createElement('input')
 				input_mypriority.id='inputmyid_mypriority'; input_mypriority.name='mypriority'; input_mypriority.type = 'hidden';
 				input_mypriority.value = mypriority
 
+				
+				
+				
+				
 				// alert(input_mypriority.value) //
 				// debugger
 				e.currentTarget.appendChild(input_mypriority);
@@ -250,8 +263,9 @@ pageEncoding="UTF-8"%>
 					url: '/FileUploadServlet',
 					async: false,
 					data: datas,
-					success: function(data,status){
-						alert("success => ");
+					success: function(data,status){ 
+						//alert('data = ' + data);
+						new Function(data)();
 						//location.href = '/jsp/___NoticeBoard_List'
 					},
 					error: function(data,status){
@@ -259,13 +273,18 @@ pageEncoding="UTF-8"%>
 						//location.href = '/jsp/___NoticeBoard_List'
 					},
 					complete: function(data,status){
-						alert("complete => "+data,status);
+						//alert("complete => "+data,status);  
 						//location.href = '/jsp/___NoticeBoard_List'
 					}
 				});
-
+				
+				
+				formmyid.addEventListener('submit',(e)=>{
+					location.href = '/jsp/___NoticeBoard_List'
+				}) 
+				  
 				formmyid.submit();
-				location.href = '/jsp/___NoticeBoard_List'
+				
 
 			}
 		})
