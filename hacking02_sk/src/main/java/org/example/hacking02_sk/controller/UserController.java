@@ -220,7 +220,7 @@ public class UserController {
 	public String findLocation(@RequestParam(value = "keyword", required = false) String keyword, Model model) throws SQLException {
 		if (keyword != null) {
 			List<Location> locations = userDAO.findLocation(keyword);
-			System.out.println(userDAO.findLocation(keyword));
+//			System.out.println(userDAO.findLocation(keyword));
 			model.addAttribute("locations", locations);
 		}
 		return "popup/findlocation";

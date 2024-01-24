@@ -1,11 +1,9 @@
 package org.example.hacking02_sk.service;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.sql.DataSource;
@@ -20,26 +18,27 @@ public class MyDBConnection {
     private static Statement statement;
     private static ResultSet resultSet;
 
-//    public static void setConnection(DataSource dataSource) {
-//        try {
-//            connection = dataSource.getConnection();
-//        }catch (SQLException e){
-//            e.printStackTrace();
-//            System.out.println(e.getMessage());
-//        }
-//    }
-
     @Autowired
-    public MyDBConnection(DataSource dataSource) {
+    public static void setConnection(DataSource dataSource) {
         try {
             connection = dataSource.getConnection();
-        }catch (Exception e){
+        }catch (SQLException e){
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
 
+//    public MyDBConnection(DataSource dataSource) {
+//        try {
+//            connection = dataSource.getConnection();
+//        }catch (SQLException e){
+//            System.out.println(e.getMessage());
+//        }
+//    }
+
     public static Connection getConnection(){
         try{
+
             if(connection != null && !connection.isClosed()){
                 statement = connection.createStatement();
                 if(statement != null && !statement.isClosed()){
@@ -49,14 +48,7 @@ public class MyDBConnection {
                 connection.close();
                 connection = null;
             }
-
-            Class.forName("com.mysql.jdbc.Driver");
-            connection =  DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/myhacking?verifyServerCertificate=false&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&autoReconnect=true",
-                    "myhack",
-                    "1234"
-            );
-        }catch (Exception e){
+        }catch (SQLException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
         }

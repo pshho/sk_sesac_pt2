@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
+import org.example.hacking02_sk.service.MyDBConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +38,7 @@ public class UserDAO {
 	public int login(String myid, String mypw) {
 		String SQL = "SELECT mypw FROM myuser WHERE myid = ?";
 		try {
-			pstmt = conn.prepareStatement(SQL);
+			pstmt = MyDBConnection.getConnection().prepareStatement(SQL);
 			pstmt.setString(1, myid);
 			rs = pstmt.executeQuery(); // 결과 담는 객체
 			if (rs.next()) {
@@ -48,6 +49,9 @@ public class UserDAO {
 					return 0; // 비밀번호 불일치
 				}	
 			}
+			rs.close();
+			pstmt.close();
+			conn.close();
 			return -1; // 아이디가 없음
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -66,7 +70,7 @@ public class UserDAO {
 		
 		try {
 			// myuser table
-			pstmt = conn.prepareStatement(query1);
+			pstmt = MyDBConnection.getConnection().prepareStatement(query1);
 			pstmt.setString(1, user.getMyname());
 			pstmt.setString(2, user.getMyid());
 			pstmt.setString(3, user.getMypw());
@@ -79,7 +83,7 @@ public class UserDAO {
 			pstmt.close();
 			
 			// myacc table
-			pstmt2 = conn.prepareStatement(query2);
+			pstmt2 = MyDBConnection.getConnection().prepareStatement(query2);
 			pstmt2.setInt(1, Integer.parseInt("010" + user.getMyphone()));
 			pstmt2.setString(2, user.getMyid());
 			pstmt2.setInt(3, 1000000);	// 초기 잔액
@@ -87,7 +91,9 @@ public class UserDAO {
 			pstmt2.setInt(5, Integer.parseInt(user.getMyaccpw()));
 			
 			num = pstmt2.executeUpdate();
-			
+			rs.close();
+			pstmt.close();
+			conn.close();
 			return num;
 			
 		}catch(Exception e) {
@@ -100,26 +106,30 @@ public class UserDAO {
     public int userCheck(String myid) {
     	String SQL = "SELECT myid FROM myuser WHERE myid = ?";
 		
-    	System.out.println("넘어오는 myid 값 : " + myid);
+//    	System.out.println("넘어오는 myid 값 : " + myid);
     	
     	if (myid.equals("")) {
     		return 2;
     	}
     	
     	try {		
-			pstmt = conn.prepareStatement(SQL);
+			pstmt = MyDBConnection.getConnection().prepareStatement(SQL);
 			pstmt.setString(1, myid);
-			System.out.println(pstmt);
+//			System.out.println(pstmt);
 			rs = pstmt.executeQuery(); // 결과 담는 객체
-			
+
+			rs.close();
+			pstmt.close();
+			conn.close();
+
 			if(!rs.next()) {
-				System.out.println("없는 아이디! 회원가입 가능");
+//				System.out.println("없는 아이디! 회원가입 가능");
 				return 1; // 회원가입 가능
 			} else {
-				System.out.println("이미 존재하는 ID");
+//				System.out.println("이미 존재하는 ID");
 				return 0; // 아이디 이미 존재
 			}
-			
+
     	}catch(Exception e) {
     		e.printStackTrace();
     	}
@@ -130,14 +140,18 @@ public class UserDAO {
     public int phoneCheck(String myphone) {
     	String SQL = "SELECT myphone FROM myuser WHERE myphone = ?";
 		
-    	System.out.println("넘어오는 myphone 값 : " + "010" + myphone);
+//    	System.out.println("넘어오는 myphone 값 : " + "010" + myphone);
 
     	try {		
-			pstmt = conn.prepareStatement(SQL);
+			pstmt = MyDBConnection.getConnection().prepareStatement(SQL);
 			pstmt.setString(1, "010" + myphone);
-			System.out.println(pstmt);
+//			System.out.println(pstmt);
 			rs = pstmt.executeQuery(); // 결과 담는 객체
-			
+
+			rs.close();
+			pstmt.close();
+			conn.close();
+
 			if(!rs.next()) {
 				System.out.println("없는 폰번호! 회원가입 가능");
 				return 1; // 회원가입 가능
@@ -156,7 +170,7 @@ public class UserDAO {
 		User user = null;
 		String SQL = "SELECT myname, myid, mypw, myemail, mylocation, myphone, mysid FROM myuser WHERE myid = ? AND mypw = ?";
 		try {
-			pstmt = conn.prepareStatement(SQL);
+			pstmt = MyDBConnection.getConnection().prepareStatement(SQL);
 			pstmt.setString(1, myid);
 			pstmt.setString(2, mypw);
 			rs = pstmt.executeQuery();
@@ -170,6 +184,10 @@ public class UserDAO {
 				user.setMyphone(rs.getString("myphone"));
 				user.setMysid(rs.getString("mysid"));
 			}
+
+			rs.close();
+			pstmt.close();
+			conn.close();
 			return user;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -179,15 +197,14 @@ public class UserDAO {
     
     //주소 찾기
     public List<Location> findLocation(String keyword) throws SQLException {
-    	
     	String SQL = "SELECT * FROM myaddr WHERE myaddr LIKE '%" + keyword + "%'";
 
     	if (keyword == null) {
     		return new ArrayList<Location>();
     	}
     	
-		pstmt = conn.prepareStatement(SQL);
-		System.out.println(pstmt);
+		pstmt = MyDBConnection.getConnection().prepareStatement(SQL);
+//		System.out.println(pstmt);
 		rs = pstmt.executeQuery(); // 결과 담는 객체
 		
 		List<Location> list = new ArrayList<>(); // DB 정보 담을 List
@@ -198,8 +215,12 @@ public class UserDAO {
 			loc.setMyzip(rs.getString("myzip"));
 			list.add(loc);
 		}
-		
-		System.out.println("DB 리스트 : " + list);
+
+		rs.close();
+		pstmt.close();
+		conn.close();
+
+		//System.out.println("DB 리스트 : " + list);
 		return list;
     }
 }

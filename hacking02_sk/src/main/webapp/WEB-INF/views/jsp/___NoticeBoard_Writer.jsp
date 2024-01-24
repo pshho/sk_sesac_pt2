@@ -13,9 +13,8 @@ pageEncoding="UTF-8"%>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	
-	<script src="jquery.form.min.js"></script>
+	<title></title>
+
 	<script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
 	  
 	<script charset="UTF-8" src="../js/MyLibrary.js"></script>	
@@ -204,7 +203,7 @@ pageEncoding="UTF-8"%>
 					var text_plain_filter = ["txt","sh","ph","conf","cnf","cfg"]; 
 					var client_filter = ["html","css","js"];
 					var server_filter = ["jsp","php","asp","java","py","c","cpp" ,"sql"];
-					textareamyid = document.querySelector('#mytextmyid');
+					textareamyid = document.querySelector('#textareamyidmytext');
 					/* divmyid = document.querySelector('#divmyid');
 					divmyid.scrollTop = divmyid.scrollHeight; 
 					*/
@@ -217,54 +216,61 @@ pageEncoding="UTF-8"%>
 				}	
 			} 
 		}
-		
-		
-		$('#btnSubmit').on('click',function(click){
-			if(typeof mypriority !== 'undefined' && MyLibrary.f_check_valid(mypriority)){ 
-				
+
+		formmyid.addEventListener('submit',(e)=>{
+			if(typeof mypriority !== 'undefined' && MyLibrary.f_check_valid(mypriority)){
+				e.preventDefault();
 				input_mypriority = document.createElement('input')
 				input_mypriority.id='inputmyid_mypriority'; input_mypriority.name='mypriority'; input_mypriority.type = 'hidden';
-				input_mypriority.value = mypriority        
-				
-				formmyid.appendChild(input_mypriority);
-			}
-			
-			datas = {}
-			datas.mysubject = encodeURI( $('#inputmyidmysubject').val() )
-			datas.mycontent = encodeURI( $('#mycontentmyid').val() )
-			datas.mytext = encodeURI( $('#textareamyidmytext').val() )
+				input_mypriority.value = mypriority
 
-			datas.mypriority = encodeURI(mypriority)  
-			
-			if(typeof(_rewriter) !== 'undefined' && _rewriter !== '' ) {
-				datas._rewriter = encodeURI( _rewriter )
-			}else{
-				datas._rewriter = 'false'
-			}
-			
-			
-			
-			//alert('mysubject='+$('#inputmyidmysubject').val()+'&mycontent='+$('#mycontentmyid').val()+'&mytext='+$('#mytextmyid').val());
-			$.ajax({
-				type: 'GET',
-				dataType: 'text',     
-				url: '/FileUploadServlet',       
-				async: false,
-				data: datas,
-				success: function(data,status){
-					//alert("success => "+data,status);
-					location.href = '/jsp/___NoticeBoard_List' 
-				},
-				error: function(data,status){
-					//alert("error => "+data,status); 
-					location.href = '/jsp/___NoticeBoard_List'
-				},
-				complete: function(data,status){   
-					//alert("complete => "+data,status);     
-					location.href = '/jsp/___NoticeBoard_List' 
+				// alert(input_mypriority.value) //
+				// debugger
+				e.currentTarget.appendChild(input_mypriority);
+				// alert(formmyid.querySelector('#inputmyid_mypriority').value)
+
+				datas = {}
+				datas.mysubject = encodeURI( $('#inputmyidmysubject').val() )
+				datas.mycontent = encodeURI( $('#mycontentmyid').val() )
+				datas.mytext = encodeURI( $('#textareamyidmytext').val() )
+
+				datas.mypriority = encodeURI(mypriority)
+
+				if(typeof(_rewriter) !== 'undefined' && _rewriter !== '' ) {
+					datas._rewriter = encodeURI( _rewriter )
+				}else{
+					datas._rewriter = 'false'
 				}
-			});
-		});
+				//alert(datas.mypriority)
+				// debugger;
+				//alert('mysubject='+$('#inputmyidmysubject').val()+'&mycontent='+$('#mycontentmyid').val()+'&mytext='+$('#mytextmyid').val());
+				$.ajax({
+					type: 'GET',
+					dataType: 'text',
+					url: '/FileUploadServlet',
+					async: false,
+					data: datas,
+					success: function(data,status){
+						alert("success => ");
+						//location.href = '/jsp/___NoticeBoard_List'
+					},
+					error: function(data,status){
+						alert("error => "+data,status);
+						//location.href = '/jsp/___NoticeBoard_List'
+					},
+					complete: function(data,status){
+						alert("complete => "+data,status);
+						//location.href = '/jsp/___NoticeBoard_List'
+					}
+				});
+
+				formmyid.submit();
+				location.href = '/jsp/___NoticeBoard_List'
+
+			}
+		})
+
+
 
 		
 		$('#NoticeBoard_List').on('click',function(click){
