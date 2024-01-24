@@ -21,18 +21,18 @@ public class UserDAO {
 	private PreparedStatement pstmt2;
 	private ResultSet rs;
 
-	@Autowired
-	public UserDAO(DataSource dataSource) {
-		try {
-//			String dbURL = "jdbc:mysql://localhost:3306/myhacking";
-//			String dbID = "myhack";
-//			String dbPassword = "1234";
-//			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = dataSource.getConnection();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	@Autowired
+//	public UserDAO(DataSource dataSource) {
+//		try {
+////			String dbURL = "jdbc:mysql://localhost:3306/myhacking";
+////			String dbID = "myhack";
+////			String dbPassword = "1234";
+////			Class.forName("com.mysql.cj.jdbc.Driver");
+//			conn = dataSource.getConnection();
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	//로그인
 	public int login(String myid, String mypw) {
@@ -49,9 +49,6 @@ public class UserDAO {
 					return 0; // 비밀번호 불일치
 				}	
 			}
-			rs.close();
-			pstmt.close();
-			conn.close();
 			return -1; // 아이디가 없음
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -91,9 +88,6 @@ public class UserDAO {
 			pstmt2.setInt(5, Integer.parseInt(user.getMyaccpw()));
 			
 			num = pstmt2.executeUpdate();
-			rs.close();
-			pstmt.close();
-			conn.close();
 			return num;
 			
 		}catch(Exception e) {
@@ -117,10 +111,6 @@ public class UserDAO {
 			pstmt.setString(1, myid);
 //			System.out.println(pstmt);
 			rs = pstmt.executeQuery(); // 결과 담는 객체
-
-			rs.close();
-			pstmt.close();
-			conn.close();
 
 			if(!rs.next()) {
 //				System.out.println("없는 아이디! 회원가입 가능");
@@ -147,10 +137,6 @@ public class UserDAO {
 			pstmt.setString(1, "010" + myphone);
 //			System.out.println(pstmt);
 			rs = pstmt.executeQuery(); // 결과 담는 객체
-
-			rs.close();
-			pstmt.close();
-			conn.close();
 
 			if(!rs.next()) {
 				System.out.println("없는 폰번호! 회원가입 가능");
@@ -185,9 +171,6 @@ public class UserDAO {
 				user.setMysid(rs.getString("mysid"));
 			}
 
-			rs.close();
-			pstmt.close();
-			conn.close();
 			return user;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -215,10 +198,6 @@ public class UserDAO {
 			loc.setMyzip(rs.getString("myzip"));
 			list.add(loc);
 		}
-
-		rs.close();
-		pstmt.close();
-		conn.close();
 
 		//System.out.println("DB 리스트 : " + list);
 		return list;
