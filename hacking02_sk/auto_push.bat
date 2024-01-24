@@ -11,12 +11,15 @@ IF "%ORI%" == "%CURRENT_PATH%" (
 		ECHO BUILD SUCCESS
 		call COPY build\libs\hacking02_sk-0.0.1-SNAPSHOT-plain.war "%CD%\ROOT.war"
 
-		FOR /F "tokens=*" %%C IN ('git branch ^| find /I "* psh240119"') DO SET "MY_GIT=%%C"
+		FOR /F "tokens=*" %%C IN ('git branch ^| find /I "* psh240124"') DO SET "MY_GIT=%%C"
 		
 		IF %ERRORLEVEL% EQU 0 (
 			call git add .
+			call git commit -m "update"
 			call git pull origin master
-			call git push origin psh240119
+			call git merge psh240124 master
+			call git checkout master
+			call git push origin psh240124
 			ECHO SUCCESS
 		)
 	)
