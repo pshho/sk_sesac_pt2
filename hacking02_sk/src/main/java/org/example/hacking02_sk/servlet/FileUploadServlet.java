@@ -209,7 +209,7 @@ public class FileUploadServlet extends HttpServlet {
         		 //param_mypriority = request.getParameter("mypriority");
 				 //System.out.println("param_mypriority = " + param_mypriority);
 //        		 빌드경로 = request.getSession().getServletContext().getRealPath("/").replace("webapp\\", "") + "resources\\static\\fileupload\\";
-				 빌드경로 = "/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/fileupload";
+				 빌드경로 = "/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/fileupload/";
                  System.out.println("경로 : \n\n\t\t"+빌드경로);           		 
 
                  DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory(); //디스크 파일 아이템 펙토리 생성자 호출
