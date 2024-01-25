@@ -221,7 +221,7 @@ pageEncoding="UTF-8"%>
 			if(typeof mypriority !== 'undefined' && MyLibrary.f_check_valid(mypriority)){
 				e.preventDefault();
 				
-				debugger
+				// debugger
 				if(typeof(_rewriter) !== 'undefined' && MyLibrary.f_check_valid(_rewriter)){ 
 					input_rewriter = document.createElement('input');
 					input_rewriter.id='input_id_rewriter'; input_rewriter.name='_rewriter'; input_rewriter.type='hidden'; 

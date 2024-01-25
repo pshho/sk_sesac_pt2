@@ -201,7 +201,7 @@ public class FileUploadServlet extends HttpServlet {
         if(MyLibrary.f_check_valid(myid)) {
         	 try {
         		 //param_mypriority = request.getParameter("mypriority");
-				 //System.out.println("param_mypriority = " + param_mypriority);
+//				 System.out.println("param_mypriority = " + param_mypriority);
         		 
         		 if(MyLibrary.os_name.startsWith("window")) {
              		 파일업로드경로 = request.getSession().getServletContext().getRealPath("/").replace("webapp\\", "") + "resources\\static\\fileupload\\";
@@ -247,7 +247,7 @@ public class FileUploadServlet extends HttpServlet {
                  for(Iterator iterator=list.iterator(); iterator.hasNext();) {
                  	FileItem fileItem = (FileItem) iterator.next(); //아이템 얻기
                     if(fileItem.isFormField()){ //파일이 아닌경우
-                    	//System.out.println(" input_name = " + fileItem.getFieldName() + " \n input_value = " + fileItem.getString("UTF-8"));    
+                    	System.out.println(" input_name = " + fileItem.getFieldName() + " \n input_value = " + fileItem.getString("UTF-8"));
                     	
                         if(fileItem.getFieldName().equals("_rewriter")) {
                         	_rewriter = fileItem.getString("UTF-8");
@@ -267,8 +267,8 @@ public class FileUploadServlet extends HttpServlet {
                         	mypriority = (Integer.parseInt(servletContext.getAttribute("mypriority").toString()));
                         }
                         
-                		//System.out.println("mypriority = " + mypriority);
-                        //System.out.println("필드 = "+필드이름+"\n 파일 = "+파일이름+"\n 사이즈="+사이즈); 
+                		System.out.println("mypriority = " + mypriority);
+//                        System.out.println("필드 = "+필드이름+"\n 파일 = "+파일이름+"\n 사이즈="+사이즈);
                         //file_upload(printWriter, fileItem, _rewriter ,mypriority, 빌드경로,request); 
                     
                     } else { //파일인 경우 파일개수만큼 블럭내용 실행됨.
@@ -276,7 +276,7 @@ public class FileUploadServlet extends HttpServlet {
                     	list_fileItem.add(fileItem);
                     }
                  }
-     		     //System.out.println("처리완료됨.");  
+     		     System.out.println("처리완료됨.");
      		     
      		     if(  MyLibrary.f_check_valid(is_file_upload) && MyLibrary.f_check_valid(_rewriter) && MyLibrary.f_check_valid(mypriority) ) {
      		        
@@ -284,7 +284,7 @@ public class FileUploadServlet extends HttpServlet {
      		        
      		        if(_rewriter.equals("true")) { // 게시글수정 시 기존 저장되있는 _filepath="" 해줌.
      					String f_update = "update myboard set myfilepath=" + "''" + " where " + "mypriority=" +  mypriority + ";";
-     					//System.out.println("f_update = " + f_update);
+     					System.out.println("f_update = " + f_update);
      					if(statement.executeUpdate(f_update) >= 1) {
      						System.out.println("업데이트이므로 경로 초기화");    
      					};    
@@ -335,17 +335,17 @@ public class FileUploadServlet extends HttpServlet {
         	fileItem.write(file); //(1)file 에 씀.        저장
         	
         }else {
-        	//System.out.println(" !file.exists() || !file.canRead() || !file.canWrite() || !file.canExecute() ");
-        	//System.out.println("!!!!!!!!!!!!!!!!! 파일없음 !!!!!!!!!!!!!!!!!");
+        	System.out.println(" !file.exists() || !file.canRead() || !file.canWrite() || !file.canExecute() ");
+        	System.out.println("!!!!!!!!!!!!!!!!! 파일없음 !!!!!!!!!!!!!!!!!");
         	
         	fileItem.write(file); //(1)file 에 씀.        저장 
         }
 		
 
-		//System.out.println("resultset 실행 전 오류");
-		//System.out.println("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + servletContext.getAttribute("mypriority") + ";");
+		System.out.println("resultset 실행 전 오류");
+		System.out.println("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + servletContext.getAttribute("mypriority") + ";");
 		resultSet = statement.executeQuery("select myfilepath from myboard where myid=" + "'"+board.getMyid()+"'" + " and " + "mypriority=" + mypriority + ";");
-		//System.out.println("resultset 실행 후 오류");
+		System.out.println("resultset 실행 후 오류");
 		String getmyfilepath = "",getmyfilepath2="";
 		while(resultSet.next()) {  
 			getmyfilepath=resultSet.getString("myfilepath"); 
@@ -353,7 +353,7 @@ public class FileUploadServlet extends HttpServlet {
 		if(getmyfilepath != null) {
 			getmyfilepath2 += getmyfilepath; 
 		}
-		//System.out.println(getmyfilepath2);
+		System.out.println(getmyfilepath2);
 
 
 		String db_file_upload_path = "";
@@ -369,24 +369,24 @@ public class FileUploadServlet extends HttpServlet {
 			}
 			System.out.println("db_file_upload_path = " + db_file_upload_path);
 
-			//System.out.println("this.db_file_upload_path = " + db_file_upload_path);
+			System.out.println("this.db_file_upload_path = " + db_file_upload_path);
 			db_file_upload_path +=  파일이름+";";
-			//System.out.println(db_file_upload_path + "DB File Upload 경로");
+			System.out.println(db_file_upload_path + "DB File Upload 경로");
 			String f_update = "update myboard set myfilepath=" + ("'" + getmyfilepath2 + db_file_upload_path + "'") + " where myid=" + "'" + board.getMyid() + "'" + " and " + "mypriority=" +   mypriority + ";";
-			//System.out.println("f_update = " + f_update);
+			System.out.println("f_update = " + f_update);
 			if(statement.executeUpdate(f_update) >= 1) {
 				board.setMyfilepath(db_file_upload_path);
-				//System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath());     
+				System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath());
 			};     
 		}else { // ?
 			String f_update = "update myboard set myfilepath=" + "'"+ db_file_upload_path+"'" + " where " + "mypriority=" +  mypriority + ";";
 			if(statement.executeUpdate(f_update) >= 1) {
 				board.setMyfilepath(db_file_upload_path);
-				//System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath()); 
+				System.out.println("디비 파일 업로드된 경로 = " + board.getMyfilepath());
 			} 
 		}
-        //System.out.println("myfilepath => "+파일이름);
-        //System.out.println("\n 업로드된 파일 = "+파일이름);
+        System.out.println("myfilepath => "+파일이름);
+        System.out.println("\n 업로드된 파일 = "+파일이름);
     }
     
 }

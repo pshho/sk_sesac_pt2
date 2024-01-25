@@ -225,7 +225,7 @@ table th:last-child {
 									if(i % 11 == 0){
 
 									} else {
-										debugger
+										// debugger
 										lt.outerHTML += '<input type=button id=list_buttonmyid_'+i+' class="list_button_class"  value='+i+' onclick="javascript: page_change('+ i +');"/>'
 
 									}
