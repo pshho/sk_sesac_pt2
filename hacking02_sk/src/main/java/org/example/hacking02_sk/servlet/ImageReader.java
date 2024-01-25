@@ -31,7 +31,7 @@ public class ImageReader extends HttpServlet {
 				IMAGES_경로 = httpSession.getServletContext().getRealPath("/") + "../" + "/resources/static/images";
 			}
 			
-			System.out.println( IMAGES_경로 );
+//			System.out.println( IMAGES_경로 );
 			File file = new File(IMAGES_경로);
 			if(file.exists()) {
 				String imgBase64Str = MyLibrary.FileSystem.binStrToImgUrlBase64Str(MyLibrary.FileSystem.readAsBinFileToStr(IMAGES_경로 + name));
