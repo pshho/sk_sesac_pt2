@@ -2,11 +2,6 @@ package org.example.hacking02_sk;
 
 import java.io.BufferedReader;
 
-
-
-
-
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,7 +67,8 @@ import java.net.*;
 
 public class MyLibrary {
 	public static String 
-		os_name = System.getProperty("os.name").toLowerCase() , crlf = "" , charset = "", cmd_or_bash = "" , 
+		os_name = "" , 
+		crlf = "" , charset = "", cmd_or_bash = "" , 
 		프젝디렉루트경로 = "E:/C_drive_backup/tool/my_eclipse/eclipse-workstation/MyLibraryAndTools";
 	;
 	static { 
@@ -102,6 +98,7 @@ public class MyLibrary {
 	
 	
 	public static void f_set_base() {
+		os_name = System.getProperty("os.name").toLowerCase();
 		if(os_name.startsWith("window")) { 
 			charset = "MS949";
 			crlf = "\r\n";
@@ -339,7 +336,7 @@ public class MyLibrary {
 		public static class Console{
 			public Console() {}
 			public static void log(String string) {
-				if(MyLibrary.Debug.log_level.equalsIgnoreCase("DEBUG")) {
+				if(Debug.log_level.equalsIgnoreCase("DEBUG")) {
 					if(MyLibrary.os_name.startsWith("window")) {
 						System.out.println("\033[105m" + string + "\\033[0m"); // 핑크색바탕
 					}else if(MyLibrary.os_name.startsWith("linux")) {
@@ -349,7 +346,7 @@ public class MyLibrary {
 			}
 			public static void error(String string) {
 				try {
-					if(MyLibrary.Debug.log_level.equalsIgnoreCase("DEBUG")) {
+					if(Debug.log_level.equalsIgnoreCase("DEBUG")) {
 						if(MyLibrary.os_name.startsWith("window")) {
 							System.err.println("\033[101m" + string + "\033[0m"); // 빨강색바탕
 						}else if(MyLibrary.os_name.startsWith("linux")) {
@@ -371,15 +368,15 @@ public class MyLibrary {
 		
 		public static void rm_rf(String path) {
 			try {
-				java.io.File file = new java.io.File(path);
+				File file = new File(path);
 				
 				if(file.exists()) {
 					if(file.isFile() && file.canWrite())
 						if(file.delete()) System.out.println("if(file.delete())");
 					if(file.isDirectory() && file.canRead() && file.canWrite()) {
-						for(java.io.File file2 : file.listFiles()) {
+						for(File file2 : file.listFiles()) {
 							if(file2.isDirectory() && file.canRead() && file.canWrite()) {
-								MyLibrary.FileSystem.rm_rf(file2.getAbsolutePath());
+								FileSystem.rm_rf(file2.getAbsolutePath());
 								continue;
 							}else if(file2.isFile() && file2.canWrite()) {
 								if(file2.delete()) System.out.println("if(file2.delete())");
@@ -418,25 +415,25 @@ public class MyLibrary {
 					//System.out.print(file2.getAbsolutePath() + "\n");
 					if(file2.isDirectory()) {
 						//MyLibrary.FileSystem.result_files_path += MyLibrary.FileSystem.ls_r(file2.getAbsolutePath());
-						MyLibrary.FileSystem.result_files_path += file.getAbsolutePath() + 슬래시 + "\n";
-						MyLibrary.FileSystem.find(file2.getAbsolutePath());
+						FileSystem.result_files_path += file.getAbsolutePath() + 슬래시 + "\n";
+						FileSystem.find(file2.getAbsolutePath());
 					}else {
-						MyLibrary.FileSystem.result_files_path += file2.getAbsolutePath() + "\n";
+						FileSystem.result_files_path += file2.getAbsolutePath() + "\n";
 					}
 					
 				}
 			}
 			
 			//System.out.println(MyLibrary.FileSystem.result_files_path);
-			return MyLibrary.FileSystem.result_files_path;
+			return FileSystem.result_files_path;
 		}
 		
 		public static String find_egrep(String 디렉 , String regex_파일,String regex_flag) { 
 			//String result = MyLibrary.FileSystem.find_egrep("C:\\Users\\leehyunho\\Desktop\\tmp\\", "^.+file\\..+$", "img");
 			String result = "";
 			
-			for(String readline: MyLibrary.Data.StringData.matchRegExp(
-					MyLibrary.FileSystem.find(디렉), 
+			for(String readline: Data.StringData.matchRegExp(
+					FileSystem.find(디렉),
 					regex_파일, 
 					regex_flag
 				)) {
@@ -1111,7 +1108,7 @@ public class MyLibrary {
 						   	+ ";ftp=" + myFtpServerSocket_host + ":"+myFtpServerSocket_port+"\""
 						);
 						
-						MyLibrary.Network.Mitm.Proxy.startSystemProxyServerHostPort();
+						Proxy.startSystemProxyServerHostPort();
 						MyLibrary.f_exec("netsh winhttp show proxy");
 
 											
@@ -1190,8 +1187,8 @@ public class MyLibrary {
 
 						sslContext = SSLContext.getInstance("TLS");
 						sslContext.init(
-							MyLibrary.Network.Mitm.Proxy.createKeyManagers(null, null), 
-							MyLibrary.Network.Mitm.Proxy.createTrustManagers(), 
+							Proxy.createKeyManagers(null, null),
+							Proxy.createTrustManagers(),
 							null
 						);
 						
@@ -1205,7 +1202,7 @@ public class MyLibrary {
 					SSLSocket sslSocket = null;
 					
 					try {
-						sslSocketFactory = MyLibrary.Network.Mitm.Proxy.createSSLContext().getSocketFactory();
+						sslSocketFactory = Proxy.createSSLContext().getSocketFactory();
 						sslSocket = (SSLSocket)sslSocketFactory.createSocket(host,port);
 					} catch (Exception e) {e.printStackTrace();}
 					
@@ -1218,7 +1215,7 @@ public class MyLibrary {
 					SSLServerSocket sslServerSocket = null;
 					
 					try {
-						sslServerSocketFactory = MyLibrary.Network.Mitm.Proxy.createSSLContext().getServerSocketFactory();
+						sslServerSocketFactory = Proxy.createSSLContext().getServerSocketFactory();
 						sslServerSocket = (SSLServerSocket)sslServerSocketFactory.createServerSocket(port);
 					} catch (Exception e) {e.printStackTrace();}
 					
@@ -1361,7 +1358,7 @@ public class MyLibrary {
 						
 						int responseCode = httpurlconnection.getResponseCode();
 						String responseMessage = httpurlconnection.getResponseMessage();
-						JSONObject jsonObject = MyLibrary.Data.getJSONObject(MyLibrary.프젝디렉루트경로 + "/src/main/webapp/my_js/json_s/web/response_code_message.json");
+						JSONObject jsonObject = Data.getJSONObject(MyLibrary.프젝디렉루트경로 + "/src/main/webapp/my_js/json_s/web/response_code_message.json");
 						String response_code_message_decription = jsonObject.getString( String.valueOf( responseCode ) );
 						System.out.println(response_code_message_decription);
 						
@@ -1378,14 +1375,14 @@ public class MyLibrary {
 						String content_location = httpurlconnection.getHeaderField("Content-Location");
 						if( (responseCode == 301 || responseCode == 302) && MyLibrary.f_check_valid(location) ) {
 							System.out.println("Location: " + location);
-							MyLibrary.Network.RequestAndResponse.httpURLConnection("GET" ,  location , p3_map_request_headers , p4_request_body); 
+							RequestAndResponse.httpURLConnection("GET" ,  location , p3_map_request_headers , p4_request_body);
 						
 						}else if( (responseCode == 307 || responseCode == 308) && MyLibrary.f_check_valid(location) ) {
 							System.out.println("Location: " + location);
-							MyLibrary.Network.RequestAndResponse.httpURLConnection(p1_request_method ,  location , p3_map_request_headers , p4_request_body); 							
+							RequestAndResponse.httpURLConnection(p1_request_method ,  location , p3_map_request_headers , p4_request_body);
 						}else if( (responseCode == 302 || responseCode == 307) && MyLibrary.f_check_valid(content_location)  ) {
 							System.out.println("Content-Location: " + content_location);
-							MyLibrary.Network.RequestAndResponse.httpURLConnection("GET" ,  content_location , p3_map_request_headers , p4_request_body); 						
+							RequestAndResponse.httpURLConnection("GET" ,  content_location , p3_map_request_headers , p4_request_body);
 						}
 						
 						// 4XX 응답코드 처리
@@ -1486,27 +1483,27 @@ public class MyLibrary {
 							if(refresh.matches("URL.*=.*")) {
 								String string = refresh.split("URL.*=.*")[1];
 								System.out.println("response header 에서 파싱한 redirect url 주소 = " + string);
-								MyLibrary.Network.RequestAndResponse.httpURLConnection("GET" ,  string , p3_map_request_headers , p4_request_body);
+								RequestAndResponse.httpURLConnection("GET" ,  string , p3_map_request_headers , p4_request_body);
 							}
 						}else {
-							for(String string: MyLibrary.Data.StringData.matchRegExp(response_body, "<meta.*http-equive.*=.*refresh.*>" , "g")) {
+							for(String string: Data.StringData.matchRegExp(response_body, "<meta.*http-equive.*=.*refresh.*>" , "g")) {
 								if(MyLibrary.f_check_valid(string)) {
 									if(string.matches("URL.*=.*")) {
 										string = string.split("URL.*=.*")[1];
 										System.out.println("response body 에서 파싱한 Location: " + string);
-										MyLibrary.Network.RequestAndResponse.httpURLConnection("GET" ,  string , p3_map_request_headers , p4_request_body);
+										RequestAndResponse.httpURLConnection("GET" ,  string , p3_map_request_headers , p4_request_body);
 									}
 									
 								}
 							}							
 						}
 						
-						for(String string: MyLibrary.Data.StringData.matchRegExp(response_body, "<link.*rel.*=.*canonical.*>" , "g")) {
+						for(String string: Data.StringData.matchRegExp(response_body, "<link.*rel.*=.*canonical.*>" , "g")) {
 							if(MyLibrary.f_check_valid(string)) {
 								if(string.matches("href.*=.*")) {
 									string = string.split("href.*=.*")[1];
 									System.out.println("response body 에서 파싱한 Content-Location: " + string);
-									MyLibrary.Network.RequestAndResponse.httpURLConnection("GET" ,  string , p3_map_request_headers , p4_request_body);
+									RequestAndResponse.httpURLConnection("GET" ,  string , p3_map_request_headers , p4_request_body);
 								}
 								
 							}
@@ -1538,7 +1535,7 @@ public class MyLibrary {
 				try {
 					String response_message = "";
 					
-					SSLContext sslContext = MyLibrary.Network.Mitm.Proxy.createSSLContext();
+					SSLContext sslContext = Mitm.Proxy.createSSLContext();
 					
 					HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
 					HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -1613,13 +1610,13 @@ public class MyLibrary {
 						System.out.println(request_body);
 						
 						
-						HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(MyLibrary.API.AI.OCR.APIGW_INVOKE_URL).openConnection();
+						HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(OCR.APIGW_INVOKE_URL).openConnection();
 						
 						
 						httpURLConnection.setDoOutput(true);
 						httpURLConnection.setRequestMethod("POST");
 						httpURLConnection.setRequestProperty("Content-Type", "application/json");
-						httpURLConnection.setRequestProperty("X-OCR-SECRET",  MyLibrary.API.AI.OCR.SECRET_KEY);
+						httpURLConnection.setRequestProperty("X-OCR-SECRET",  OCR.SECRET_KEY);
 						
 						BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream()));
 						bufferedWriter.write(request_body);
@@ -1880,11 +1877,5 @@ public class MyLibrary {
 			
 			return result;
 		}		
-	}
-	
-	
-	public static void main(String[] args) {
-		//String imgBase64Str = MyLibrary.FileSystem.binStrToImgUrlBase64Str(MyLibrary.FileSystem.readAsBinFileToStr("C:\\Users\\leehyunho\\Desktop\\tmp\\화면 캡처 2024-01-24 114540.jpg"));
-		//System.out.println(MyLibrary.FileSystem.urlCreateObjectURL("C:\\Users\\leehyunho\\Desktop\\tmp\\화면 캡처 2024-01-24 114540.jpg"));
 	}
 }

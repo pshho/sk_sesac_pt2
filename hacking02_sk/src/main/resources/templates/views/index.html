@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width", initial-scale="1">
 	<link rel="stylesheet" href="../css/bootstrap.css">
+	<script src="../js/MyLibrary.js" ></script> 
     <title>MNST</title>
     <style>
         .carousel_slide {
@@ -155,6 +156,17 @@
     </style>
 </head>
 <body>
+	<script>
+		param1 = {
+			method: "POST",
+			url: "/ImageReader",      //protocol://hostname:port/pathname?name=value&searchparam#hash
+			setRequestHeader: '', //["요청-헤더","값"] setRequestHeader 는 for(var 키 in setRequestHeader) { xhr.setRequestHeader(키 , setRequestHeader[키]) }
+			async: "false",  //true<비동기>또는false<동기>           
+			withCredentials: "true", //true<cors 일 ? 쿠키 보냄>또는false<안보냄>    
+			//responseType : "text", //text또는document등..
+		}
+	</script>
+	
 	<th:block th:replace="header :: headerFragment"></th:block>
     <!-- main -->
     <div style="height: auto; min-height: calc(100vh - 100px); padding-bottom: 100px;">
@@ -205,13 +217,34 @@
 				<p style="font-size: 22px;">주요서비스</p>
 				<div class="service_menu_box">
 					<ul>
-	                    <li><a href="/banking/inout"><span>이체</span><img th:src="@{/images/next.png}"/></a></li>
-	                    <li><a href="/banking/acchistory"><span>계좌조회</span><img th:src="@{/images/next.png}"/></a></li>
-	                    <li><a href="/jsp/___NoticeBoard_List"><span>문의게시판</span><img th:src="@{/images/next.png}"/></a></li>
-	                    <li><a href="/"><span>인터넷환전</span><img th:src="@{/images/next.png}"/></a></li>
-	                    <li><a href="/"><span>환율조회</span><img th:src="@{/images/next.png}"/></a></li>
+	                    <li><a class="a_class_next버튼" href="/banking/inout"><span>이체</span><!-- <img th:src="@{/images/next.png}"/> --></a></li>
+	                    <li><a class="a_class_next버튼" href="/banking/acchistory"><span>계좌조회</span><!-- <img th:src="@{/images/next.png}"/> --></a></li>
+	                    <li><a class="a_class_next버튼" href="/jsp/___NoticeBoard_List"><span>문의게시판</span><!-- <img th:src="@{/images/next.png}"/> --></a></li>
+	                    <li><a class="a_class_next버튼" href="/"><span>인터넷환전</span><!-- <img th:src="@{/images/next.png}"/> --></a></li>
+	                    <li><a class="a_class_next버튼" href="/"><span>환율조회</span><!-- <img th:src="@{/images/next.png}"/> --></a></li>
                 	</ul>
 				</div>
+			<script>    
+				//console.log(xmlHttpRequest.response)   
+				window.img_s=[]
+				
+      			document.querySelectorAll('a[class=a_class_next버튼]').forEach((a,i,arr)=>{
+      				img = document.createElement('img');
+      				a.appendChild(img)
+      				window.img_s.push(img)
+          		}) 	 
+					
+					
+				
+	  			param1.send_querystring = 'name=next.png'   
+    			param1.done_2xx_callback = ()=>{
+    				for(var i=0;i<window.img_s.length;i++){
+    					window.img_s[i].src = window.xmlHttpRequest.response;  	 
+    				}
+				}
+    			window.xmlHttpRequest = MyLibrary.Base.xmlHttpRequest( param1 )  
+            </script>
+            
             </div>
         </div>
     </div>

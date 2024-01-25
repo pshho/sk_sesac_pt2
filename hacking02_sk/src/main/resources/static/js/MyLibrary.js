@@ -43,7 +43,8 @@ var MyLibrary = {
 	f_check_valid: (obj) => { // f_check_valid(객체) 를 할 때 객체가 아예없으면 에러남. 때문에 typeof obj !== 'undefined' 는 아무런 의미 없음.   // || ( obj instanceof Array && obj.length > 0 )
 		if (
 			(typeof obj === 'number' && !isNaN(obj)) || typeof obj !== 'undefined' && obj !== undefined && obj !== null && obj !== '' && obj !== false && obj.length !== 0
-			|| (obj instanceof Array && obj.length > 0) /* 객체 길이검증 로직 찾아서 포함해야됨 */
+			|| (obj instanceof Array && obj.length > 0) /* 객체 길이검증 로직 찾아서 포함해야됨 */ 
+			|| (typeof a === 'string' && a !== 'null') 
 		) return true;
 		else return false
 	},
@@ -210,15 +211,15 @@ var MyLibrary = {
 				return "param1 없음"
 			}
 
-			window.xmlHttpRequest = new XMLHttpRequest()
-			window.xmlHttpRequest.open(
+			xmlHttpRequest = new XMLHttpRequest()
+			xmlHttpRequest.open(
 				param1.method || "POST",
 				param1.url || "http://127.0.0.1:8080/",
 				param1.async === "true" ? true : false
 			)
 
 
-			window.xmlHttpRequest.withCredentials = param1.withCredentials === "true" ? true : false
+			xmlHttpRequest.withCredentials = param1.withCredentials === "true" ? true : false
 
 
 			if( !MyLibrary.f_check_valid(param1.setRequestHeader)){  
@@ -245,7 +246,7 @@ var MyLibrary = {
 				}
 			}
 
-			window.xmlHttpRequest.addEventListener('readystatechange', (event) => {
+			xmlHttpRequest.addEventListener('readystatechange', (event) => {
 				switch (xmlHttpRequest.readyState) {
 					case XMLHttpRequest.UNSENT:
 						console.log('XMLHttpRequest.UNSENT = ' + XMLHttpRequest.UNSENT)
@@ -299,13 +300,12 @@ var MyLibrary = {
 			});
 
 			if (param1.send_querystring !== "") {
-				window.xmlHttpRequest.send( param1.send_querystring  ); 
+				xmlHttpRequest.send( param1.send_querystring ); 
 			} else {
-				window.xmlHttpRequest.send()
+				xmlHttpRequest.send(); 
 			}
-
+			return xmlHttpRequest;
 		}
-
 	},
 
 	imageCharCodeAtToString16: (img_src) => {
@@ -1038,6 +1038,138 @@ function getFindChangeDecodeUri(strings){
 		return strings;
 }
 
+
+
+
+
+var MyEnDeCryption = {
+	Hash:{
+		
+	},
+	
+	JWT:{
+		init:()=>{
+			window.param1 = {  
+				method: "POST",  
+				url: "/MyLibraryAndTools/MyEnDeCryption",            //protocol://hostname:port/pathname?name=value&searchparam#hash    
+				async: "false",  //true<비동기>또는false<동기>  
+				withCredentials: "true", //true<cors 일 ? 쿠키 보냄>또는false<안보냄>
+				send_querystring: ""
+			}			
+		},
+		
+		encode: (obj)=>{// MyEnDeCryption.JWT.encode( {}헤더 , 페이로드 ,비밀키)
+			//MyEnDeCryption.JWT.encode({payload: {"email":"devhudi@gmail.com","name":"Hudi","isAdmin":true} , privatekey: '비밀키'})
+			MyEnDeCryption.JWT.init(); 
+			window.param1.send_querystring += `jwt=true` 
+			
+			header = ''
+			if(MyLibrary.f_check_valid(obj.header)){
+				header = JSON.stringify(obj.header);
+			}else{
+				header = JSON.stringify({
+				  alg: "HS256",
+				  typ: "JWT",
+				})
+			}
+			window.param1.send_querystring += `&encode=true&header=${header}`
+			
+			
+			payload = ''
+			if(MyLibrary.f_check_valid(obj.payload)){
+				payload = JSON.stringify(obj.payload);
+				/* 
+				{
+					"iss": "발급자",
+					"sub": "제목",
+					"aud": "대상자",
+					"exp": "expiration 만료시간ms초현시간보다이후로설정되있어야됨",
+					"nbf": "not before 활성시간ms초지나기전까지는토큰처리안됨",
+					"iat": "age 발급된시간ms초해당값으로토큰발급이언제됐는지확인가능",
+					"jti": "식별자중복처리방지때사용ㄱ일회용토큰에사용시유용.",
+					"http://호.도/../uri": "public claim 충돌방지를위해키를uri로지정ㄱ",
+					"키": "값 private claim 서버 클라 송수신간 협의하여 사용되는 즉 키가 중복될수있음."
+	    
+				}
+				
+				*/
+			}
+			window.param1.send_querystring += `&payload=${payload}`
+			
+			
+			
+			privatekey = ''
+			if(MyLibrary.f_check_valid(obj.privatekey)){
+				privatekey = obj.privatekey;
+			}
+			
+			window.param1.send_querystring += `&privatekey=${privatekey}`
+			
+			
+			MyLibrary.Base.xmlHttpRequest( window.param1 )
+			
+			return window.xmlHttpRequest.responseText.replace('\r\n',''); 
+		},
+		decode: (obj)=>{
+			
+			/* 
+				MyEnDeCryption.JWT.decode( 
+					{  
+						header_payload_signature: MyEnDeCryption.JWT.encode({payload: {"email":"devhudi@gmail.com","name":"Hudi","isAdmin":true} , privatekey: '비밀키'}) ,  
+						privatekey: "비밀키"
+					} 
+				)
+			*/
+			
+			
+			MyEnDeCryption.JWT.init();
+			window.param1.send_querystring += `jwt=true&decode=true`
+			
+			
+			
+			
+			
+			if(MyLibrary.f_check_valid(obj.header_payload_signature)){
+				window.param1.send_querystring += `&header_payload_signature=${obj.header_payload_signature}`
+			}
+			
+			if(MyLibrary.f_check_valid(obj.privatekey)){
+				window.param1.send_querystring += `&privatekey=${obj.privatekey}`
+			}			
+			
+			MyLibrary.Base.xmlHttpRequest( window.param1 )
+			
+			return window.xmlHttpRequest.responseText.replace('\r\n',''); //'{"alg":"HS256","typ":"JWT"}.{"email":"devhudi@gmail.com","name":"Hudi","isAdmin":true}.KeefPR1ixDwoNnBQ77YsBYQxXFkZR1VcAkah6yle5lk'
+		}
+	}
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //네이버는 sessionStorage 사용 x 임.
 
 var MyAttack = {
@@ -1176,6 +1308,7 @@ var MyAttack = {
 	}
 } 
 
+
 var MyTool = {
 	'ToolketCommandWindow':{
 		"help": ()=>{
@@ -1184,6 +1317,8 @@ var MyTool = {
 		'open': ()=>{ window.open('/JSPproject/ToolKit_CommandWindow.jsp')}
 	}
 }
+
+
 
 
 //====================== 현재 안됨. 수정해야됨. =========================
