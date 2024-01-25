@@ -209,7 +209,7 @@ public class FileUploadServlet extends HttpServlet {
 					  
         		 }else if(MyLibrary.os_name.startsWith("linux")){
         			 ///usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/fileupload/
-        			 파일업로드경로 = request.getSession().getServletContext().getRealPath("/") + "../resources/static/fileupload/" ;
+        			 파일업로드경로 = request.getSession().getServletContext().getRealPath("/") + "WEB-INF/classes/static/fileupload/" ;
         		 }
    
         		 
@@ -365,7 +365,7 @@ public class FileUploadServlet extends HttpServlet {
 				System.out.println("db_file_upload_path = " + db_file_upload_path); 
 			}else if(MyLibrary.os_name.startsWith("linux")){
 				///usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/fileupload/
-				db_file_upload_path = request.getSession().getServletContext().getRealPath("/") + "../resources/static/fileupload/";
+				db_file_upload_path = request.getSession().getServletContext().getRealPath("/") + "WEB-INF/classes/static/fileupload/";
 				
 			}
 			System.out.println("db_file_upload_path = " + db_file_upload_path);
