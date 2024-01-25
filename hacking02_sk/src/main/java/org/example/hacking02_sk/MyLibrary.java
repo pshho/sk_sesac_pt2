@@ -490,12 +490,12 @@ public class MyLibrary {
 							string_hex += String.format("\\x%02x" ,_byte&0xff ); 
 						} 
 					}
-					System.out.println(string_hex); 
+//					System.out.println(string_hex);
 					//result += new String(Base64.getEncoder().encode(string_hex.getBytes("utf-8")),"utf-8"); 
 
 					//URLEncoder.encode(result).replaceAll("%20", "+") + MyLibrary.crlf; 
 					//result = URLEncoder.encode(result).replaceAll("%20", "+");
-					System.out.println(result);
+//					System.out.println(result);
 				}else {
 					result = "!MyLibrary.f_check_valid(string_바이너리파일내용)";
 				}
@@ -503,7 +503,7 @@ public class MyLibrary {
 				e.printStackTrace();
 				return e.getMessage();
 			}
-			System.out.println(result); 
+//			System.out.println(result);
 			return result; // data:image/*;base64, 등.. url 주소창에 입력 시 파일 다운로드 받는 창 열림.
 		}
 		
