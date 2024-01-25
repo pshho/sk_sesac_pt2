@@ -28,7 +28,7 @@ public class ImageReader extends HttpServlet {
 			if(MyLibrary.os_name.startsWith("window")) {
 				IMAGES_경로 = request.getSession().getServletContext().getRealPath("/").toString().replaceAll("\\\\","/").replace("/webapp","/resources/static/images");
 			}else if(MyLibrary.os_name.startsWith("linux")) {
-				IMAGES_경로 = httpSession.getServletContext().getRealPath("/") + "WEB-INF/classes/static/images";
+				IMAGES_경로 = httpSession.getServletContext().getRealPath("/") + "WEB-INF/classes/static/images/";
 			}
 			
 //			System.out.println( IMAGES_경로 );
