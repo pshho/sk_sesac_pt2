@@ -129,10 +129,10 @@ public class UserController {
     @PostMapping("login")
 	public ModelAndView loginAction(User user, HttpServletRequest request, HttpServletResponse response) {
     	ModelAndView mav = new ModelAndView();
-        int result = userDAO.login(user.getMyid(), user.getMypw());
+        String result = userDAO.login(user.getMyid(), user.getMypw());
 		request.getSession().invalidate();
 
-        if (result == 1) { //로그인 성공
+        if (result.equals("로그인 성공")) { //로그인 성공
 			int session_time_seconds = 1800;
 			HttpSession session = request.getSession();
 			user = userDAO.getUser(user.getMyid(), user.getMypw());
@@ -148,28 +148,16 @@ public class UserController {
 			response.addCookie(cookie);
 			sessions.put(session.getId(), ((User)(session.getAttribute("user"))).getMyname());
 			mav.setViewName("redirect:/");
-			return mav;
         }
-        else if (result == 0) {
+		else {
 			mav.setViewName("member/loginFail");
 			if (user.getMypw().equals("")) {
 				mav.addObject("message", "패스워드 공란");
 			} else {
-				mav.addObject("message", "패스워드 불일치");
+				mav.addObject("message", result);
 			}
-			return mav;
-        }
-        else if (result == -1) {
-			mav.setViewName("member/loginFail");
-			mav.addObject("message", "존재하지 않는 ID");
-			return mav;
-        }
-        else if (result == -2) {
-			mav.setViewName("member/loginFail");
-			mav.addObject("message", "DB 에러");
-			return mav;
-        }
-        return null; // maybe not reachable
+		}
+		return mav;
     }
 
 	@RequestMapping("logout")

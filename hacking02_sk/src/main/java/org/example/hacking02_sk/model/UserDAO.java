@@ -35,7 +35,7 @@ public class UserDAO {
 //	}
 	
 	//로그인
-	public int login(String myid, String mypw) {
+	public String login(String myid, String mypw) {
 		String SQL = "SELECT mypw FROM myuser WHERE myid = ?";
 		try {
 			pstmt = MyDBConnection.getConnection().prepareStatement(SQL);
@@ -43,17 +43,17 @@ public class UserDAO {
 			rs = pstmt.executeQuery(); // 결과 담는 객체
 			if (rs.next()) {
 				if(rs.getString(1).equals(mypw)) {
-					return 1; // 로그인 성공
+					return "로그인 성공"; // 로그인 성공
 				}
 				else {
-					return 0; // 비밀번호 불일치
+					return "비밀번호 불일치"; // 비밀번호 불일치
 				}	
 			}
-			return -1; // 아이디가 없음
+			return "존재하지 않는 아이디"; // 아이디가 없음
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return -2; // DB 오류
+		return "DB 에러"; // DB 오류
 	}
 	
 	//회원가입
