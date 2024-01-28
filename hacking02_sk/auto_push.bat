@@ -6,7 +6,7 @@ FOR /F %%P IN ('cd') DO SET CURRENT_PATH=%%P
 IF "%ORI%" == "%CURRENT_PATH%" (
 	 ECHO PATH SAME
 	 SET "MY_BUILD="
-	 FOR /F "tokens=*" %%G IN ('gradlew build ^| find /I "BUILD SUCCESSFUL"') DO SET "MY_BUILD=%%G"
+	 FOR /F "tokens=*" %%G IN ('gradlew clean build ^| find /I "BUILD SUCCESSFUL"') DO SET "MY_BUILD=%%G"
 	
 	 IF %ERRORLEVEL% EQU 0 (
 		 ECHO BUILD SUCCESS
